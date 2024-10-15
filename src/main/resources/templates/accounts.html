@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Accounts</title>
+</head>
+<body>
+<h2>Accounts List</h2>
+<a href="/accounts/new">Add New Account</a>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Birth Date</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Active</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="account : ${data}">
+            <td th:text="${account.name}"></td>
+            <td th:text="${account.getBirthDateAsString('dd/MM/yyyy')}"></td>
+            <td th:text="${account.username}"></td>
+            <td th:text="${account.email}"></td>
+            <td th:text="${account.active ? 'Yes' : 'No'}"></td>
+            <td>
+                <a th:href="@{/accounts/update/{id}(id=${account.id})}">Edit</a> |
+                <a th:href="@{/accounts/delete/{id}(id=${account.id})}">Delete</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>
