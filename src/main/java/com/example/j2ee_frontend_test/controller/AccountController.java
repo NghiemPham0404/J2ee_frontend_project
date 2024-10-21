@@ -1,20 +1,19 @@
 package com.example.j2ee_frontend_test.controller;
 
-import com.example.j2ee_frontend_test.config.RetrofitClientConfig;
 import com.example.j2ee_frontend_test.models.Account;
-import com.example.j2ee_frontend_test.response.AccountResponse;
-import com.example.j2ee_frontend_test.services.AccountApi;
+import com.example.j2ee_frontend_test.models.Role;
+import com.example.j2ee_frontend_test.response.AccountListResponse;
+import com.example.j2ee_frontend_test.services.AccountService;
+import com.example.j2ee_frontend_test.services.RoleService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
@@ -22,22 +21,25 @@ import java.util.List;
 public class AccountController {
 
     @Autowired
-    AccountApi accountApi;
+    AccountService accountService;
 
+    @Autowired
+    RoleService roleService;
 
     @GetMapping
-    public String viewAccountsPage(Model model) throws IOException {
-        Call<AccountResponse> call = accountApi.getAllAccounts(1, 1);
-        Response<AccountResponse> response = call.execute();
+    public String viewAccountsPage(Model model, @PathParam("page") Integer page) {
+        page = page != null ? page - 1: 0;
+        AccountListResponse accountListResponse = accountService.getAllAccounts(1, page);
+        model.addAttribute("data", accountListResponse.getAccountList());
+        model.addAttribute("page", page);
+        model.addAttribute("total_pages", accountListResponse.getTotalPages());
+        model.addAttribute("total_results", accountListResponse.getTotalResults());
 
-        if (response.isSuccessful() && response.body() != null) {
-            List<Account> accounts = response.body().getAccountList();
-            model.addAttribute("data", accounts);
-        } else {
-            // Handle errors here, if needed
-            System.out.println("Error: " + response.errorBody());
-        }
+        accountListResponse.getAccountList().forEach(account -> System.out.println(account.getName()));
 
+        List<Role> roles = roleService.getAllRoles();
+        roles.forEach(role -> System.out.println(role.getName()));
+        model.addAttribute("roles", roles);
         return "accounts";  // Thymeleaf template
     }
 
@@ -45,37 +47,48 @@ public class AccountController {
     public String showNewAccountForm(Model model) {
         Account account = new Account();
         model.addAttribute("account", account);
+
+        List<Role> roles = roleService.getAllRoles();
+//        roles.forEach(role -> System.out.println(role.getName()));
+        model.addAttribute("roles", roles);
+
         return "new_account";
     }
 
     @PostMapping("/save")
-    public String saveAccount(@ModelAttribute("account") Account account) throws IOException {
+    public String saveAccount(@ModelAttribute("account") Account account) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Role role = roleService.getRoleById(account.getRole_id());
+        account.setRole(role);
+        account.setBirthDate(new SimpleDateFormat("yyyy-MM-dd").parse(account.getBirthDateAsString("yyyy-MM-dd")));
+        String jString = objectMapper.writeValueAsString(account);
+        System.out.println(jString);
         if (account.getId() != null) {
-            accountApi.updateAccount(account.getId(), account).execute();
+            accountService.updateAccount(account.getId(), account);
         } else {
-            accountApi.createAccount(account).execute();
+            accountService.createAccount(account);
         }
 
-        return "redirect:/accounts";
+        return "redirect:/account";
     }
 
     @GetMapping("/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) throws IOException {
-        Call<Account> call = accountApi.getAccountById(id);
-        Response<Account> response = call.execute();
+    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
+        Account account = accountService.getAccountById(id);
+        model.addAttribute("account", account);
+        System.out.println("role id = "+account.getRole().getId());
 
-        if (response.isSuccessful()) {
-            Account account = response.body();
-            model.addAttribute("account", account);
-        }
+        List<Role> roles = roleService.getAllRoles();
+        roles.forEach(role -> System.out.println(role.getName()));
+        model.addAttribute("roles", roles);
 
         return "update_account";
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteAccount(@PathVariable("id") Integer id) throws IOException {
-        accountApi.deleteAccount(id).execute();
-        return "redirect:/accounts";
+    public String deleteAccount(@PathVariable("id") Integer id){
+        accountService.deleteAccount(id);
+        return "redirect:/account";
     }
 }
 

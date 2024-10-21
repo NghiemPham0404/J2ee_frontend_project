@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>New Account</title>
+</head>
+<body>
+<h2>New Account</h2>
+<form action="#" th:action="@{/account/save}" th:object="${account}" method="post">
+    <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" th:field="*{name}"/>
+    </div>
+    <div>
+        <label for="birthdate">Birth Date</label>
+        <input type="date" id="birthdate" th:field="*{birthDate}"/>
+    </div>
+    <div>
+        <label for="username">Username</label>
+        <input type="text" id="username" th:field="*{username}"/>
+    </div>
+    <div>
+        <label for="email">Email</label>
+        <input type="text" id="email" th:field="*{email}"/>
+    </div>
+    <div>
+        <label for="role">Choose Role:</label>
+        <select th:field="*{role_id}">
+            <option id="role" th:each="role_item : ${roles}" th:value="${role_item.id}" th:text="${role_item.name}"></option>
+        </select>
+    </div>
+    <div>
+        <label for="active">Active</label>
+        <input type="checkbox" id="active" th:field="*{active}"/>
+    </div>
+    <div>
+        <button type="submit">Save</button>
+    </div>
+</form>
+</body>
+</html>
