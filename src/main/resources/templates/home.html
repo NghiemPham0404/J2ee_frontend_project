@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/home.css" th:href="@{/css/home.css}" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+  <div class="container">
+    <a class="navbar-brand " href="#" th:href="@{/}">
+      <img src="img/SGU-LOGO.png" alt="SGU Logo" style="height: 50px" th:src="@{img/SGU-LOGO.png}">
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link fw-bold active" aria-current="page" th:href="@{/home}">Trang chủ</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/introduction}">Giới thiệu</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Dự án</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Sao kê</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/contact}">Liên hệ</a>
+        </li>
+      </ul>
+
+      <a th:href="@{/sign-in}" class="btn btn-dark ms-3 fw-bold">Đăng nhập</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="important-project text-center position-relative">
+        <h3 class="text-primary">Dự án quan trọng</h3>
+        <img src="img/Demo_1.JPG" alt="Flood Relief" class="img-fluid custom-size" th:src="@{img/Demo_1.JPG}">
+        <div class="badge-position">
+          <span class="badge bg-danger p-2">Đang vận động</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <h4>Chung tay giúp đỡ các tỉnh miền Trung bị thiệt hại do mưa lũ.</h4>
+      <p>'Nhằm chia sẻ những khó khăn mà đồng bào miền Trung đang phải gánh chịu...'</p>
+      <div class="text-end">
+        <a href="#" class="text-primary">Xem thêm >></a>
+      </div>
+
+      <div class="countdown text-center mt-4 btn-outline-primary">
+        <div>29 : 23 : 59 : 59</div>
+        <div class="small">Ngày Giờ Phút Giây</div>
+      </div>
+
+      <div class="progress-container">
+        <div class="progress-label mt-4">Đã góp được <span class="highlight">500,000,000đ</span> / 1,000,000,000đ</div>
+        <div class="d-flex align-items-center justify-content-between mt-2">
+          <div class="progress w-75 me-3">
+            <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <div class="donate-button">
+            <a th:href="@{/donate}">
+              <button class="btn btn-danger btn-lg">Đóng góp</button>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="container my-5">
+  <h2 class="mb-4">Các dự án khác</h2>
+  <hr style="margin-top:-10px ; margin-bottom: 30px;width: 100%;">
+  <div class="row">
+    <!-- Dự án 1 -->
+    <div class="col-md-4">
+      <div class="card">
+        <img src="img/Demo_2.webp" class="card-img-top" alt="Project Image" th:src="@{img/Demo_2.webp}">
+        <div class="badge-position-secondary">
+          <span class="badge bg-danger p-2">Đang vận động</span>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Thời gian còn lại trước khi khóa sổ</h5>
+          <div class="countdowns text-center mb-3">
+            <div>29 : 23 : 59 : 59</div>
+            <div class="small">Ngày Giờ Phút Giây</div>
+          </div>
+          <h5 class="card-title">Gây quỹ trao tặng cơ hội phẫu thuật cho 20 em bé hở môi, hàm ếch (Tháng 10/2024)</h5>
+          <p class="card-text">Năm 2024 đánh dấu năm thứ 35 Operation Smile hoạt động tại Việt Nam, hãy cùng chúng tôi tiếp sức cho 20 hoàn cảnh khó khăn ở các địa phương vùng cao phía Bắc có cơ hội tìm lại nụ cười cho con em mình.</p>
+          <p class="card-text">Đã góp được: 7,750,000đ / 12,000,000đ</p>
+          <div class="progress mb-3">
+            <div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <a th:href="@{/donate}" class="btn btn-outline-primary w-100">Đóng góp</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dự án 2 -->
+    <div class="col-md-4">
+      <div class="card">
+        <img src="https://via.placeholder.com/500x300" class="card-img-top" alt="Project Image" th:src="@{'https://via.placeholder.com/500x300'}">
+        <div class="badge-position-secondary">
+          <span class="badge bg-success p-2">Đã hoàn thành</span>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Thời gian còn lại trước khi khóa sổ</h5>
+          <div class="countdowns text-center mb-3">
+            <div>29 : 23 : 59 : 59</div>
+            <div class="small">Ngày Giờ Phút Giây</div>
+          </div>
+          <h5 class="card-title">Gây quỹ trao tặng cơ hội phẫu thuật cho 20 em bé hở môi, hàm ếch (Tháng 10/2024)</h5>
+          <p class="card-text">Năm 2024 đánh dấu năm thứ 35 Operation Smile hoạt động tại Việt Nam, hãy cùng chúng tôi tiếp sức cho 20 hoàn cảnh khó khăn ở các địa phương vùng cao phía Bắc có cơ hội tìm lại nụ cười cho con em mình.</p>
+          <p class="card-text">Đã góp được: 12,000,000đ / 12,000,000đ</p>
+          <div class="progress mb-3">
+            <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <div class="done">
+          <a href="javascript:void(0);" class="btn btn-primary w-100">Cảm ơn vì đã từ thiện</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dự án 3 -->
+    <div class="col-md-4">
+      <div class="card">
+        <img src="https://via.placeholder.com/500x300" class="card-img-top" alt="Project Image" th:src="@{'https://via.placeholder.com/500x300'}">
+        <div class="badge-position-secondary">
+          <span class="badge bg-danger p-2">Đang vận động</span>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Thời gian còn lại trước khi khóa sổ</h5>
+          <div class="countdowns text-center mb-3">
+            <div>29 : 23 : 59 : 59</div>
+            <div class="small">Ngày Giờ Phút Giây</div>
+          </div>
+          <h5 class="card-title">Gây quỹ trao tặng cơ hội phẫu thuật cho 20 em bé hở môi, hàm ếch (Tháng 10/2024)</h5>
+          <p class="card-text">Năm 2024 đánh dấu năm thứ 35 Operation Smile hoạt động tại Việt Nam, hãy cùng chúng tôi tiếp sức cho 20 hoàn cảnh khó khăn ở các địa phương vùng cao phía Bắc có cơ hội tìm lại nụ cười cho con em mình.</p>
+          <p class="card-text">Đã góp được: 7,750,000đ / 12,000,000đ</p>
+          <div class="progress mb-3">
+            <div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <a th:href="@{/donate}" class="btn btn-outline-primary w-100">Đóng góp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Xem thêm button -->
+  <div class="text-center mt-4">
+    <a href="#" class="btn btn-primary btn-lg">Xem thêm</a>
+  </div>
+</div>
+
+<div class="stats-container py-4">
+  <div class="container text-center">
+    <h2 class="mb-2">Đến bây giờ quỹ đã làm được:</h2>
+    <hr>
+    <div class="row">
+      <!-- Số trường hợp -->
+      <div class="col-md-6">
+        <div class="stat-item">
+          <img src="https://via.placeholder.com/50" alt="Charity Icon" th:src="@{'https://via.placeholder.com/50'}">
+          <h1>69</h1>
+        </div>
+        <div class="stat-item">
+          <h3>TRƯỜNG HỢP</h3>
+        </div>
+      </div>
+      <!-- Số tiền đã quyên góp -->
+      <div class="col-md-6">
+        <div class="stat-item">
+          <img src="https://via.placeholder.com/50" alt="Money Icon" th:src="@{'https://via.placeholder.com/50'}">
+          <h1>500,000,000</h1>
+        </div>
+        <div class="stat-item">
+          <h3>ĐỒNG</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

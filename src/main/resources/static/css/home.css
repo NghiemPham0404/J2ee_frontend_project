@@ -1,0 +1,142 @@
+        .important-project {
+
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .important-project img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+        .custom-size {
+            width: 500px;
+            height: 300px;
+            object-fit: cover;
+        }}
+        .countdown {
+            font-size: 1.5rem;
+            background-color: #FFF;
+            outline-color: #0d6efd;
+            color: #0d6efd;
+            outline-style: solid;
+            outline-width: 1px;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .countdowns {
+            font-size: 1.25rem;
+            background-color: #fff;
+            outline-color: #0d6efd;
+            outline-width: 1px;
+            outline-style: solid;
+            color: #0d6efd;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .progress-container {
+            margin-bottom: 15px;
+        }
+
+        .progress-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .progress {
+            flex-grow: 1;
+        }
+
+        .donate-button {
+            flex-shrink: 0;
+        }
+        .highlight {
+            color: red;
+            font-weight: bold;
+        }
+        .badge-position {
+            position: absolute;
+            bottom: 30px;
+            right: 50px;
+        }
+        .badge-position-secondary {
+            position: absolute;
+            top: 210px;
+            right: -10px;
+        }
+        .stats-container {
+            background-color: #eac8c8;
+            color: #000;
+        }
+        .stat-item {
+            display: flex;
+            align-items: center; /* Căn giữa theo chiều dọc */
+            text-align: center; /* Căn giữa văn bản */
+            padding: 20px;
+            justify-content: center;
+        }
+
+        .stat-item img {
+            height: 50px;
+            margin-bottom: 10px; /* Khoảng cách giữa ảnh và tiêu đề */
+        }
+
+        .stat-item h2 {
+            font-size: 40px;
+            font-weight: bold;
+            margin: 0; /* Loại bỏ margin mặc định */
+        }
+
+        .stat-item p {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0; /* Loại bỏ margin mặc định */
+        }
+
+        .stat-item img {
+            height: 50px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .stat-item h2 {
+            font-size: 40px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .stat-item p {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        hr {
+            border: 1px solid #000;
+            width: 80%;
+            margin: 10px auto;
+        }
+        .container hr {
+            border: 1px solid #000;
+            width: 80%;
+            margin: 10px auto;
+        }
+        .stats-container h2 {
+            text-align: left;
+            margin-left: 125px;
+        }
+        .stats-container h1 {
+            text-align: left;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        .stats-container h3 {
+            margin-top: -50px;
+            font-weight: bold;
+            margin-right: -40px;
+        }
+
+        .done:hover {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
