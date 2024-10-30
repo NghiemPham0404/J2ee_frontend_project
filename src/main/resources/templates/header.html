@@ -22,7 +22,7 @@
                     <a class="nav-link fw-bold" th:classappend="${currentUri == '/home'} ? 'active'" aria-current="page" th:href="@{/home}">Trang chủ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/introduction}">Giới thiệu</a>
+                    <a class="nav-link " th:classappend="${currentUri == '/introduce'} ? 'active'" th:href="@{/introduce}">Giới thiệu</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Dự án</a>
@@ -34,7 +34,7 @@
                     <a class="nav-link" th:href="@{/contact}">Liên hệ</a>
                 </li>
             </ul>
-            <a th:href="@{/sign-in}" class="btn btn-dark ms-3 fw-bold">Đăng nhập</a>
+            <a th:href="@{/sign_in}" class="btn btn-dark ms-3 fw-bold">Đăng nhập</a>
         </div>
     </div>
 </nav>

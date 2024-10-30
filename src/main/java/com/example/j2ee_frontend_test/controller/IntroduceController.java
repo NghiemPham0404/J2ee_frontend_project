@@ -4,11 +4,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import jakarta.servlet.http.HttpServletRequest;
 @Controller
-public class HomeController {
-
-    @GetMapping("/home")
-    public String home(Model model, HttpServletRequest request) {
+public class IntroduceController {
+    @GetMapping("/introduce")
+    public String introduce(Model model, HttpServletRequest request) {
         model.addAttribute("currentUri", request.getRequestURI());
-        return "home";
+        return "introduce";
     }
 }
