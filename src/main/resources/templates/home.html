@@ -9,39 +9,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white">
-  <div class="container">
-    <a class="navbar-brand " href="#" th:href="@{/}">
-      <img src="img/SGU-LOGO.png" alt="SGU Logo" style="height: 50px" th:src="@{img/SGU-LOGO.png}">
-    </a>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link fw-bold active" aria-current="page" th:href="@{/home}">Trang chủ</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/introduction}">Giới thiệu</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Dự án</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Sao kê</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/contact}">Liên hệ</a>
-        </li>
-      </ul>
-
-      <a th:href="@{/sign-in}" class="btn btn-dark ms-3 fw-bold">Đăng nhập</a>
-    </div>
-  </div>
-</nav>
+<div th:replace="~{header :: navbar}"></div>
 
 <div class="container my-5">
   <div class="row">
@@ -50,7 +18,7 @@
         <h3 class="text-primary">Dự án quan trọng</h3>
         <img src="img/Demo_1.JPG" alt="Flood Relief" class="img-fluid custom-size" th:src="@{img/Demo_1.JPG}">
         <div class="badge-position">
-          <span class="badge bg-danger p-2">Đang vận động</span>
+          <span class="badge bg-primary p-2">Đang vận động</span>
         </div>
       </div>
     </div>
@@ -62,7 +30,7 @@
         <a href="#" class="text-primary">Xem thêm >></a>
       </div>
 
-      <div class="countdown text-center mt-4 btn-outline-primary">
+      <div class="countdowns text-center mt-4">
         <div>29 : 23 : 59 : 59</div>
         <div class="small">Ngày Giờ Phút Giây</div>
       </div>
@@ -75,7 +43,7 @@
           </div>
           <div class="donate-button">
             <a th:href="@{/donate}">
-              <button class="btn btn-danger btn-lg">Đóng góp</button>
+              <button class="btn btn-outline-primary h-100 w-300">Đóng góp</button>
             </a>
           </div>
         </div>
@@ -94,7 +62,7 @@
       <div class="card">
         <img src="img/Demo_2.webp" class="card-img-top" alt="Project Image" th:src="@{img/Demo_2.webp}">
         <div class="badge-position-secondary">
-          <span class="badge bg-danger p-2">Đang vận động</span>
+          <span class="badge bg-primary p-2">Đang vận động</span>
         </div>
         <div class="card-body">
           <h5 class="card-title">Thời gian còn lại trước khi khóa sổ</h5>
@@ -116,7 +84,7 @@
     <!-- Dự án 2 -->
     <div class="col-md-4">
       <div class="card">
-        <img src="https://via.placeholder.com/500x300" class="card-img-top" alt="Project Image" th:src="@{'https://via.placeholder.com/500x300'}">
+        <img src="img/Demo_2.webp" class="card-img-top" alt="Project Image" th:src="@{'img/Demo_2.webp'}">
         <div class="badge-position-secondary">
           <span class="badge bg-success p-2">Đã hoàn thành</span>
         </div>
@@ -142,9 +110,9 @@
     <!-- Dự án 3 -->
     <div class="col-md-4">
       <div class="card">
-        <img src="https://via.placeholder.com/500x300" class="card-img-top" alt="Project Image" th:src="@{'https://via.placeholder.com/500x300'}">
+        <img src="img/Demo_2.webp" class="card-img-top" alt="Project Image" th:src="@{'img/Demo_2.webp'}">
         <div class="badge-position-secondary">
-          <span class="badge bg-danger p-2">Đang vận động</span>
+          <span class="badge bg-primary p-2">Đang vận động</span>
         </div>
         <div class="card-body">
           <h5 class="card-title">Thời gian còn lại trước khi khóa sổ</h5>
