@@ -54,6 +54,15 @@
         .highlight {
             color: red;
             font-weight: bold;
+
+
+        }
+        .bg-primary{
+        background-image : linear-gradient(195deg, #c2e59c 0%, #64b3f4 100%)
+        }
+        .bg-success{
+        background-image:linear-gradient(45deg, #8a2387, #e94057, #f27121);
+
         }
         .badge-position {
             position: absolute;
@@ -66,7 +75,7 @@
             right: -10px;
         }
         .stats-container {
-                 background-color:#eac8c8;
+                     background-image: linear-gradient(195deg, #c2e59c 0%, #64b3f4 100%);
                  color: #000;
                 }
         .stat-item {
@@ -141,4 +150,12 @@
             cursor: not-allowed;
             pointer-events: none;
         }
-
+        .btn-outline-primary:hover{
+            background: linear-gradient(195deg, #c2e59c 0%, #64b3f4 100%);
+            outline:none;
+            border:none;
+        }
+        .btn-primary{
+           background: linear-gradient(195deg, #c2e59c 0%, #64b3f4 100%);
+           border:none;
+        }
