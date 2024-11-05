@@ -25,7 +25,7 @@ public class TransferSessionController {
         model.addAttribute("total_pages", transferSessionListResponse.getTotalPages());
         model.addAttribute("total_results", transferSessionListResponse.getTotalResults());
 
-        //transferSessionListResponse.getTransferSessionList().forEach(transactionStatement -> System.out.println(transactionStatement.getName()));
+        System.out.println(transferSessionListResponse.getTransferSessionList().size());
 
         return "transaction_statements";
     }
