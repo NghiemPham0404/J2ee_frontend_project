@@ -4,11 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class ProjectController {
+public class CharityController {
 
-    @GetMapping("/projects")
+    @GetMapping("/charities")
     public String showProjectsPage() {
-        return "project";
+        return "charity";
     }
 }
 
