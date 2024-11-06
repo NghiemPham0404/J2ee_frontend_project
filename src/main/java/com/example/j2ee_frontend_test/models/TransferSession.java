@@ -30,4 +30,6 @@ public class TransferSession {
             id = UUID.randomUUID();
         }
     }
+
+    private String formattedTime;
 }
