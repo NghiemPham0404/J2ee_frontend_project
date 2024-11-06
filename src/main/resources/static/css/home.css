@@ -160,3 +160,13 @@
            background: linear-gradient(195deg, #c2e59c 0%, #64b3f4 100%);
            border:none;
         }
+        .btn-outline-del {
+          border: 1px solid red;
+          color: red;
+          background-color: white;
+        }
+
+        .btn-outline-del:hover {
+          background-color: red;
+          color: white;
+          border-color: none;
