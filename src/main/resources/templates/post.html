@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,7 +74,7 @@
   </div>
   <div class="button-group">
     <h2 id="labelpost"> Bài viết của tôi</h2>
-    <button class="btn btn-outline-primary" id="btn-add" onclick="createNewPost()">Tạo bài viết mới</button>
+    <a href="/posts/new" class="btn btn-primary">Tạo bài viết mới</a>
   </div>
   <div class="row">
     <div class="col-md-10 offset-md-1">
