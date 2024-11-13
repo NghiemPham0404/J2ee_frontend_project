@@ -15,6 +15,11 @@
         .table th:nth-child(4) {
     vertical-align: middle;
     text-align: center;
+    }
+    .table tbody tr:hover {
+    background: linear-gradient(195deg, #c2e59c, #64b3f4);
+    cursor: pointer;
+    color:white;
 }
     </style>
 </head>
@@ -30,7 +35,7 @@
             <th>ID</th>
             <th>Tên Vai trò</th>
             <th>Quyền truy cập</th>
-            <th>Hành động</th>
+
         </tr>
         </thead>
         <tbody>
@@ -57,10 +62,7 @@
                     <input type="checkbox"checked disabled> Quản lý tài khoản
                 </div>
             </td>
-            <td>
-                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editRoleModal" data-id="1" data-name="Quản trị viên" onclick="editRole(this)">Sửa</button>
-                <button class="btn btn-outline-del" onclick="deleteRole(1)">Xóa</button>
-            </td>
+
         </tr>
         <tr>
             <td>2</td>
@@ -85,10 +87,7 @@
                     <input type="checkbox" disabled> Quản lý tài khoản
                 </div>
             </td>
-            <td>
-                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editRoleModal" data-id="2" data-name="Accountant" onclick="editRole(this)">Sửa</button>
-                <button class="btn btn-outline-del" onclick="deleteRole(2)">Xóa</button>
-            </td>
+
         </tr>
         <tr>
             <td>3</td>
@@ -113,10 +112,7 @@
                     <input type="checkbox" disabled> Quản lý tài khoản
                 </div>
             </td>
-            <td>
-                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editRoleModal" data-id="3" data-name="Collaboraty" onclick="editRole(this)">Sửa</button>
-                <button class="btn btn-outline-del" onclick="deleteRole(3)">Xóa</button>
-            </td>
+
         </tr>
         </tbody>
     </table>
