@@ -22,5 +22,11 @@ public class CharityController {
         model.addAttribute("charity",c);
         return "create_charity";
     }
+    @GetMapping("/detail")
+    public String showDetailCharityPage(Model model) {
+        CharityEvent c= new CharityEvent();
+        model.addAttribute("charity",c);
+        return "detail_charity";
+    }
 }
 
