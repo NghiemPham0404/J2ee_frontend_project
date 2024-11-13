@@ -50,6 +50,11 @@
     background-image: linear-gradient(0 deg, #c2e59c var(--filled-width), #64b3f4 var(--filled-width));
     border-radius: 5px;
   }
+    .table tbody tr:hover {
+    background: linear-gradient(195deg, #c2e59c, #64b3f4);
+    cursor: pointer;
+    color:white;
+}
   </style>
   <link href="/css/home.css" th:href="@{/css/home.css}" rel="stylesheet">
 </head>
@@ -98,7 +103,7 @@
 
   <button id="approvedProjectsBtn" class="btn btn-outline-primary mb-3 active-btn" data-bs-toggle="modal" data-bs-target="#approvedProjectsModal" onclick="showApprovedProjects()">Dự án đang vận động</button>
   <button id="pendingProjectsBtn" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" data-bs-target="#pendingProjectsModal" onclick="showPendingProjects()">Dự án đã kết thúc</button>
-
+  <button class="btn btn-outline-primary mb-3 float-end" onclick="addCharity()">Thêm dự án</button>
   <!-- Project table -->
   <div id="projectsTableContainer">
     <table class="table table-bordered" id="approvedProjectsTable">
@@ -111,7 +116,7 @@
         <th>Ngày Kết thúc</th>
         <th>Mục tiêu</th>
         <th>Hiện có</th>
-        <th>Hành động</th>
+
       </tr>
       </thead>
       <tbody>
@@ -123,10 +128,7 @@
         <td>31/12/2024</td>
         <td>1,000,000,000 VND</td>
         <td>500,000,000 VND</td>
-        <td>
-          <button class="btn btn-outline-primary" onclick="editProject(1)">Sửa</button>
-          <button class="btn btn-outline-del" onclick="deleteProject(1)">Xóa</button>
-        </td>
+
       </tr>
       </tbody>
     </table>
@@ -139,7 +141,7 @@
         <th>Ngày Kết thúc</th>
         <th>Mục tiêu</th>
         <th>Hoàn thành</th>
-        <th>Hành động</th>
+
       </tr>
       </thead>
       <tbody>
@@ -151,9 +153,7 @@
         <td>15/08/2024</td>
         <td>50,000,000 VND</td>
         <td>50,000,000 VND</td>
-        <td>
-          <button class="btn btn-outline-primary" onclick="viewPendingProject(2)">Chi tiết</button>
-        </td>
+
       </tr>
       </tbody>
     </table>
