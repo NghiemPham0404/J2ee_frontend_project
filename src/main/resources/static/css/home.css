@@ -167,6 +167,7 @@
         }
 
         .btn-outline-del:hover {
-          background-color: red;
-          color: white;
-          border-color: none;
+            background-color: red;
+            color: white;
+            border-color: none;
+        }
