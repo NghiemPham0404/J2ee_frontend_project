@@ -139,14 +139,15 @@
       <tr >
         <th>ID</th>
         <th>Tên Dự án</th>
+        <th>Mô tả</th>
         <th>Ngày Bắt đầu</th>
         <th>Ngày Kết thúc</th>
         <th>Mục tiêu</th>
-        <th>Đã hoàn thành</th>
+        <th>Hoàn thành</th>
       </tr>
       </thead>
       <tbody>
-      <tr th:each="charity : ${data}" th:if="${charity.disbursed}" onclick="window.location.href='/charities/detail'">
+      <tr th:each="charity : ${data}" th:if="${!charity.disbursed}" onclick="window.location.href='/charities/detail'">
         <td th:text="${charity.id}"></td>
         <td th:text="${charity.name}"></td>
         <td th:text="${charity.description}"></td>
