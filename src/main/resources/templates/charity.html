@@ -121,40 +121,39 @@
       </tr>
       </thead>
       <tbody>
-      <tr onclick="window.location.href='/charities/detail'">
-        <td>1</td>
-        <td>Dự án Xây Nhà Cho Trẻ Em</td>
-        <td>Cung cấp nơi ở cho trẻ em mồ côi.</td>
-        <td>01/01/2024</td>
-        <td>31/12/2024</td>
-        <td>1,000,000,000 VND</td>
-        <td>500,000,000 VND</td>
+      <tr th:each="charity : ${data}"  th:if="${!charity.disbursed}" onclick="window.location.href='/charities/detail'" >
+        <td th:text="${charity.id}"></td>
+        <td th:text="${charity.name}"></td>
+        <td th:text="${charity.description}"></td>
+        <td th:text="${charity.startTime}"></td>
+        <td th:text="${charity.endTime}"></td>
+        <td th:text="${charity.goalAmount}"></td>
+        <td th:text="${charity.currentAmount}"></td>
+
 
       </tr>
       </tbody>
     </table>
     <table class="table table-bordered" id="pendingProjectsTable" style="display: none;">
       <thead>
-      <tr>
+      <tr >
         <th>ID</th>
         <th>Tên Dự án</th>
         <th>Ngày Bắt đầu</th>
         <th>Ngày Kết thúc</th>
         <th>Mục tiêu</th>
-        <th>Hoàn thành</th>
-
+        <th>Đã hoàn thành</th>
       </tr>
       </thead>
       <tbody>
-      <!-- Projects that are pending will go here -->
-      <tr onclick="window.location.href='/charities/detail'">
-        <td>2</td>
-        <td>Dự án Cung Cấp Thực Phẩm</td>
-        <td>15/02/2024</td>
-        <td>15/08/2024</td>
-        <td>50,000,000 VND</td>
-        <td>50,000,000 VND</td>
-
+      <tr th:each="charity : ${data}" th:if="${charity.disbursed}" onclick="window.location.href='/charities/detail'">
+        <td th:text="${charity.id}"></td>
+        <td th:text="${charity.name}"></td>
+        <td th:text="${charity.description}"></td>
+        <td th:text="${charity.startTime}"></td>
+        <td th:text="${charity.endTime}"></td>
+        <td th:text="${charity.goalAmount}"></td>
+        <td th:text="${charity.currentAmount}"></td>
       </tr>
       </tbody>
     </table>

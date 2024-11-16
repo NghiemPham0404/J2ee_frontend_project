@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:grid-template-columns="http://www.w3.org/1999/xhtml"
+      xmlns:gap="http://www.w3.org/1999/xhtml" xmlns:align-items="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,8 +69,12 @@
             <td>2</td>
             <td>Accountant</td>
             <td>
-                <div>
-                    <input type="checkbox" checked disabled> Thống kê
+                <div style="display: grid; grid-template-columns: auto auto; gap: 5px; align-items: center;">
+                    <span style="grid-column: span 2;"> Thống kê</span>
+                    <input type="checkbox" checked disabled> Xem
+                    <input type="checkbox" checked disabled> Thêm
+                    <input type="checkbox" checked disabled> Xóa
+                    <input type="checkbox" checked disabled> Sửa
                 </div>
                 <div>
                     <input type="checkbox"  disabled> Quản lý vai trò
