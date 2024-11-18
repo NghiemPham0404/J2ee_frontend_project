@@ -17,22 +17,25 @@
             <h4>Chỉnh sửa thông tin cá nhân</h4>
         </div>
     </div>
-<!--    <div class="row justify-content-center">-->
-<!--        <div class="col-md-6">-->
-<!--            <div class="form-group">-->
-<!--                <label for="MaTV" class="font-weight-bold">Mã thành viên:</label>-->
-<!--                <input type="number" id="MaTV" name="MaTV" class="form-control" placeholder="Mã thành viên" th:value="${profile.maTV}" disabled />-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="font-weight-bold" for="id">ID:</label>
+                <input class="form-control" disabled id="id" name="id" placeholder="id" th:value="${profile.id}"
+                       type="text"/>
+            </div>
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="form-group mt-2">
                 <label for="hoten" class="font-weight-bold">Họ tên:</label>
-                <input type="text" id="hoten" name="hoten" class="form-control" placeholder="Họ tên" th:value="${profile.hoten}" />
+                <input class="form-control" id="hoten" name="hoten" placeholder="Họ tên" th:value="${profile.name}"
+                       type="text"/>
             </div>
         </div>
     </div>
+
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="form-group mt-2">
@@ -41,30 +44,58 @@
             </div>
         </div>
     </div>
+
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="form-group mt-2">
-                <label for="sdt" class="font-weight-bold">Số điện thoại:</label>
-                <input type="text" id="sdt" name="sdt" class="form-control" placeholder="Số điện thoại" th:value="${profile.sdt}" />
+                <label class="font-weight-bold" for="birthdate">Ngày sinh:</label>
+                <input class="form-control" id="birthdate" name="birthdate" placeholder="Ngày sinh" th:value="${profile.birthDate}"
+                       type="text"/>
             </div>
         </div>
     </div>
+
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="form-group mt-2">
-                <label for="khoa" class="font-weight-bold">Khoa:</label>
-                <input type="text" id="khoa" name="khoa" class="form-control" placeholder="Khoa" th:value="${profile.khoa}" />
+                <label class="font-weight-bold" for="user">Username:</label>
+                <input class="form-control" id="user" name="user" placeholder="Username" th:value="${profile.username}"
+                       type="text"/>
             </div>
         </div>
     </div>
+
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="form-group mt-2">
-                <label for="nganh" class="font-weight-bold">Ngành:</label>
-                <input type="text" id="nganh" name="nganh" class="form-control" placeholder="Ngành" th:value="${profile.nganh}" />
+                <label class="font-weight-bold" for="password">Password:</label>
+                <input class="form-control" id="password" name="password" placeholder="password" th:value="${profile.password}"
+                       type="text"/>
             </div>
         </div>
     </div>
+
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="form-group mt-2">
+                <label class="font-weight-bold" for="role">Quyền:</label>
+                <input class="form-control" id="role" name="role" placeholder="role" th:value="${profile.role}"
+                       type="text"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="form-group mt-2">
+                <label class="font-weight-bold" for="active">Trạng thái hoạt động:</label>
+                <input class="form-control" disabled id="active" name="active" placeholder="active"
+                       th:value="${profile.active ? 'Hoạt động': 'Đã khóa'}" type="text"/>
+            </div>
+        </div>
+    </div>
+
     <div th:if="${errorMessage}" class="row justify-content-center text-danger pb-4 error-message">
         <div class="col-md-6" th:text="${errorMessage}"></div>
     </div>
