@@ -41,7 +41,10 @@
         </div>
     </div>
 
-    <a href="/account/new">Add New Account</a>
+    <div class="text-end mb-3">
+        <a class="btn btn-success" href="/account/new">Thêm tài khoản</a>
+    </div>
+
     <div id="projectsTableContainer">
         <table class="table table-bordered">
             <thead>
@@ -65,8 +68,9 @@
             <td th:text="${account.role.getName()}"></td>
             <td th:text="${account.active ? 'Hoạt động' : 'Đã khóa'}"></td>
             <td>
-                <a th:href="@{/account/update/{id}(id=${account.id})}">Edit</a> |
-                <a th:href="@{/account/delete/{id}(id=${account.id})}">Delete</a>
+                <a class="btn btn-primary btn-sm" th:href="@{/account/update/{id}(id=${account.id})}">Sửa</a>
+                <a class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?');"
+                   th:href="@{/account/delete/{id}(id=${account.id})}">Xóa</a>
             </td>
         </tr>
             </tbody>
