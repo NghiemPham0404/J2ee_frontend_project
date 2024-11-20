@@ -10,7 +10,7 @@
     <link href="/css/home.css" th:href="@{/css/home.css}" rel="stylesheet">
 </head>
 <body>
-<div th:replace="header :: header"></div>
+<div th:replace="~{header :: navbar}"></div>
 <form th:action="@{/me}" th:object="${profile}" method="POST">
     <div class="row justify-content-center mt-2">
         <div class="col-md-6">
@@ -80,7 +80,8 @@
         <div class="col-md-6">
             <div class="form-group mt-2">
                 <label class="font-weight-bold" for="role">Quyền:</label>
-                <input class="form-control" id="role" name="role" placeholder="role" th:value="${profile.role}"
+                <input class="form-control" id="role" name="role" placeholder="role"
+                       th:value="${profile.role.getName()}"
                        type="text"/>
             </div>
         </div>
@@ -107,3 +108,6 @@
 </form>
 </body>
 </html>
+
+
+
