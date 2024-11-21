@@ -26,7 +26,7 @@ public class CharityEvent {
 
     private BigDecimal goalAmount;
 
-    private boolean isDisbursed;
+    private boolean disbursed;
 
     public void generateUUID() {
         if (id == null) {
@@ -39,9 +39,13 @@ public class CharityEvent {
     List<TransferSession> transferSessions;
 
     public BigDecimal getCurrentAmount() {
-        BigDecimal currentAmount = new BigDecimal(0);
-        for(TransferSession session : transferSessions) {
-            currentAmount = currentAmount.add(session.getAmount());
+        BigDecimal currentAmount = BigDecimal.ZERO;
+        if (transferSessions != null) {
+            for (TransferSession session : transferSessions) {
+                if (session != null && session.getAmount() != null) {
+                    currentAmount = currentAmount.add(session.getAmount());
+                }
+            }
         }
         return currentAmount;
     }
