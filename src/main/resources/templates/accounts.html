@@ -66,7 +66,12 @@
             <td th:text="${account.getBirthDateAsString('dd/MM/yyyy')}"></td>
             <td th:text="${account.username}"></td>
             <td th:text="${account.role.getName()}"></td>
-            <td th:text="${account.active ? 'Hoạt động' : 'Đã khóa'}"></td>
+            <!--            <td th:text="${account.active ? 'Hoạt động' : 'Đã khóa'}"></td>-->
+            <td>
+                <span th:classappend="${account.active} ? 'text-success fw-bold' : 'text-danger fw-bold'"
+                      th:text="${account.active ? 'Hoạt động' : 'Đã khóa'}">
+                </span>
+            </td>
             <td>
                 <a class="btn btn-primary btn-sm" th:href="@{/account/update/{id}(id=${account.id})}">Sửa</a>
                 <a class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?');"
