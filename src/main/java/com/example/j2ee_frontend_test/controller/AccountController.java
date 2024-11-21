@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class AccountController {
 
     @GetMapping
     public String viewAccountsPage(Model model, @PathParam("page") Integer page) {
-        page = page != null ? page - 1: 0;
+        page = page != null ? page - 1 : 0;
         AccountListResponse accountListResponse = accountService.getAllAccounts(1, page);
         model.addAttribute("data", accountListResponse.getAccountList());
         model.addAttribute("page", page);
@@ -76,7 +75,7 @@ public class AccountController {
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         Account account = accountService.getAccountById(id);
         model.addAttribute("account", account);
-        System.out.println("role id = "+account.getRole().getId());
+        System.out.println("role id = " + account.getRole().getId());
 
         List<Role> roles = roleService.getAllRoles();
         roles.forEach(role -> System.out.println(role.getName()));
@@ -86,9 +85,8 @@ public class AccountController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteAccount(@PathVariable("id") Integer id){
+    public String deleteAccount(@PathVariable("id") Integer id) {
         accountService.deleteAccount(id);
         return "redirect:/account";
     }
 }
-

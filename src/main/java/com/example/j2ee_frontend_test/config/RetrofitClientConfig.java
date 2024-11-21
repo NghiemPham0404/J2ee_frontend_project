@@ -4,10 +4,10 @@ import com.example.j2ee_frontend_test.services.apis.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Value;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.time.LocalDateTime;
 
@@ -56,7 +56,7 @@ public class RetrofitClientConfig {
     }
 
     @Bean
-    public CharityApi getCharityApi(Retrofit retrofit) {
-        return retrofit.create(CharityApi.class);
+    public ProfileApi getProfileApi(Retrofit retrofit) {
+        return retrofit.create(ProfileApi.class);
     }
 }

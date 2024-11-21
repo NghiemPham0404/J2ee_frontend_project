@@ -17,6 +17,7 @@ public class AccountService {
     @Autowired
     AccountApi accountApi;
 
+
     public AccountListResponse getAllAccounts(int adminId, int page) {
         Call<AccountListResponse> call = accountApi.getAllAccounts(adminId, page);
         Response<AccountListResponse> response = null;
