@@ -101,11 +101,11 @@
   </div>
 
 
-  <button id="approvedProjectsBtn" class="btn btn-outline-primary mb-3 active-btn" data-bs-toggle="modal" data-bs-target="#approvedProjectsModal" onclick="showApprovedProjects()">Dự án đang vận động</button>
-  <button id="pendingProjectsBtn" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" data-bs-target="#pendingProjectsModal" onclick="showPendingProjects()">Dự án đã kết thúc</button>
-  <a href="/charities/new" class="btn btn-outline-primary mb-3 float-end">Thêm dự án</a>
+<!--  <button id="approvedProjectsBtn" class="btn btn-outline-primary mb-3 active-btn" data-bs-toggle="modal" data-bs-target="#approvedProjectsModal" onclick="showApprovedProjects()">Dự án đang vận động</button>-->
+<!--  <button id="pendingProjectsBtn" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" data-bs-target="#pendingProjectsModal" onclick="showPendingProjects()">Dự án đã kết thúc</button>-->
+  <a href="/charity-events/new" class="btn btn-outline-primary mb-3 float-end">Thêm dự án</a>
 
-  <!-- Project table -->
+
   <div id="projectsTableContainer">
     <table class="table table-bordered" id="approvedProjectsTable">
       <thead>
@@ -117,11 +117,11 @@
         <th>Ngày Kết thúc</th>
         <th>Mục tiêu</th>
         <th>Hiện có</th>
-
+        <th>Trạng thái</th>
       </tr>
       </thead>
       <tbody>
-      <tr th:each="charity : ${data}"  th:if="${!charity.disbursed}" onclick="window.location.href='/charities/detail'" >
+      <tr th:each="charity : ${data}"  th:onclick="window.location.href='/charity-events/' + /*[[${charity.id}]]*/ ''">
         <td th:text="${charity.id}"></td>
         <td th:text="${charity.name}"></td>
         <td th:text="${charity.description}"></td>
@@ -129,58 +129,45 @@
         <td th:text="${charity.endTime}"></td>
         <td th:text="${charity.goalAmount}"></td>
         <td th:text="${charity.currentAmount}"></td>
-
-
+        <td>
+    <span th:classappend="${charity.disbursed} ? 'text-danger fw-bold' : 'text-success fw-bold'"
+          th:text="${charity.disbursed ? 'Đã giải ngân' : 'Đang hoạt động'}">
+    </span>
+        </td>
       </tr>
       </tbody>
+
     </table>
-    <table class="table table-bordered" id="pendingProjectsTable" style="display: none;">
-      <thead>
-      <tr >
-        <th>ID</th>
-        <th>Tên Dự án</th>
-        <th>Mô tả</th>
-        <th>Ngày Bắt đầu</th>
-        <th>Ngày Kết thúc</th>
-        <th>Mục tiêu</th>
-        <th>Hoàn thành</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="charity : ${data}" th:if="${!charity.disbursed}" onclick="window.location.href='/charities/detail'">
-        <td th:text="${charity.id}"></td>
-        <td th:text="${charity.name}"></td>
-        <td th:text="${charity.description}"></td>
-        <td th:text="${charity.startTime}"></td>
-        <td th:text="${charity.endTime}"></td>
-        <td th:text="${charity.goalAmount}"></td>
-        <td th:text="${charity.currentAmount}"></td>
-      </tr>
-      </tbody>
-    </table>
+<!--    <table class="table table-bordered" id="pendingProjectsTable" style="display: none;">-->
+<!--      <thead>-->
+<!--      <tr >-->
+<!--        <th>ID</th>-->
+<!--        <th>Tên Dự án</th>-->
+<!--        <th>Mô tả</th>-->
+<!--        <th>Ngày Bắt đầu</th>-->
+<!--        <th>Ngày Kết thúc</th>-->
+<!--        <th>Mục tiêu</th>-->
+<!--        <th>Hoàn thành</th>-->
+<!--        <th>Trạng thái</th>-->
+<!--      </tr>-->
+<!--      </thead>-->
+<!--      <tbody>-->
+<!--      <tr th:each="charity : ${data}" onclick="window.location.href='/charities/detail'">-->
+<!--        <td th:text="${charity.id}"></td>-->
+<!--        <td th:text="${charity.name}"></td>-->
+<!--        <td th:text="${charity.description}"></td>-->
+<!--        <td th:text="${charity.startTime}"></td>-->
+<!--        <td th:text="${charity.endTime}"></td>-->
+<!--        <td th:text="${charity.goalAmount}"></td>-->
+<!--        <td th:text="${charity.currentAmount}"></td>-->
+<!--        <td th:text="${charity.disbursed?'rồi':'chưa'}"></td>-->
+<!--      </tr>-->
+<!--      </tbody>-->
+<!--    </table>-->
   </div>
 </div>
 
 <script>
-  function showApprovedProjects() {
-    document.getElementById('approvedProjectsTable').style.display = 'table';
-    document.getElementById('pendingProjectsTable').style.display = 'none';
-    document.getElementById('approvedProjectsBtn').classList.add('active-btn');
-    document.getElementById('approvedProjectsBtn').classList.remove('btn-unactive');
-    document.getElementById('pendingProjectsBtn').classList.add('btn-unactive');
-    document.getElementById('pendingProjectsBtn').classList.remove('active-btn');
-}
-
-function showPendingProjects() {
-    document.getElementById('approvedProjectsTable').style.display = 'none';
-    document.getElementById('pendingProjectsTable').style.display = 'table';
-    document.getElementById('pendingProjectsBtn').classList.add('active-btn');
-    document.getElementById('pendingProjectsBtn').classList.remove('btn-unactive');
-    document.getElementById('approvedProjectsBtn').classList.add('btn-unactive');
-    document.getElementById('approvedProjectsBtn').classList.remove('active-btn');
-}
-
-
 
 
 

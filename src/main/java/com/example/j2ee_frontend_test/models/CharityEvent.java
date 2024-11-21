@@ -26,7 +26,7 @@ public class CharityEvent {
 
     private BigDecimal goalAmount;
 
-    private boolean isDisbursed;
+    private boolean disbursed;
 
     public void generateUUID() {
         if (id == null) {

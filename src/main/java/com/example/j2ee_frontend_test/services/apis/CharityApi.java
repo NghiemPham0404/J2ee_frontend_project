@@ -16,9 +16,9 @@ public interface CharityApi {
     @GET("charity-events/{id}")
     Call<CharityEvent> getCharityById(@Path("id") UUID id);
 
-    @PUT("charity/{id}")
+    @PUT("charity-events/{id}")
     Call<ResponseEntity<Object>> updateCharity(@Path("id") UUID id, @Body CharityEvent charity);
 
-    @DELETE("charity/{id}")
+    @DELETE("charity-events/{id}")
     Call<ResponseEntity<Object>> deleteCharity(@Path("id") UUID id);
 }

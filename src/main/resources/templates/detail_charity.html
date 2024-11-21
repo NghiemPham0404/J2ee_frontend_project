@@ -12,36 +12,48 @@
 
 <div class="container mt-5">
   <h1 class="text-center">Chi tiết Dự án Từ thiện</h1>
-  <form>
+  <form th:action="@{/charity-events/save}" th:object="${charity}" method="post">
+    <div class="mb-3">
+      <label for="name" class="form-label">ID </label>
+      <input type="text" class="form-control" id="id" name="id" th:value="${data.id}" readonly>
+    </div>
     <div class="mb-3">
       <label for="name" class="form-label">Tên Dự án</label>
-      <input type="text" class="form-control" id="name" name="name" value="Dự án Xây Nhà Cho Trẻ Em" >
+      <input type="text" class="form-control" id="name" name="name" th:value="${data.name}" >
     </div>
     <div class="mb-3">
       <label for="description" class="form-label">Mô tả</label>
-      <textarea class="form-control" id="description" name="description" rows="3"  >Cung cấp nơi ở cho trẻ em mồ côi. </textarea>
+      <textarea class="form-control" id="description" name="description" rows="3" th:text="${data.description}" ></textarea>
     </div>
     <div class="row">
       <div class="col-md-6 mb-3">
         <label for="startTime" class="form-label">Ngày bắt đầu</label>
-        <input type="date" class="form-control" id="startTime" name="startTime" >
+        <input type="datetime-local" class="form-control" id="startTime" name="startTime"/>
       </div>
       <div class="col-md-6 mb-3">
         <label for="endTime" class="form-label">Ngày kết thúc</label>
-        <input type="date" class="form-control" id="endTime" name="endTime"  >
+        <input type="datetime-local" class="form-control" id="endTime" name="endTime" />
       </div>
     </div>
     <div class="mb-3">
-      <label for="goal" class="form-label">Số tiền mục tiêu</label>
-      <input type="number" class="form-control" id="goal" name="goal" value="1000000000" >
+      <label for="goalAmount" class="form-label">Số tiền mục tiêu</label>
+      <input type="number" class="form-control" id="goalAmount" name="goalAmount" th:value="${data.goalAmount}" >
     </div>
     <div class="mb-3">
-      <label for="goal" class="form-label">Số tiền hiện tại</label>
-      <input type="number" class="form-control" id="process" name="goal" value="500000000">
+      <label for="currentAmount" class="form-label">Số tiền hiện tại</label>
+      <input type="number" class="form-control" id="currentAmount" name="currentAmount" th:value="${data.currentAmount}">
+    </div>
+    <div class="mb-3">
+      <label for="disbursed" class="form-label">Trạng thái</label>
+      <select class="form-control" id="disbursed" name="disbursed">
+        <option value="true" th:selected="${data.disbursed == true}">Đã giải ngân</option>
+        <option value="false" th:selected="${data.disbursed == false}">Đang hoạt động</option>
+      </select>
     </div>
     <div class="text-center">
-      <a href="" class="btn btn-outline-primary">Lưu</a>
-      <a href="" class="btn btn-outline-del">Xóa</a>
+      <button type="submit" class="btn btn-outline-primary">Lưu </button>
+      <a th:href="@{/transaction/{id}(id=${data.id})}" class="btn btn-outline-primary">Sao kê</a>
+      <a th:href="@{/charity-events/delete/{id}(id=${data.id})}" class="btn btn-outline-del">Xóa</a>
     </div>
   </form>
 </div>
