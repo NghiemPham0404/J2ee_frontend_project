@@ -59,4 +59,10 @@ public class RetrofitClientConfig {
     public ProfileApi getProfileApi(Retrofit retrofit) {
         return retrofit.create(ProfileApi.class);
     }
+
+    @Bean
+    public CharityApi getCharityApi(Retrofit retrofit) {
+        return retrofit.create(CharityApi.class);
+    }
+
 }
