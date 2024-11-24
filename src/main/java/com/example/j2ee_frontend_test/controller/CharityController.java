@@ -18,10 +18,11 @@ public class CharityController {
 
     @Autowired
     CharityService charityService;
+
     @GetMapping
     public String showProjectsPage(Model model,@PathParam("page") Integer page) {
         page = page != null ? page - 1: 0;
-        CharityListResponse charityListResponse=charityService.getAllCharities(1,page);
+        CharityListResponse charityListResponse=charityService.getAllCharities(1, page);
         model.addAttribute("data", charityListResponse.getCharityList());
         model.addAttribute("page", page);
         model.addAttribute("total_pages", charityListResponse.getTotalPages());

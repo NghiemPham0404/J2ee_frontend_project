@@ -14,6 +14,10 @@ public class PostListResponse {
     private List<Post> postList;
 
     @Expose
+    @SerializedName("search_data")
+    private List<Post> searchList;
+
+    @Expose
     @SerializedName("total_results")
     private int totalResults;
 

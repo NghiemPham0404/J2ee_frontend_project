@@ -30,7 +30,7 @@ public class RetrofitClientConfig {
     public Gson gson() {
         return new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .setDateFormat("yyyy-MM-dd")
+                .setDateFormat("yyyy/MM/dd HH:mm:ss")
                 .create();
     }
 
@@ -54,6 +54,7 @@ public class RetrofitClientConfig {
     public PostApi getPostApi(Retrofit retrofit) {
         return retrofit.create(PostApi.class);
     }
+
 
     @Bean
     public CharityApi getCharityApi(Retrofit retrofit) {
