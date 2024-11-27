@@ -18,8 +18,14 @@ public class PostService {
     @Autowired
     PostApi postApi;
 
-    public PostListResponse getAllPosts(int adminId, int page) {
-        Call<PostListResponse> call = postApi.getAllPosts(adminId, page);
+    public PostListResponse getAllPosts(int adminId, int page, String query) {
+        Call<PostListResponse> call = null;
+        if (query == null) {
+            call = postApi.getAllPosts(adminId, page);
+        } else {
+            call = postApi.searchPostsByTitle(page, query);
+        }
+
         Response<PostListResponse> response = null;
         try {
             response = call.execute();
@@ -97,20 +103,5 @@ public class PostService {
         }
     }
 
-    public PostListResponse searchPosts(int adminId, int page, String query) {
-        Call<PostListResponse> call = postApi.searchPostsByTitle(adminId, page, query);
-        Response<PostListResponse> response = null;
-        try {
-            response = call.execute();
-            if (response.isSuccessful() && response.body() != null) {
-                return response.body();
-            } else {
-                // Handle errors here, if needed
-                System.out.println("Error: " + response.errorBody());
-                return new PostListResponse();
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 }

@@ -33,13 +33,21 @@ public class PostController {
 
 
     @GetMapping
-    public String viewPostsPage(Model model, @PathParam("page") Integer page) {
+    public String viewPostsPage(Model model, @PathParam("page") Integer page, @PathParam("query") String query) {
         page = page != null ? page - 1: 0;
-        PostListResponse postListResponse = postService.getAllPosts(1, page);
+        PostListResponse postListResponse = null;
+        if (query != null) {
+            postListResponse = postService.getAllPosts(1, page, query);
+        } else {
+            postListResponse = postService.getAllPosts(1, page, null);
+        }
+
+        System.out.println("Response:" +postListResponse.getPostList());
         model.addAttribute("data", postListResponse.getPostList());
         model.addAttribute("page", page);
         model.addAttribute("total_pages", postListResponse.getTotalPages());
         model.addAttribute("total_results", postListResponse.getTotalResults());
+        model.addAttribute("query", query);
 
         return "post";
     }
@@ -101,17 +109,7 @@ public class PostController {
         return "redirect:/posts";
     }
 
-    @GetMapping("/search")
-    public String searchPosts(Model model, @PathParam("page") Integer page, @RequestParam("title") String title) {
-        page = page != null ? page - 1: 0;
-        PostListResponse postListResponse = postService.searchPosts(1, page, title);
-        model.addAttribute("search_data", postListResponse.getSearchList());
-        model.addAttribute("page", 0);
-        model.addAttribute("total_pages", postListResponse.getTotalPages());
-        model.addAttribute("total_results", postListResponse.getTotalResults());
 
-        return "post";
-    }
 
 
 

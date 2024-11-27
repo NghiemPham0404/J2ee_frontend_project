@@ -41,8 +41,11 @@
   <div class="row mb-2 mt-4">
     <div class="col-md-10 offset-md-1">
       <div class="input-group mb-3">
-        <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm bài viết theo tiêu đề..." />
-        <button type="submit" class="btn btn-primary" onclick="searchPosts()">Tìm kiếm</button>
+        <form th:action="@{/posts}" method="get" class="d-flex align-items-center input-group mb-3">
+          <input type="text" id="query" class="form-control me-2" name="query" th:value="${query}" placeholder="Tìm kiếm bài viết theo tiêu đề..." />
+          <input type="submit" class="btn btn-outline-primary active-btn me-2" value="Tìm kiếm">
+          <button type="button" class="btn btn-outline-primary" onclick="window.location.href='/posts'">Làm mới</button>
+        </form>
       </div>
     </div>
   </div>
@@ -69,8 +72,10 @@
 
         </tr>
         </thead>
-        <tbody id="postTableBody">
-        <tr th:each="post : ${search_data != null ? search_data : data}"
+        <tbody id="postTableBody" >
+
+
+        <tr th:each="post : ${data}"
             th:attr="data-id=${post.id}"
             th:onclick="|window.location.href='/posts/update/' + this.getAttribute('data-id');|"
             style="cursor: pointer">
@@ -112,12 +117,6 @@
 </div>
 <div th:replace="~{footer :: footer}"></div>
 <script>
-  // Hàm tìm kiếm bài viết
-  function searchPosts() {
-    const title = document.getElementById('searchInput').value;
-    window.location.href = '/posts/search?title=' + title;
-
-  }
 
   // Hàm thêm bài viết
   function addPost() {
