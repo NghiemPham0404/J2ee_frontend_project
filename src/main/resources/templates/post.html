@@ -41,14 +41,37 @@
   <div class="row mb-2 mt-4">
     <div class="col-md-10 offset-md-1">
       <div class="input-group mb-3">
-        <form th:action="@{/posts}" method="get" class="d-flex align-items-center input-group mb-3">
-          <input type="text" id="query" class="form-control me-2" name="query" th:value="${query}" placeholder="Tìm kiếm bài viết theo tiêu đề..." />
-          <input type="submit" class="btn btn-outline-primary active-btn me-2" value="Tìm kiếm">
-          <button type="button" class="btn btn-outline-primary" onclick="window.location.href='/posts'">Làm mới</button>
-        </form>
+        <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm bài viết..." />
+        <button class="btn btn-primary" onclick="searchProjects()">Tìm kiếm</button>
       </div>
     </div>
   </div>
+
+  <!-- Filters Section -->
+  <div class="row mb-4">
+    <div class="col-md-10 offset-md-1">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="input-group mx-2" style="max-width: 250px;">
+          <label for="startDate" class="form-label mt-2">Ngày bắt đầu: </label>&nbsp;
+          <input type="date" id="startDate" class="form-control" />
+        </div>
+
+        <div class="input-group mx-2" style="max-width: 250px;">
+          <label for="endDate" class="form-label mt-2">Ngày kết thúc:</label>&nbsp;
+          <input type="date" id="endDate" class="form-control" />
+        </div>
+
+        <div class="input-group mx-2" style="max-width: 250px;">
+          <label for="viewRange" class="form-label">Số lượt xem:</label>
+          <input type="range" id="viewRange" class="form-range" min="0" max="1000000" step="100" value="1000000" onchange="updateViewRangeValue()" />
+          <span id="viewRangeValue">1,000,000 lượt xem</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Button group for "Tạo bài viết mới" and "Bài viết đang duyệt" -->
+
 
   <!-- Bảng quản lý bài viết -->
   <div class="button-group">
@@ -72,14 +95,8 @@
 
         </tr>
         </thead>
-        <tbody id="postTableBody" >
-
-
-        <tr th:each="post : ${data}"
-            th:attr="data-id=${post.id}"
-            th:onclick="|window.location.href='/posts/update/' + this.getAttribute('data-id');|"
-            style="cursor: pointer">
-
+        <tbody id="postTableBody">
+        <tr th:each="post : ${data}" th:onclick="'window.location.href=\'/posts/new' + '\';'" style="cursor: pointer">
           <td th:text="${post.id}">1</td>
           <td th:text="${post.title}">Tiêu đề bài viết 1</td>
           <td th:text="${post.timePost}">01/01/2024</td>
@@ -109,14 +126,20 @@
           <td>7/11/2024</td>
           <td><img src="/img/Demo_2.webp" alt="Thumb" style="width: 50px; height: auto;"></td>
 
+
         </tr>
         </tbody>
       </table>
     </div>
   </div>
 </div>
-<div th:replace="~{footer :: footer}"></div>
+
 <script>
+  // Hàm tìm kiếm bài viết
+  function searchPosts() {
+    const searchInput = document.getElementById('searchInput').value;
+    alert('Tìm kiếm bài viết với từ khóa: ' + searchInput);
+  }
 
   // Hàm thêm bài viết
   function addPost() {

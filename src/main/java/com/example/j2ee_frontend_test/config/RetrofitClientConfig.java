@@ -54,7 +54,6 @@ public class RetrofitClientConfig {
         return retrofit.create(PostApi.class);
     }
 
-
     @Bean
     public ProfileApi getProfileApi(Retrofit retrofit) {
         return retrofit.create(ProfileApi.class);
