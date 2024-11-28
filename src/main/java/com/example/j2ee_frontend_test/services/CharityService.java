@@ -22,10 +22,8 @@ public class CharityService {
         Response<CharityListResponse> response = null;
         try {
             response = call.execute();
+            System.out.println(response.body());
             if (response.isSuccessful() && response.body() != null) {
-                for(CharityEvent ce : response.body().getCharityList()){
-                    System.out.println(ce.isDisbursed());
-                }
                 return response.body();
             } else {
                 System.out.println("Error: " + response.errorBody());
@@ -35,7 +33,22 @@ public class CharityService {
             throw new RuntimeException(e);
         }
     }
-
+    public CharityListResponse searchNameCharities(String query, int page) {
+        Call<CharityListResponse> call = charityApi.searchNameCharities(query, page);
+        Response<CharityListResponse> response = null;
+        try {
+            response = call.execute();
+            System.out.println(response.body());
+            if (response.isSuccessful() && response.body() != null) {
+                return response.body();
+            } else {
+                System.out.println("Error: " + response.errorBody());
+                return new CharityListResponse();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public String createCharity(CharityEvent charityEvent) {
         Call<ResponseEntity<Object>> call = charityApi.createCharity(charityEvent);
         try {

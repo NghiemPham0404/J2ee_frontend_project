@@ -29,8 +29,7 @@ public class RetrofitClientConfig {
     @Bean
     public Gson gson() {
         return new GsonBuilder()
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .setDateFormat("yyyy-MM-dd")
+                .setDateFormat("yyyy/MM/dd HH:mm:ss")
                 .create();
     }
 

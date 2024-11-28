@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -21,7 +22,7 @@ public class TransferSession {
 
     private String description;
 
-    private LocalDateTime time;
+    private Date time;
 
     private CharityEvent charityEvent;
 

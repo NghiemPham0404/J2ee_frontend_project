@@ -16,10 +16,40 @@
     vertical-align: middle;
     text-align: center;
     }
+    .table th {
+    background: linear-gradient(195deg, #8E2DE2, #4A00E0);
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+}
     .table tbody tr:hover {
-    background: linear-gradient(195deg, #c2e59c, #64b3f4);
+     background: linear-gradient(195deg, #8E2DE2, #4A00E0);
     cursor: pointer;
     color:white;
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+}
+        .modal div {
+        display: flex;
+        align-items: center;
+    }
+        .table td label {
+        margin-left: 5px;
+    }
+   input[type="checkbox"] {
+       accent-color: #8E2DE2;
+   }
+.table tr:nth-child(odd) {
+    background-color: white;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+       input[type="checkbox"].non-interactive {
+    pointer-events: none;
+    background-color: #f0f0f0;
+    cursor: not-allowed;
 }
     </style>
 </head>
@@ -27,7 +57,7 @@
 <div th:replace="~{header :: navbar}"></div>
 <div class="container mt-5">
     <h1 class="text-center">Quản lý vai trò</h1>
-    <button class="btn btn-primary mb-3" th:onclick="window.location.href='/role/new'">Thêm Vai trò</button>
+    <button class="btn btn-outline-primary mb-3 float-end" th:onclick="window.location.href='/role/new'">Thêm Vai trò</button>
 
     <table class="table table-bordered">
         <thead>
@@ -44,10 +74,10 @@
             <td th:each="actions : ${data[0].roleActions}">
                     <div th:each="action : ${role.roleActions}">
                         <div th:if="${action.action.id == actions.action.id}">
-                            <input type="checkbox" th:checked="${action.read}" disabled> Xem
-                            <input type="checkbox" th:checked="${action.create}" disabled> Thêm
-                            <input type="checkbox" th:checked="${action.update}" disabled> Sửa
-                            <input type="checkbox" th:checked="${action.delete}" disabled> Xóa
+                            <input type="checkbox" th:checked="${action.read}" class="non-interactive" > Xem &nbsp;
+                            <input type="checkbox" th:checked="${action.create}" class="non-interactive"> Thêm &nbsp;
+                            <input type="checkbox" th:checked="${action.update}" class="non-interactive"> Sửa &nbsp;
+                            <input type="checkbox" th:checked="${action.delete}" class="non-interactive"> Xóa
 
                         </div>
                     </div>

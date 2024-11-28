@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.swing.event.ChangeEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.UUID;
 
 @Controller
@@ -23,14 +24,21 @@ public class CharityController {
     @Autowired
     CharityService charityService;
     @GetMapping
-    public String showProjectsPage(Model model,@PathParam("page") Integer page) {
-        page = page != null ? page - 1: 0;
-        CharityListResponse charityListResponse=charityService.getAllCharities(1,page);
+    public String showProjectsPage(Model model,@PathParam("query") String query,@PathParam("page") Integer page) {
+        page = page != null ? page : 0;
+        CharityListResponse charityListResponse;
+        if(query==null) {
+             charityListResponse = charityService.getAllCharities(1, page);
+        } else
+        { charityListResponse = charityService.searchNameCharities( query,page); }
+        System.out.println(charityListResponse.getCharityList());
         model.addAttribute("data", charityListResponse.getCharityList());
         model.addAttribute("page", page);
         model.addAttribute("total_pages", charityListResponse.getTotalPages());
         model.addAttribute("total_results", charityListResponse.getTotalResults());
+        model.addAttribute("query",query);
         return "charity";
+
     }
     @GetMapping("/new")
     public String showNewCharityPage(Model model) {
@@ -41,25 +49,19 @@ public class CharityController {
     @GetMapping("/{id}")
     public String showDetailCharityPage(Model model,@PathVariable("id") UUID id) {
         CharityEvent c=charityService.getCharityById(id);
-
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedStartTime = sdf.format(c.getStartTime());
+        String formattedEndTime = sdf.format(c.getEndTime());
         model.addAttribute("data",c);
-
+        model.addAttribute("startTime", formattedStartTime);
+        model.addAttribute("endTime", formattedEndTime);
         return "detail_charity";
     }
     @PostMapping("/save")
     public String saveCharity(@ModelAttribute("charity") CharityEvent charityEvent) throws Exception{
-        ObjectMapper objectMapper = new ObjectMapper();
-        String charityJson = objectMapper.writeValueAsString(charityEvent);
-        System.out.println(charityJson);
         if (charityEvent.getId() != null) {
             charityService.updateCharity(charityEvent.getId(),charityEvent);
         } else {
-            charityEvent.generateUUID();
-            charityEvent.setDisbursed(false);
-            Date s=new Date(2024, 10, 20, 20, 47, 30);
-            Date e=new Date(2024, 11, 20, 20, 47, 30);
-            charityEvent.setStartTime(s);
-            charityEvent.setEndTime(e);
             charityService.createCharity(charityEvent);
         }
         return "redirect:/charity-events";

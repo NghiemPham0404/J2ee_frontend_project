@@ -8,11 +8,16 @@
     <link href="/css/home.css" rel="stylesheet" th:href="@{/css/home.css}">
 </head>
 <body>
+<style>
+    label {
+      font-weight: bold;
+    }
+</style>
 <div th:replace="~{header :: navbar}"></div>
 
 <form method="post" th:action="@{/account/save}" th:object="${account}">
     <div class="row justify-content-center mt-2">
-        <div class="col-md-6">
+        <div class="col-md-6 ">
             <h4>Cập nhật tài khoản</h4>
         </div>
     </div>
@@ -31,7 +36,8 @@
         <div class="col-md-6">
             <div class="form-group mt-2">
                 <label class="font-weight-bold" for="birthdate">Ngày sinh:</label>
-                <input class="form-control" id="birthdate" th:field="*{birthDate}" type="date"/>
+                <input class="form-control" id="birthdatetemp"  type="date" th:value="${#dates.format(account.birthDate,'YYYY-MM-dd')}"/>
+                <input type="text" id="birthDate" name="birthDate" th:value="${#dates.format(account.birthDate,'YYYY/MM/dd')}">
             </div>
         </div>
     </div>
@@ -60,7 +66,8 @@
             <div class="form-group mt-2">
                 <label class="font-weight-bold" for="role">Chọn quyền:</label>
                 <select class="form-control" id="role" th:field="*{role_id}">
-                    <option th:each="role_item : ${roles}" th:selected="${account.role.getId() == role_item.getId()}" th:text="${role_item.name}"
+                    <option th:text="${account.role.name}" th:value="${account.role.id}" selected></option>
+                    <option th:each="role_item : ${roles}" th:if="${account.role.id != role_item.id}"  th:text="${role_item.name}"
                             th:value="${role_item.id}"></option>
                 </select>
             </div>
@@ -78,10 +85,29 @@
 
     <div class="row justify-content-center">
         <div class="col-md-6 text-center">
-            <button class="btn btn-primary mt-4" type="submit">Cập nhật</button>
+            <button class="btn btn-outline-primary mt-4" type="submit">Cập nhật</button>
+            <button class="btn btn-outline-del mt-4" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?');" th:href="@{/account/delete/{id}(id=${account.id})}">Xóa</button>
         </div>
     </div>
 </form>
+<script>
+
+     function formatDate(date) {
+         if (!date) return '';
+         const [yyyy, mm, dd] = date.split('-');
+         const d = new Date(Number(yyyy), Number(mm) - 1, Number(dd));
+         const formattedYear = d.getFullYear();
+         const formattedMonth = String(d.getMonth() + 1).padStart(2, '0');
+         const formattedDay = String(d.getDate()).padStart(2, '0');
+         return `${formattedYear}/${formattedMonth}/${formattedDay} `;
+     }
+
+     document.getElementById('birthdatetemp').addEventListener('input', function () {
+         const formattedDate = formatDate(this.value);
+         document.getElementById('birthDate').value = formattedDate;
+     });
+
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

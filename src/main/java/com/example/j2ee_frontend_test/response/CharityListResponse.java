@@ -6,18 +6,18 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 
 import java.util.List;
-    @Getter
-    public class CharityListResponse {
-        @Expose
-        @SerializedName("data")
-        private List<CharityEvent> charityList;
+@Getter
+public class CharityListResponse {
+    @Expose
+    @SerializedName("data")
+    private List<CharityEvent> charityList;
 
-        @Expose
-        @SerializedName("total_results")
-        private int totalResults;
+    @Expose
+    @SerializedName("total_results")
+    private int totalResults;
 
-        @Expose
-        @SerializedName("total_pages")
-        private int totalPages;
-    }
+    @Expose
+    @SerializedName("total_page")
+    private int totalPages;
+}
 

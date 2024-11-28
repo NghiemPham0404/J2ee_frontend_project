@@ -21,4 +21,8 @@ public interface CharityApi {
 
     @DELETE("charity-events/{id}")
     Call<ResponseEntity<Object>> deleteCharity(@Path("id") UUID id);
+
+    @GET("charity-events/search")
+    Call<CharityListResponse> searchNameCharities(@Query("query") String query, @Query("page") int page);
+
 }
