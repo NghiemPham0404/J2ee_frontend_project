@@ -36,8 +36,7 @@
         <div class="col-md-6">
             <div class="form-group mt-2">
                 <label class="font-weight-bold" for="birthdate">Ngày sinh:</label>
-                <input class="form-control" id="birthdatetemp"  type="date" th:value="${#dates.format(account.birthDate,'YYYY-MM-dd')}"/>
-                <input type="text" id="birthDate" name="birthDate" th:value="${#dates.format(account.birthDate,'YYYY/MM/dd')}">
+                <input class="form-control" type="date" id="birthDate"  th:field="${account.birthDate}" th:value="${account.birthDate}"/>
             </div>
         </div>
     </div>

@@ -28,7 +28,7 @@ public class AccountController {
     RoleService roleService;
 
     @GetMapping
-    public String viewAccountsPage(Model model,@PathParam("query") String query,@PathParam("role") Integer role, @PathParam("page") Integer page) {
+    public String viewAccountsPage(Model model,@PathParam("query") String query,@RequestParam(value = "role", defaultValue = "0") Integer role, @PathParam("page") Integer page) {
         page = page != null ? page  : 0;
         AccountListResponse accountListResponse;
         if (query==null) {
@@ -37,7 +37,7 @@ public class AccountController {
         {
             accountListResponse=accountService.SearchNameAccounts(query,page);
         }
-        if(role !=0 ){
+        if(role != 0 ){
             System.out.println(accountListResponse.getAccountList());
             List<Account> filteredAccounts = accountListResponse.getAccountList().stream()
                     .filter(account -> account.getRole().getId() == role)
