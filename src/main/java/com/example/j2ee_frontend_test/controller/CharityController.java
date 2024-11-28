@@ -23,6 +23,7 @@ public class CharityController {
 
     @Autowired
     CharityService charityService;
+
     @GetMapping
     public String showProjectsPage(Model model,@PathParam("query") String query,@PathParam("page") Integer page) {
         page = page != null ? page : 0;

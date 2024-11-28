@@ -13,6 +13,7 @@ public class PostListResponse {
     @SerializedName("data")
     private List<Post> postList;
 
+
     @Expose
     @SerializedName("total_results")
     private int totalResults;

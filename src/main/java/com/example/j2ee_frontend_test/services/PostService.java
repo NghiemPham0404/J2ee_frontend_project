@@ -6,6 +6,7 @@ import com.example.j2ee_frontend_test.services.apis.PostApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -17,8 +18,14 @@ public class PostService {
     @Autowired
     PostApi postApi;
 
-    public PostListResponse getAllPosts(int adminId, int page) {
-        Call<PostListResponse> call = postApi.getAllPosts(adminId, page);
+    public PostListResponse getAllPosts(int adminId, int page, String query) {
+        Call<PostListResponse> call = null;
+        if (query == null) {
+            call = postApi.getAllPosts(adminId, page);
+        } else {
+            call = postApi.searchPostsByTitle(page, query);
+        }
+
         Response<PostListResponse> response = null;
         try {
             response = call.execute();
@@ -95,4 +102,6 @@ public class PostService {
             throw new RuntimeException(e);
         }
     }
+
+
 }
