@@ -14,6 +14,17 @@
     <link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.css">
 
 </head>
+<style>
+
+    .config-image {
+        max-width: 300px;
+        height: auto;
+        object-fit: contain;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 5px;
+    }
+</style>
 <body>
 <div th:replace="~{header :: navbar}"></div>
 
@@ -41,7 +52,7 @@
 
             <div class="mb-3">
                 <label for="image" class="form-label">Hình ảnh</label>
-                <div id="display-image"></div>
+                <div id="display-image" class="config-image"></div>
                 <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
                 <input type="hidden" name="hidden-image" id="hidden-image" th:field="*{thumbImg}">
 
@@ -118,8 +129,7 @@
                 <img id="thumb-image"
                      src="${imageUrl}"
                      alt="Image"
-                     class="img-fluid"
-                     style="width: 300px; height: 300px; object-fit: cover; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);"
+                     class="config-image"
                 >`;
 
                     // Lưu URL của hình ảnh vào input ẩn
@@ -146,8 +156,6 @@
         this.submit();
 
     });
-
-
 
 
 </script>
