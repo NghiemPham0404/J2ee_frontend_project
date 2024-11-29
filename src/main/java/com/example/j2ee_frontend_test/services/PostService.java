@@ -34,6 +34,23 @@ public class PostService {
         }
     }
 
+    public PostListResponse getAllPostsforuser(int page) {
+        Call<PostListResponse> call = postApi.getAllPostsforUser( page);
+        Response<PostListResponse> response = null;
+        try {
+            response = call.execute();
+            if (response.isSuccessful() && response.body() != null) {
+                return response.body();
+            } else {
+                // Handle errors here, if needed
+                System.out.println("Error: " + response.errorBody());
+                return new PostListResponse();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public String createPost(Post post) {
         Call<ResponseEntity<Object>> call = postApi.createPost(post);
         try {

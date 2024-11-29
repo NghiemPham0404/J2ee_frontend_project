@@ -64,4 +64,9 @@ public class RetrofitClientConfig {
         return retrofit.create(CharityApi.class);
     }
 
+    @Bean
+    public StatisticApi getStatisticApi(Retrofit retrofit) {
+        return retrofit.create(StatisticApi.class);
+    }
+
 }

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thống kê tài khoản</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="container">
+
+  <h2 class="text-center">Tài khoản có nhiều bài viết</h2>
+  <h5 th:text="${startDate}"></h5>
+  <h5 th:text="${endDate}"></h5>
+
+<!--  <div th:each="a :${accounts}">-->
+<!--    <h5 th:text="${a.accountId}"></h5>-->
+<!--    <h5 th:text="${a.accountName}"></h5>-->
+<!--    <h5 th:text="${a.postCount}"></h5>-->
+<!--  </div>-->
+</div>
+
+<script>
+  // Lấy dữ liệu JSON từ Thymeleaf
+  const accounts = /*[[${accounts}]]*/ []; // Thymeleaf render JSON data
+
+  // Debug dữ liệu
+  console.log("Accounts data:", accounts);
+
+  // Chuyển đổi dữ liệu cho biểu đồ
+  const accountNames = accounts.map(account => account.accountName); // Tên tài khoản
+  const postCounts = accounts.map(account => account.postCount); // Số bài viết
+
+  console.log("Account Names:", accountNames);
+  console.log("Post Counts:", postCounts);
+
+  // Cấu hình biểu đồ
+  const ctx = document.getElementById('postChart').getContext('2d');
+  const postChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: accountNames, // Gán nhãn trục X
+          datasets: [{
+              label: 'Số lượng bài viết',
+              data: postCounts, // Gán dữ liệu trục Y
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+          }]
+      },
+      options: {
+          responsive: true,
+          plugins: {
+              legend: {
+                  display: false
+              }
+          },
+          scales: {
+              x: {
+                  title: {
+                      display: true,
+                      text: 'Tài khoản'
+                  }
+              },
+              y: {
+                  beginAtZero: true,
+                  title: {
+                      display: true,
+                      text: 'Số lượng bài viết'
+                  }
+              }
+          }
+      }
+  });
+</script>
+</body>
+</html>

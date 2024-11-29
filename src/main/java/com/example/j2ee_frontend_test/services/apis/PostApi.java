@@ -23,4 +23,8 @@ public interface PostApi {
 
     @DELETE("posts/{id}")
     Call<ResponseEntity<Object>> deletePost(@Path("id") UUID id);
+
+    @GET("posts")
+    Call<PostListResponse> getAllPostsforUser(@Query("page") int page);
+
 }

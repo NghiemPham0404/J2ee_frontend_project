@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.UUID;
+
 @Controller
 public class HomeController {
 
@@ -18,7 +21,9 @@ public class HomeController {
     public String home(Model model, HttpServletRequest request) throws JsonProcessingException {
         model.addAttribute("currentUri", request.getRequestURI());
         int page=0;
-        PostListResponse postListResponse = postService.getAllPosts(1, page);
+        PostListResponse postListResponse = postService.getAllPostsforuser(0);
+
+        System.out.println(postListResponse.getPostList());
         ObjectMapper objectMapper = new ObjectMapper();
         String charityJson = objectMapper.writeValueAsString(postListResponse);
         System.out.println(charityJson);
