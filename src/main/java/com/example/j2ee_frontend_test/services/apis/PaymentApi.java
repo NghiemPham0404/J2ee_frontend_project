@@ -18,7 +18,5 @@ public interface PaymentApi  {
     // Find all payments by display status
     List<Payment> findByDisplay(int display);
 
-
-
 }
 

@@ -1,22 +1,25 @@
 package com.example.j2ee_frontend_test.controller;
 
 
+import com.example.j2ee_frontend_test.models.CharityEvent;
+import com.example.j2ee_frontend_test.models.TransferSession;
+import com.example.j2ee_frontend_test.services.CharityService;
+import com.example.j2ee_frontend_test.services.TransferSessionService;
 import com.example.j2ee_frontend_test.services.VNPayService;
-import com.example.j2ee_frontend_test.models.Artical;
-//import com.example.j2ee_frontend_test.Model.FundraisingCampaign_model;
-import com.example.j2ee_frontend_test.models.Payment;
-import com.example.j2ee_frontend_test.services.apis.CharityApi;
-//import com.example.j2ee_frontend_test.Repository.FundraisingCampaign_Repo;
-import com.example.j2ee_frontend_test.services.apis.PaymentApi;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.UUID;
 
 @org.springframework.stereotype.Controller
 public class PaymentController {
@@ -24,20 +27,27 @@ public class PaymentController {
     private VNPayService vnPayService;
 
     @Autowired
-    private Payment payment;
+    private TransferSessionService transferSessionService;
 
     @Autowired
-    private CharityApi articalRepo;
+    private CharityService charityService;
 
-    @GetMapping("/thanh-toan")
-    public String home(){
+    @GetMapping("/donate/{event_id}")
+    public String home(@PathVariable String event_id, Model model) {
+
+        CharityEvent charityEvent = charityService.getCharityById(UUID.fromString(event_id));
+        model.addAttribute("event_name", charityEvent.getName());
+        model.addAttribute("event_id", event_id);
         return "payment/payment_user";
     }
 
     @PostMapping("/submitOrder")
-    public String submidOrder(@RequestParam("amount") int orderTotal,
+    public String submitOrder(@RequestParam("amount") int orderTotal,
                               @RequestParam("orderInfo") String orderInfo,
-                              HttpServletRequest request){
+                              @RequestParam("fullname") String fullname,
+                              @RequestParam("eventId") String eventId,
+                              HttpServletRequest request) {
+        orderInfo = fullname + "_" + eventId + "_" + orderInfo;
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         String vnpayUrl = vnPayService.createOrder(orderTotal, orderInfo, baseUrl);
         return "redirect:" + vnpayUrl;
@@ -57,97 +67,44 @@ public class PaymentController {
             DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
             DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
             LocalDateTime parsedPaymentTime = LocalDateTime.parse(paymentTime, inputFormatter);
+            Date time = Date.from(parsedPaymentTime.atZone(ZoneId.systemDefault()).toInstant());
             String formattedPaymentTime = parsedPaymentTime.format(outputFormatter);
 
             // Cắt bỏ 2 số cuối của vnp_Amount
             String formattedTotalPrice = totalPrice.substring(0, totalPrice.length() - 2);
-            double totalAmount = Double.parseDouble(formattedTotalPrice);
+            BigDecimal totalAmount = BigDecimal.valueOf(Double.parseDouble(formattedTotalPrice));
 
-            // Lưu thông tin thanh toán vào cơ sở dữ liệu
-            Payment payment = new Payment();
-            payment.setOrderId(orderInfo);
-            payment.setTotalPrice(String.valueOf(totalAmount));
-            payment.setTransactionId(transactionId);
-            payment.setPaymentTime(parsedPaymentTime);
-            payment.setPaymentStatus(paymentStatus);
-            payment.setDisplay(0);
-            PaymentApi.save(payment);
 
             // Nếu thanh toán thành công, cập nhật số tiền đã gây quỹ
             if (paymentStatus == 1 && orderInfo != null && !orderInfo.trim().isEmpty()) {
-                String lastFiveChars = orderInfo.replaceAll("\\s", "").substring(orderInfo.length() - 5);
 
-                // Cập nhật FundraisingCampaign_model
-                FundraisingCampaign_model campaign = fundraisingCampaignRepo.findByCode(lastFiveChars).stream()
-                        .findFirst()
-                        .orElse(null);
+                String[] orderInfoSplit = orderInfo.trim().split("_");
+                String fullname = orderInfoSplit[0];
+                String eventId = orderInfoSplit[1];
 
-                if (campaign != null) {
-                    if ("1".equals(campaign.getStatus())) {
-                        updateDefaultArticle(totalPrice);
-                        model.addAttribute("message", "Hoàn cảnh bạn muốn quyên góp đã bị đóng không thể quyên góp được nữa và tiền bạn đóng góp đã được chuyển vào quỹ chung của tổ chức. Nếu bạn có thắc mắc và muốn giúp đỡ vui lòng liên hệ đến SĐT: 0898502822");
-                        model.addAttribute("orderId", orderInfo);
-                        model.addAttribute("totalPrice", totalPrice);
-                        model.addAttribute("paymentTime", formattedPaymentTime);
-                        model.addAttribute("transactionId", transactionId);
-                        return "payment/ordersuccess2";
-                    }
+                TransferSession transferSession = new TransferSession();
+                transferSession.setName(fullname);
+                transferSession.setDescription(orderInfoSplit[2]);
+                transferSession.setCharityEvent(charityService.getCharityById(UUID.fromString(eventId)));
+                transferSession.setAmount(totalAmount);
+                transferSession.setTime(time);
+                transferSessionService.recordTransferSession(eventId, transferSession);
 
-                    if ("0".equals(campaign.getStatus())) {
-                        Long campaignId = campaign.getId();
-                        campaign = fundraisingCampaignRepo.findById(campaignId).orElse(null);
-                        if (campaign != null) {
-                            double amountRaised = campaign.getAmountRaised() + Double.parseDouble(totalPrice) / 100; // Chia 100 vì vnp_Amount nhân 100
-                            campaign.setAmountRaised(amountRaised);
-                            fundraisingCampaignRepo.save(campaign);
-                        }
-                    }
-                }
 
-                // Cập nhật Artical_model
-                Artical artical = articalRepo.findByCode(lastFiveChars).stream()
-                        .findFirst()
-                        .orElse(null);
+                // Truyền thông tin đã định dạng vào model để hiển thị
+                model.addAttribute("orderId", orderInfo);
+                model.addAttribute("totalPrice", totalPrice);
+                model.addAttribute("paymentTime", formattedPaymentTime);
+                model.addAttribute("transactionId", transactionId);
 
-                // Nếu không tìm thấy, tìm bài viết mặc định QC000
-                if (artical == null || "1".equals(artical.getStatus())) {
-                    updateDefaultArticle(totalPrice);
-                    model.addAttribute("message", "Hoàn cảnh bạn muốn quyên góp đã bị đóng không thể quyên góp được nữa và tiền bạn đóng góp đã được chuyển vào quỹ chung của tổ chức. Nếu bạn có thắc mắc và muốn giúp đỡ vui lòng liên hệ đến SĐT: 0898502822");
-                    model.addAttribute("orderId", orderInfo);
-                    model.addAttribute("totalPrice", totalPrice);
-                    model.addAttribute("paymentTime", formattedPaymentTime);
-                    model.addAttribute("transactionId", transactionId);
-                    return "payment/ordersuccess2";
-                } else {
-                    // Cộng dồn số tiền vào bài viết tìm được
-                    double amountRaisedArtical = artical.getAmountRaised() + Double.parseDouble(totalPrice) / 100; // Chia 100 vì vnp_Amount nhân 100
-                    artical.setAmountRaised(amountRaisedArtical);
-                    articalRepo.save(artical);
-                }
+                return paymentStatus == 1 ? "payment/ordersuccess" : "payment/orderfail";
+            }else{
+                return "payment/orderfail";
             }
-
-            // Truyền thông tin đã định dạng vào model để hiển thị
-            model.addAttribute("orderId", orderInfo);
-            model.addAttribute("totalPrice", totalPrice);
-            model.addAttribute("paymentTime", formattedPaymentTime);
-            model.addAttribute("transactionId", transactionId);
-
-            return paymentStatus == 1 ? "payment/ordersuccess" : "payment/orderfail";
-
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Đã xảy ra lỗi khi xử lý thanh toán: " + e.getMessage());
             return "payment/orderfail";
         }
     }
-
-    private void updateDefaultArticle(String totalPrice) {
-        Artical defaultArtical = articalRepo.findByCode("QC000").stream()
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(""));
-        double amountRaisedArtical = defaultArtical.getAmountRaised() + Double.parseDouble(totalPrice) / 100; // Chia 100 vì vnp_Amount nhân 100
-        defaultArtical.setAmountRaised(amountRaisedArtical);
-        articalRepo.save(defaultArtical);
-    }
-
 }
