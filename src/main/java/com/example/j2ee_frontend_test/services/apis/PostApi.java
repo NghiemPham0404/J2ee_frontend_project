@@ -12,6 +12,9 @@ public interface PostApi {
     @GET("posts/all")
     Call<PostListResponse> getAllPosts(@Query("admin_id")int adminId, @Query("page") int page);
 
+    @GET("posts/my-posts")
+    Call<PostListResponse> getMyPosts(@Query("page") int page, @Query("ownerId") int ownerId);
+
     @POST("posts")
     Call<ResponseEntity<Object>> createPost(@Body Post post);
 
@@ -26,4 +29,7 @@ public interface PostApi {
 
     @GET("posts/search-all")
     Call<PostListResponse> searchPostsByTitle(@Query("page") int page, @Query("query") String query);
+
+    @GET("posts/search/my-posts")
+    Call<PostListResponse> searchMyPostsByTitle(@Query("page") int page, @Query("query") String query, @Query("ownerId") int ownerId);
 }

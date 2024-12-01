@@ -50,7 +50,9 @@
         </tr>
         </thead>
         <tbody id="postTableBody" >
-
+        <tr th:if="${message != null}">
+            <td colspan="5" class="text-center" th:text="${message}"></td>
+        </tr>
 
         <tr th:each="post : ${data}"
             th:attr="data-id=${post.id}"
@@ -78,7 +80,7 @@
           </li>
 
           <li class="page-item" th:each="i : ${#numbers.sequence(0, total_pages)}">
-            <a class="page-link" th:href="@{/posts(page=${i+1})}" th:text="${i + 1}"></a>
+            <a class="page-link" th:href="@{/posts(page=${i + 1})}" th:text="${i + 1}"></a>
           </li>
 
           <li th:disabled="${page + 1 == total_pages}" class="page-item">
@@ -89,10 +91,7 @@
 
         </ul>
 
-
-
       </nav>
-
 
   </div>
 </div>

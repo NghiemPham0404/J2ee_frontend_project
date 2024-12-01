@@ -18,6 +18,7 @@ public class PostService {
     @Autowired
     PostApi postApi;
 
+    // lay danh sach tat ca post (chi admin moi co quyen)
     public PostListResponse getAllPosts(int adminId, int page, String query) {
         Call<PostListResponse> call = null;
         if (query == null) {
@@ -96,6 +97,27 @@ public class PostService {
                 return response.body().toString();
             } else {
                 System.out.println("Error: " + response.errorBody().string());
+                return null;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // lay danh sach post cua chinh minh viet
+    public PostListResponse getMyPosts(int page, int ownerId, String query) {
+        Call<PostListResponse> call = null;
+        if (query == null) {
+            call = postApi.getMyPosts(page, ownerId);
+        } else {
+            call = postApi.searchMyPostsByTitle(page, query, ownerId);
+        }
+
+        try {
+            Response<PostListResponse> response = call.execute();
+            if (response.isSuccessful() && response.body() != null) {
+                return response.body();
+            } else {
                 return null;
             }
         } catch (IOException e) {
