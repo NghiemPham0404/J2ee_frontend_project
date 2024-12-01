@@ -17,8 +17,8 @@ public class CharityService {
     @Autowired
     CharityApi charityApi;
 
-    public CharityListResponse getAllCharities(int adminId, int page) {
-        Call<CharityListResponse> call = charityApi.getAllCharities(adminId, page);
+    public CharityListResponse getAllCharities( int page) {
+        Call<CharityListResponse> call = charityApi.getAllCharities( page);
         Response<CharityListResponse> response = null;
         try {
             response = call.execute();

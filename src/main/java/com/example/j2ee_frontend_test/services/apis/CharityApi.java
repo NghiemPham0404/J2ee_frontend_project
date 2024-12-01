@@ -8,7 +8,7 @@ import retrofit2.http.*;
 import java.util.UUID;
 public interface CharityApi {
     @GET("charity-events")
-    Call<CharityListResponse> getAllCharities(@Query("admin_id")int adminId, @Query("page") int page);
+    Call<CharityListResponse> getAllCharities(@Query("page") int page);
 
     @POST("charity-events")
     Call<ResponseEntity<Object>> createCharity(@Body CharityEvent charity);

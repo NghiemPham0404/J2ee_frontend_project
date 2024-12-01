@@ -28,7 +28,7 @@ public class CharityController {
         page = page != null ? page : 0;
         CharityListResponse charityListResponse;
         if(query==null) {
-             charityListResponse = charityService.getAllCharities(1, page);
+             charityListResponse = charityService.getAllCharities( page);
         } else
         { charityListResponse = charityService.searchNameCharities( query,page); }
         System.out.println(charityListResponse.getCharityList());
