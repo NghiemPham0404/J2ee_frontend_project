@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 public class HomeController {
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String home(Model model, HttpServletRequest request) {
         model.addAttribute("currentUri", request.getRequestURI());
         return "home";

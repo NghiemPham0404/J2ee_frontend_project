@@ -1,12 +1,15 @@
 package com.example.j2ee_frontend_test.config;
 
+
+import com.example.j2ee_frontend_test.services.apis.*;
+
 import com.example.j2ee_frontend_test.services.apis.AccountApi;
 import com.example.j2ee_frontend_test.services.apis.RoleApi;
 import com.example.j2ee_frontend_test.services.apis.TransactionStatementApi;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.converter.json.JsonbHttpMessageConverter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +36,7 @@ public class RetrofitClientConfig {
     public Gson gson() {
         return new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .setDateFormat("yyyy-MM-dd")
+                .setDateFormat("yyyy/MM/dd HH:mm:ss")
                 .create();
     }
 
@@ -52,4 +55,16 @@ public class RetrofitClientConfig {
     public TransactionStatementApi getTransactionStatementApi(Retrofit retrofit) {
         return retrofit.create(TransactionStatementApi.class);
     }
+
+
+    @Bean
+    public PostApi getPostApi(Retrofit retrofit) {
+        return retrofit.create(PostApi.class);
+    }
+
+    @Bean
+    public CharityApi getCharityApi(Retrofit retrofit) {
+        return retrofit.create(CharityApi.class);
+    }
+
 }

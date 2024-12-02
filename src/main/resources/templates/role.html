@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:grid-template-columns="http://www.w3.org/1999/xhtml"
+      xmlns:gap="http://www.w3.org/1999/xhtml" xmlns:align-items="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +16,11 @@
         .table th:nth-child(4) {
     vertical-align: middle;
     text-align: center;
+    }
+    .table tbody tr:hover {
+    background: linear-gradient(195deg, #c2e59c, #64b3f4);
+    cursor: pointer;
+    color:white;
 }
     </style>
 </head>
@@ -30,7 +36,7 @@
             <th>ID</th>
             <th>Tên Vai trò</th>
             <th>Quyền truy cập</th>
-            <th>Hành động</th>
+
         </tr>
         </thead>
         <tbody>
@@ -57,17 +63,18 @@
                     <input type="checkbox"checked disabled> Quản lý tài khoản
                 </div>
             </td>
-            <td>
-                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editRoleModal" data-id="1" data-name="Quản trị viên" onclick="editRole(this)">Sửa</button>
-                <button class="btn btn-outline-del" onclick="deleteRole(1)">Xóa</button>
-            </td>
+
         </tr>
         <tr>
             <td>2</td>
             <td>Accountant</td>
             <td>
-                <div>
-                    <input type="checkbox" checked disabled> Thống kê
+                <div style="display: grid; grid-template-columns: auto auto; gap: 5px; align-items: center;">
+                    <span style="grid-column: span 2;"> Thống kê</span>
+                    <input type="checkbox" checked disabled> Xem
+                    <input type="checkbox" checked disabled> Thêm
+                    <input type="checkbox" checked disabled> Xóa
+                    <input type="checkbox" checked disabled> Sửa
                 </div>
                 <div>
                     <input type="checkbox"  disabled> Quản lý vai trò
@@ -85,10 +92,7 @@
                     <input type="checkbox" disabled> Quản lý tài khoản
                 </div>
             </td>
-            <td>
-                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editRoleModal" data-id="2" data-name="Accountant" onclick="editRole(this)">Sửa</button>
-                <button class="btn btn-outline-del" onclick="deleteRole(2)">Xóa</button>
-            </td>
+
         </tr>
         <tr>
             <td>3</td>
@@ -113,10 +117,7 @@
                     <input type="checkbox" disabled> Quản lý tài khoản
                 </div>
             </td>
-            <td>
-                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editRoleModal" data-id="3" data-name="Collaboraty" onclick="editRole(this)">Sửa</button>
-                <button class="btn btn-outline-del" onclick="deleteRole(3)">Xóa</button>
-            </td>
+
         </tr>
         </tbody>
     </table>
