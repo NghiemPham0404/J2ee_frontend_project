@@ -67,7 +67,7 @@
                     <a class="nav-link" th:classappend="${currentUri == '/introduce'} ? 'active'" th:href="@{/introduce}">Giới thiệu</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Dự án</a>
+                    <a class="nav-link" th:classappend="${currentUri == '/introduce'} ? 'active'" th:href="@{/charities_events}">Dự án</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link">Sao kê</a>
