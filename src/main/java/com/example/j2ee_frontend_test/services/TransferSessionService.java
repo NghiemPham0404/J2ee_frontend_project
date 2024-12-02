@@ -16,8 +16,10 @@ public class TransferSessionService {
     @Autowired
     TransactionStatementApi transactionStatementApi;
 
+
     public TransferSessionListResponse getTransferSessionsByEvent(String eventId) {
         Call<TransferSessionListResponse> call = transactionStatementApi.getTransferSessionsByEvent(eventId);
+
         Response<TransferSessionListResponse> response = null;
         try {
             response = call.execute();
@@ -31,6 +33,5 @@ public class TransferSessionService {
             throw new RuntimeException(e);
         }
     }
-
 
 }

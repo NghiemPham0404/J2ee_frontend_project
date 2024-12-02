@@ -19,15 +19,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import jakarta.websocket.server.PathParam;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -39,7 +43,6 @@ public class TransferSessionController {
 
     @Value("${font.path}")
     private String fontPath;
-
 
     @GetMapping("/{eventId}")
     public String viewTransactionPage(@PathVariable("eventId") String eventId, Model model) {
@@ -68,8 +71,6 @@ public class TransferSessionController {
 
         return "transaction_statements";
     }
-
-
 
     @GetMapping("/export/{eventId}")
     public ResponseEntity<byte[]> exportToPDF(@PathVariable String eventId, Model model, HttpServletResponse response) throws IOException {
@@ -135,6 +136,5 @@ public class TransferSessionController {
 
         return htmlContent.toString();
     }
-
 
 }

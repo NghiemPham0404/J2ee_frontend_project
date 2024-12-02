@@ -1,6 +1,12 @@
 package com.example.j2ee_frontend_test.config;
 
+
 import com.example.j2ee_frontend_test.services.apis.*;
+
+import com.example.j2ee_frontend_test.services.apis.AccountApi;
+import com.example.j2ee_frontend_test.services.apis.RoleApi;
+import com.example.j2ee_frontend_test.services.apis.TransactionStatementApi;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,14 +56,15 @@ public class RetrofitClientConfig {
         return retrofit.create(TransactionStatementApi.class);
     }
 
+
     @Bean
     public PostApi getPostApi(Retrofit retrofit) {
         return retrofit.create(PostApi.class);
     }
 
-
     @Bean
     public CharityApi getCharityApi(Retrofit retrofit) {
         return retrofit.create(CharityApi.class);
     }
+
 }

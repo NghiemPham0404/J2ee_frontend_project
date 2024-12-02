@@ -10,6 +10,5 @@ import retrofit2.http.Query;
 public interface TransactionStatementApi {
     @GET("charity-events/{eventId}/all-transfer")
     Call<TransferSessionListResponse> getTransferSessionsByEvent(
-            @Path("eventId") String eventId
-    );
+            @Path("eventId") String eventId);
 }
