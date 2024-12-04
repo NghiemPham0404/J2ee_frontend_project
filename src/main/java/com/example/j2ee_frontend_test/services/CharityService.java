@@ -109,8 +109,9 @@ public class CharityService {
             throw new RuntimeException(e);
         }
     }
-    public String disburseCharity(UUID id) {
+    public String disburseCharity(String id) {
         Call<ResponseEntity<Object>> call = charityApi.disburse(id);
+        System.out.println("Đang giải ngân cho chương trình ID: " + id);
         try {            Response<ResponseEntity<Object>> response = call.execute();
             if (response.isSuccessful() && response.body() != null) {
                 System.out.println("Success");

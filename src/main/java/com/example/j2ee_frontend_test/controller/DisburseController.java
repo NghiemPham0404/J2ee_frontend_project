@@ -30,18 +30,12 @@ public class DisburseController {
         return "disburse";
     }
     @PostMapping("/{id}")
-    public String disburse(@PathVariable("id") UUID id, Model model) {
+    public String disburse(@PathVariable("id") String id, Model model) {
         String c=charityService.disburseCharity(id);
         System.out.println(c);
-        boolean success = disburseFunds(id);
-        model.addAttribute("message", success ? "Giải ngân thành công!" : "Giải ngân thất bại!");
+        model.addAttribute("message", true ? "Giải ngân thành công!" : "Giải ngân thất bại!");
         model.addAttribute("id", id);
 
         return "disburse-confirm";
-    }
-
-    private boolean disburseFunds(UUID id) {
-        System.out.println("Đang giải ngân cho chương trình ID: " + id);
-        return true;
     }
 }

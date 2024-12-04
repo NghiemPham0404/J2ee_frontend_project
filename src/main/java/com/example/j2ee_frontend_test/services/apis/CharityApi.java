@@ -32,5 +32,5 @@ public interface CharityApi {
     Call<CharityListResponse> searchOngoing(@Query("page") int page);
 
     @POST("charity-events/disburse/{id}")
-    Call<ResponseEntity<Object>> disburse(@Query("id") UUID id);
+    Call<ResponseEntity<Object>> disburse(@Path("id") String id);
 }
