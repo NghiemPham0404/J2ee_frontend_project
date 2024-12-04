@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thanh toán thất bại</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="/css/home.css" th:href="@{/css/home.css}" rel="stylesheet">
     <style>
         /* CSS cho hiệu ứng vòng tròn màu đỏ và dấu X */
         .failure-circle {
@@ -27,6 +28,7 @@
 
 <body>
 <!-- back to top -->
+<div th:replace="~{header :: navbar}"></div>
 
 <!-- start body -->
 <div class="body py-5">
@@ -34,8 +36,11 @@
         <div class="w-50 m-auto text-center">
             <!-- Hiệu ứng dấu X trong vòng tròn màu đỏ -->
             <div class="failure-circle">
-                <i class="fas fa-times"></i> <!-- Dấu X hiển thị trong vòng tròn -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white" class="bi bi-x" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
             </div>
+
             <!-- Tiêu đề trang thông báo thất bại -->
             <h1 class="my-3 text-danger">Thanh toán thất bại</h1>
             <h2 class="my-2">Chi tiết giao dịch</h2>
@@ -61,7 +66,7 @@
                 </tbody>
             </table>
             <!-- Nút trở về trang chủ -->
-            <a href="/trang-chu" class="btn btn-primary mt-3">Về trang chủ</a>
+            <a href="/" class="btn btn-primary mt-3">Về trang chủ</a>
         </div>
     </div>
 </div>
