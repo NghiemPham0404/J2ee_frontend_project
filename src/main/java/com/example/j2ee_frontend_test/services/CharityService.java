@@ -109,6 +109,48 @@ public class CharityService {
             throw new RuntimeException(e);
         }
     }
+    public String disburseCharity(UUID id) {
+        Call<ResponseEntity<Object>> call = charityApi.disburse(id);
+        try {            Response<ResponseEntity<Object>> response = call.execute();
+            if (response.isSuccessful() && response.body() != null) {
+                System.out.println("Success");
+                return response.body().toString();
+            } else {
+                System.out.println("Error: " + response.errorBody().string());
+                return null;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public CharityListResponse ongoingCharity(int page) {
+        Call<CharityListResponse> call = charityApi.searchOngoing(page);
+        try {            Response<CharityListResponse> response = call.execute();
+            if (response.isSuccessful() && response.body() != null) {
+                System.out.println("Success");
+                return response.body();
+            } else {
+                System.out.println("Error: " + response.errorBody().string());
+                return null;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public CharityListResponse notDisburseCharity(int page) {
+        Call<CharityListResponse> call = charityApi.searchNotDisburse(page);
+        try {            Response<CharityListResponse> response = call.execute();
+            if (response.isSuccessful() && response.body() != null) {
+                System.out.println("Success");
+                return response.body();
+            } else {
+                System.out.println("Error: " + response.errorBody().string());
+                return null;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 
 
