@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="/css/home.css" th:href="@{/css/home.css}" rel="stylesheet">
     <title>Thanh toán thành công</title>
     <style>
         /* Hiệu ứng vòng tròn xanh với dấu tích */
@@ -61,6 +62,7 @@
 </head>
 
 <body>
+<div th:replace="~{header :: navbar}"></div>
 <div class="container py-5">
     <div class="w-75 m-auto text-center">
         <!-- Hiệu ứng dấu tích thành công -->

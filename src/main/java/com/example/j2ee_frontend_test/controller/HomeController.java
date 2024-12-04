@@ -54,11 +54,30 @@ public class HomeController {
         return "home";
     }
     @GetMapping("/charities_events")
-    public String charities_events(Model model,@PathParam("page") Integer page){
+    public String charities_events(Model model,@PathParam("page") Integer page,@PathParam("query") String query){
         page = page != null ? page : 0;
-        PostListResponse postListResponse=postService.getAllPostsforuser(0);
-        List<Post> data=postListResponse.getPostList();
-        model.addAttribute("data", data);
+        PostListResponse postListResponse;
+        if (query == null) {
+             postListResponse = postService.getAllPostsforuser(page);
+            List<Post> data=postListResponse.getPostList();
+            int total=postListResponse.getTotalPages();
+            for (Post p : data) {
+                timeLeft(p);
+            }
+            model.addAttribute("total_pages",total);
+            model.addAttribute("data", data);
+        } else {
+            postListResponse=postService.searchPosts(page,query);
+            List<Post> data=postListResponse.getPostList();
+            int total=postListResponse.getTotalPages();
+            for (Post p : data) {
+                timeLeft(p);
+            }
+            model.addAttribute("total_pages",total);
+            model.addAttribute("data", data);
+        }
+
+        model.addAttribute("query",query);
         model.addAttribute("page", page);
         return "charities";
     }

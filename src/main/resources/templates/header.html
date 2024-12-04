@@ -21,10 +21,7 @@
         background:linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%); /* Thay đổi màu nền khi hover */
         color: white;
     }
-    .dropdown-menu{
-    position: relative;
-     z-index: 1050;
-     }
+
 
 
         .navbar-nav .nav-item {
@@ -34,9 +31,10 @@
          background:linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%);
         color: white;
     }
-        .nav-item:hover, .dropdown-item:hover {
+        .nav-item:hover, .dropdown-item:hover,dropdown-menu:hover {
     transform: scale(1.1);
     transition: transform 0.2s ease-in-out;
+    z-index:2000;
 }
     </style>
     <div class="container">
@@ -67,7 +65,7 @@
                     <a class="nav-link" th:classappend="${currentUri == '/introduce'} ? 'active'" th:href="@{/introduce}">Giới thiệu</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:classappend="${currentUri == '/introduce'} ? 'active'" th:href="@{/charities_events}">Dự án</a>
+                    <a class="nav-link" th:classappend="${currentUri == '/introduce'} ? 'active'" th:href="@{/charities_events (page=0)}">Dự án</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link">Sao kê</a>

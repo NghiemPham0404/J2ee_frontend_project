@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thanh toán thất bại</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="/css/home.css" th:href="@{/css/home.css}" rel="stylesheet">
     <style>
         /* CSS cho hiệu ứng vòng tròn màu đỏ và dấu X */
         .failure-circle {
@@ -27,6 +28,7 @@
 
 <body>
 <!-- back to top -->
+<div th:replace="~{header :: navbar}"></div>
 
 <!-- start body -->
 <div class="body py-5">
