@@ -158,10 +158,10 @@
     </span>
         </td>
         <td>
-          <a  class="btn btn-outline-primary"
-             th:href="@{/disburse/{id} (id=${charity.id})}">
-            Giải ngân
-          </a>
+<!--          <a th:href="@{/disburse/{id}(id=${charity.id})}">Giải ngân</a>-->
+          <form th:action="@{/disburse/{id}(id=${charity.id})}" method="post">
+            <button type="submit" class="btn btn-outline-primary">Giải ngân</button>
+          </form>
         </td>
       </tr>
       </tbody>
