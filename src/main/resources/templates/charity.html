@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +8,10 @@
   <style>
     .table th, .table td {
         text-align: center;
+        vertical-align: middle;
     }
     .active-btn {
-      background: linear-gradient(195deg, #c2e59c 0%, #64b3f4 100%);
+      background: linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%);
      color:white;
      border:none;
     }
@@ -51,15 +52,37 @@
     border-radius: 5px;
   }
     .table tbody tr:hover {
-    background: linear-gradient(195deg, #c2e59c, #64b3f4);
+     background:#D3D3D3;
     cursor: pointer;
     color:white;
+     transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+}
+    .table tr:nth-child(odd) {
+    background-color: white;
+}
+.dropdown-menu{
+     z-index: 1050;
+     }
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+    .table th {
+    background: linear-gradient(195deg, #8E2DE2, #4A00E0);
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+}
+   td.description {
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
   </style>
   <link href="/css/home.css" th:href="@{/css/home.css}" rel="stylesheet">
 </head>
 <body>
-<div th:replace="~{header :: navbar}"></div>
+<div style="position: relative;z-index: 1050;" th:replace="~{header :: navbar}"></div>
 
 
 <div class="container mt-5">
@@ -69,8 +92,8 @@
 
     <div class="col-md-10 offset-md-1">
       <div class="input-group mb-3">
-        <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm dự án..." />
-        <button class="btn btn-primary" onclick="searchProjects()">Tìm kiếm</button>
+        <input type="text" id="searchInput" th:value="${query}" style="z-index: 0;" class="form-control" placeholder="Tìm kiếm dự án..." />
+        <a class="btn btn-primary" onclick="searchCharities()">Tìm kiếm</a>
       </div>
     </div>
   </div>
@@ -101,13 +124,13 @@
   </div>
 
 
-  <button id="approvedProjectsBtn" class="btn btn-outline-primary mb-3 active-btn" data-bs-toggle="modal" data-bs-target="#approvedProjectsModal" onclick="showApprovedProjects()">Dự án đang vận động</button>
-  <button id="pendingProjectsBtn" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" data-bs-target="#pendingProjectsModal" onclick="showPendingProjects()">Dự án đã kết thúc</button>
-  <a href="/charities/new" class="btn btn-outline-primary mb-3 float-end">Thêm dự án</a>
+<!--  <button id="approvedProjectsBtn" class="btn btn-outline-primary mb-3 active-btn" data-bs-toggle="modal" data-bs-target="#approvedProjectsModal" onclick="showApprovedProjects()">Dự án đang vận động</button>-->
+<!--  <button id="pendingProjectsBtn" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" data-bs-target="#pendingProjectsModal" onclick="showPendingProjects()">Dự án đã kết thúc</button>-->
+  <a href="/charity-events/new" class="btn btn-outline-primary mb-3 float-end">Thêm dự án</a>
 
-  <!-- Project table -->
+
   <div id="projectsTableContainer">
-    <table class="table table-bordered" id="approvedProjectsTable">
+    <table class="table table-bordered" >
       <thead>
       <tr>
         <th>ID</th>
@@ -117,106 +140,63 @@
         <th>Ngày Kết thúc</th>
         <th>Mục tiêu</th>
         <th>Hiện có</th>
-
+        <th>Trạng thái</th>
       </tr>
       </thead>
       <tbody>
-      <tr th:each="charity : ${data}"  th:if="${!charity.disbursed}" onclick="window.location.href='/charities/detail'" >
+      <tr th:each="charity : ${data}"  th:onclick="window.location.href='/charity-events/' + /*[[${charity.id}]]*/ ''">
         <td th:text="${charity.id}"></td>
         <td th:text="${charity.name}"></td>
         <td th:text="${charity.description}"></td>
-        <td th:text="${charity.startTime}"></td>
-        <td th:text="${charity.endTime}"></td>
+        <td th:text="${#dates.format(charity.startTime,'MM/dd/YYYY')}"></td>
+        <td th:text="${#dates.format(charity.endTime,'MM/dd/YYYY')}"></td>
         <td th:text="${charity.goalAmount}"></td>
         <td th:text="${charity.currentAmount}"></td>
-
-
+        <td>
+    <span th:classappend="${charity.disbursed} ? 'text-danger fw-bold' : 'text-success fw-bold'"
+          th:text="${charity.disbursed ? 'Đã giải ngân' : 'Đang hoạt động'}">
+    </span>
+        </td>
       </tr>
       </tbody>
+
     </table>
-    <table class="table table-bordered" id="pendingProjectsTable" style="display: none;">
-      <thead>
-      <tr >
-        <th>ID</th>
-        <th>Tên Dự án</th>
-        <th>Mô tả</th>
-        <th>Ngày Bắt đầu</th>
-        <th>Ngày Kết thúc</th>
-        <th>Mục tiêu</th>
-        <th>Hoàn thành</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="charity : ${data}" th:if="${!charity.disbursed}" onclick="window.location.href='/charities/detail'">
-        <td th:text="${charity.id}"></td>
-        <td th:text="${charity.name}"></td>
-        <td th:text="${charity.description}"></td>
-        <td th:text="${charity.startTime}"></td>
-        <td th:text="${charity.endTime}"></td>
-        <td th:text="${charity.goalAmount}"></td>
-        <td th:text="${charity.currentAmount}"></td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="d-flex justify-content-center">
+
+    <a th:classappend="${page == 0} ? 'disabled'" class="btn btn-outline-primary"
+       th:href="@{/charity-events (query=${query},page=${page - 1})}">
+      Trang trước
+    </a>
+
+
+    <a th:classappend="${page + 1 == total_pages} ? 'disabled'"  class="btn btn-outline-primary"
+       th:href="@{/charity-events (query=${query},page=${page + 1})}">
+      Trang kế tiếp
+    </a>
+  </div>
+
   </div>
 </div>
 
 <script>
-  function showApprovedProjects() {
-    document.getElementById('approvedProjectsTable').style.display = 'table';
-    document.getElementById('pendingProjectsTable').style.display = 'none';
-    document.getElementById('approvedProjectsBtn').classList.add('active-btn');
-    document.getElementById('approvedProjectsBtn').classList.remove('btn-unactive');
-    document.getElementById('pendingProjectsBtn').classList.add('btn-unactive');
-    document.getElementById('pendingProjectsBtn').classList.remove('active-btn');
-}
-
-function showPendingProjects() {
-    document.getElementById('approvedProjectsTable').style.display = 'none';
-    document.getElementById('pendingProjectsTable').style.display = 'table';
-    document.getElementById('pendingProjectsBtn').classList.add('active-btn');
-    document.getElementById('pendingProjectsBtn').classList.remove('btn-unactive');
-    document.getElementById('approvedProjectsBtn').classList.add('btn-unactive');
-    document.getElementById('approvedProjectsBtn').classList.remove('active-btn');
-}
-
-
-
-
-
-  function approvePendingProject() {
-    alert('Dự án đã được duyệt.');
-  }
-
-
-  function rejectPendingProject() {
-    alert('Dự án đã bị từ chối.');
-  }
-
-
-  function editProject(projectId) {
-    alert('Đã sửa dự án');
-  }
-
-
-  function deleteProject(projectId) {
-    if (confirm('Bạn có chắc chắn muốn xóa dự án này không?')) {
-      alert('Dự án đã được xóa.');
+  function searchCharities() {
+      const query = document.getElementById('searchInput').value;
+      const url = `/charity-events?query=${encodeURIComponent(query)}&page=0`;
+      window.location.href = url;
     }
+    function updateMoneyRangeValue() {
+    const moneyRange = document.getElementById('moneyRange');
+    const moneyRangeValue = document.getElementById('moneyRangeValue');
+    const moneyRangeValueFormatted = formatMoney(moneyRange.value);
+    moneyRangeValue.textContent = `${moneyRangeValueFormatted} VND`;
+    const percentage = (moneyRange.value / moneyRange.max) * 100;
+     moneyRange.style.setProperty('--filled-width', `${percentage}%`);
   }
-  function updateMoneyRangeValue() {
-  const moneyRange = document.getElementById('moneyRange');
-  const moneyRangeValue = document.getElementById('moneyRangeValue');
-  const moneyRangeValueFormatted = formatMoney(moneyRange.value);
-  moneyRangeValue.textContent = `${moneyRangeValueFormatted} VND`;
-  const percentage = (moneyRange.value / moneyRange.max) * 100;
-   moneyRange.style.setProperty('--filled-width', `${percentage}%`);
-}
-updateMoneyRangeValue()
-// Hàm định dạng số tiền
-function formatMoney(value) {
-  return Number(value).toLocaleString();
-}
+  updateMoneyRangeValue()
+  // Hàm định dạng số tiền
+  function formatMoney(value) {
+    return Number(value).toLocaleString();
+  }
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>

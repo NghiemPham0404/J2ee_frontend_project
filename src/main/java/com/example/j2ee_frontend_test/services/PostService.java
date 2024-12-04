@@ -6,7 +6,6 @@ import com.example.j2ee_frontend_test.services.apis.PostApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -26,7 +25,6 @@ public class PostService {
         } else {
             call = postApi.searchPostsByTitle(page, query);
         }
-
         Response<PostListResponse> response = null;
         try {
             response = call.execute();
@@ -42,6 +40,55 @@ public class PostService {
         }
     }
 
+    public PostListResponse getAllPosts(int adminId, int page) {
+        Call<PostListResponse> call = postApi.getAllPosts(adminId, page);
+        Response<PostListResponse> response = null;
+        try {
+            response = call.execute();
+            if (response.isSuccessful() && response.body() != null) {
+                return response.body();
+            } else {
+                // Handle errors here, if needed
+                System.out.println("Error: " + response.errorBody());
+                return new PostListResponse();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public PostListResponse getAllPostsforuser(int page) {
+        Call<PostListResponse> call = postApi.getAllPostsforUser( page);
+        Response<PostListResponse> response = null;
+        try {
+            response = call.execute();
+            if (response.isSuccessful() && response.body() != null) {
+                return response.body();
+            } else {
+                // Handle errors here, if needed
+                System.out.println("Error: " + response.errorBody());
+                return new PostListResponse();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public PostListResponse searchPosts(int page, String query) {
+        Call<PostListResponse> call = postApi.searchPosts( page,query);
+        Response<PostListResponse> response = null;
+        try {
+            response = call.execute();
+            if (response.isSuccessful() && response.body() != null) {
+                return response.body();
+            } else {
+                // Handle errors here, if needed
+                System.out.println("Error: " + response.errorBody());
+                return new PostListResponse();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public String createPost(Post post) {
         Call<ResponseEntity<Object>> call = postApi.createPost(post);
         try {

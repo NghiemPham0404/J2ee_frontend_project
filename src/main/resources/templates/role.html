@@ -10,17 +10,46 @@
     <style>
         .table td:nth-child(1),
         .table td:nth-child(2),
-        .table td:nth-child(4),
         .table th:nth-child(1),
-        .table th:nth-child(2),
-        .table th:nth-child(4) {
+        .table th:nth-child(2)
+         {
     vertical-align: middle;
     text-align: center;
     }
+    .table th {
+    background: linear-gradient(195deg, #8E2DE2, #4A00E0);
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+}
     .table tbody tr:hover {
-    background: linear-gradient(195deg, #c2e59c, #64b3f4);
+     background:#D3D3D3;
     cursor: pointer;
     color:white;
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+}
+        .modal div {
+        display: flex;
+        align-items: center;
+    }
+        .table td label {
+        margin-left: 5px;
+    }
+   input[type="checkbox"] {
+       accent-color: #8E2DE2;
+   }
+.table tr:nth-child(odd) {
+    background-color: white;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+       input[type="checkbox"].non-interactive {
+    pointer-events: none;
+    background-color: #f0f0f0;
+    cursor: not-allowed;
 }
     </style>
 </head>
@@ -28,97 +57,37 @@
 <div th:replace="~{header :: navbar}"></div>
 <div class="container mt-5">
     <h1 class="text-center">Quản lý vai trò</h1>
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addRoleModal">Thêm Vai trò</button>
+    <button class="btn btn-outline-primary mb-3 float-end" th:onclick="window.location.href='/role/new'">Thêm Vai trò</button>
 
     <table class="table table-bordered">
         <thead>
         <tr>
             <th>ID</th>
-            <th>Tên Vai trò</th>
-            <th>Quyền truy cập</th>
-
+            <th>Name</th>
+            <th th:each="actions : ${data[0].roleActions}" th:text="${actions.action.name}"></th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>1</td>
-            <td>Quản trị viên</td>
-            <td>
-                <div>
-                    <input type="checkbox" checked disabled> Thống kê
-                </div>
-                <div>
-                    <input type="checkbox" checked disabled> Quản lý vai trò
-                </div>
-                <div>
-                    <input type="checkbox" checked disabled> Quản lý tài khoản
-                </div>
-                <div>
-                    <input type="checkbox"checked disabled> Quản lý dự án
-                </div>
-                <div>
-                    <input type="checkbox"checked disabled> Quản lý ngân sách
-                </div>
-                <div>
-                    <input type="checkbox"checked disabled> Quản lý tài khoản
-                </div>
-            </td>
+        <tr th:each="role : ${data}"  th:onclick="window.location.href='/role/' + /*[[${role.id}]]*/ ''" >
+            <td th:text="${role.id}"></td>
+            <td th:text="${role.name}"></td>
+            <td th:each="actions : ${data[0].roleActions}">
+                    <div th:each="action : ${role.roleActions}">
+                        <div th:if="${action.action.id == actions.action.id}">
+                            <input type="checkbox" th:checked="${action.read}" class="non-interactive" > Xem &nbsp;
+                            <input type="checkbox" th:checked="${action.create}" class="non-interactive"> Thêm &nbsp;
+                            <input type="checkbox" th:checked="${action.update}" class="non-interactive"> Sửa &nbsp;
+                            <input type="checkbox" th:checked="${action.delete}" class="non-interactive"> Xóa
 
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Accountant</td>
-            <td>
-                <div style="display: grid; grid-template-columns: auto auto; gap: 5px; align-items: center;">
-                    <span style="grid-column: span 2;"> Thống kê</span>
-                    <input type="checkbox" checked disabled> Xem
-                    <input type="checkbox" checked disabled> Thêm
-                    <input type="checkbox" checked disabled> Xóa
-                    <input type="checkbox" checked disabled> Sửa
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <input type="checkbox"  disabled> Quản lý vai trò
-                </div>
-                <div>
-                    <input type="checkbox"  disabled> Quản lý tài khoản
-                </div>
-                <div>
-                    <input type="checkbox" disabled> Quản lý dự án
-                </div>
-                <div>
-                    <input type="checkbox"checked disabled> Quản lý ngân sách
-                </div>
-                <div>
-                    <input type="checkbox" disabled> Quản lý tài khoản
-                </div>
-            </td>
 
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Collaboraty</td>
-            <td>
-                <div>
-                    <input type="checkbox" disabled> Thống kê
-                </div>
-                <div>
-                    <input type="checkbox"  disabled> Quản lý vai trò
-                </div>
-                <div>
-                    <input type="checkbox"  disabled> Quản lý tài khoản
-                </div>
-                <div>
-                    <input type="checkbox" disabled checked> Quản lý dự án
-                </div>
-                <div>
-                    <input type="checkbox" disabled> Quản lý ngân sách
-                </div>
-                <div>
-                    <input type="checkbox" disabled> Quản lý tài khoản
-                </div>
-            </td>
 
+            </td>
         </tr>
+
+
         </tbody>
     </table>
 </div>

@@ -5,47 +5,75 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/css/home.css" th:href="@{/css/home.css}" rel="stylesheet">
+
 </head>
 
 <body>
+<style>
+
+  h4 {
+  font-weight: bold;
+  color: #6607F1;
+}
+</style>
+<link href="/css/home.css" th:href="@{/css/home.css}" rel="stylesheet">
+<link href="/css/animation.css" th:href="@{/css/animation.css}" rel="stylesheet">
 <div th:replace="~{header :: navbar}"></div>
 <div th:replace="~{login :: loginModal}"></div>
 
-
+<div  class="custom-container ">
+  <h1><span>Quỹ từ thiện và những hoàn cảnh khó khăn</span><span>Chân thành cảm ơn mọi người</span><span>Đã chung tay đùm bọc giúp đỡ</span><span>Quỹ từ thiện đã hoàn thành được</span><span>21 hoàn cảnh với 50,000,000đ</span>
+  </h1>
+  <svg class="bg" viewBox="0 0 512.009 512.009">
+    <defs>
+      <linearGradient id="gradient" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#ff8a00"></stop>
+        <stop offset="100%" stop-color="#c8305f"></stop>
+      </linearGradient>
+    </defs>
+    <path d="M504.473,401.071c4.713,0,8.533-3.821,8.533-8.533c0-4.713-3.821-8.533-8.533-8.533h-8.533				c0-4.713-3.82-8.533-8.533-8.533s-8.533,3.82-8.533,8.533H342.34c0-4.713-3.821-8.533-8.533-8.533				c-4.713,0-8.533,3.82-8.533,8.533h-8.533c-4.713,0-8.533,3.821-8.533,8.533c0,4.713,3.82,8.533,8.533,8.533h8.533v25.6h-8.533				c-4.713,0-8.533,3.82-8.533,8.533s3.82,8.533,8.533,8.533h8.533v8.533h-8.533c-4.713,0-8.533,3.821-8.533,8.533				s3.82,8.533,8.533,8.533h8.533v25.6H180.206v-70.6c12.623,7.113,26.865,10.856,41.354,10.867				c48.46-0.698,87.215-40.48,86.646-88.942c0.263-33.693-18.552-64.638-48.588-79.908c9.888-13.462,15.186-29.747,15.113-46.45				c0.297-36.863-25.562-68.771-61.688-76.117c9.141-20.158,7.57-43.556-4.185-62.31c-11.754-18.755-32.126-30.37-54.253-30.931				c-0.253,0-0.497,0.036-0.749,0.039c-4.543-29.367-29.99-50.923-59.704-50.577c-29.714,0.346-54.651,22.49-58.509,51.955				C14.035,56.104-0.882,75.998,1.197,97.902c2.079,21.904,20.473,38.635,42.476,38.636h49.741c0.77,2.454,1.683,4.861,2.734,7.208				c-36.124,7.371-61.97,39.291-61.667,76.158c-0.073,16.703,5.225,32.988,15.112,46.45c-30.035,15.271-48.85,46.215-48.587,79.908				c-0.57,48.461,38.186,88.244,86.646,88.942c14.489-0.011,28.731-3.753,41.354-10.867v70.6H9.54c-4.713,0-8.533,3.82-8.533,8.533				s3.82,8.533,8.533,8.533h494.933c4.713,0,8.533-3.82,8.533-8.533s-3.821-8.533-8.533-8.533h-8.533v-25.6h8.533				c4.713,0,8.533-3.82,8.533-8.533s-3.821-8.533-8.533-8.533h-8.533v-8.533h8.533c4.713,0,8.533-3.82,8.533-8.533				s-3.821-8.533-8.533-8.533h-8.533v-25.6H504.473z M90.277,116.521c0,0.991,0.112,1.965,0.156,2.95h-46.76				c-14.138,0-25.6-11.461-25.6-25.6c0-14.139,11.462-25.6,25.6-25.6c2.263,0.001,4.434-0.898,6.035-2.499				c1.6-1.6,2.499-3.771,2.499-6.035c-0.044-22.27,17.079-40.812,39.282-42.538c22.203-1.727,41.986,13.946,45.386,35.955				C109.043,61.655,90.096,87.421,90.277,116.521z M163.14,494.938h-17.067v-83.145c3.058-2.848,5.91-5.91,8.533-9.163				c2.623,3.253,5.475,6.315,8.533,9.162V494.938z M164.176,386.502l56.197-56.198c3.281-3.341,3.256-8.701-0.054-12.012				s-8.671-3.335-12.012-0.054l-45.167,45.166v-86.8l40.166-40.166c3.296-3.338,3.28-8.711-0.038-12.029				c-3.317-3.317-8.69-3.334-12.029-0.038l-28.1,28.1v-39.133c0-4.713-3.821-8.533-8.533-8.533c-4.713,0-8.533,3.821-8.533,8.533				v39.133l-28.1-28.1c-3.338-3.296-8.711-3.279-12.029,0.038s-3.334,8.69-0.038,12.029l40.166,40.167v86.8l-45.167-45.167				c-3.338-3.296-8.711-3.279-12.029,0.038c-3.317,3.317-3.334,8.691-0.038,12.029l56.197,56.197				c-12.493,19.629-34.118,31.55-57.385,31.636c-39.038-0.687-70.159-32.835-69.579-71.875				c-0.362-30.873,19.152-58.485,48.375-68.45c2.825-0.931,4.961-3.266,5.637-6.163c0.676-2.897-0.207-5.936-2.328-8.021				c-11.73-11.515-18.298-27.288-18.208-43.725c-0.558-32.561,25.193-59.507,57.746-60.425c3.523,0.311,6.89-1.513,8.554-4.634				c1.455-2.868,1.17-6.311-0.737-8.9c-6.325-8.508-9.749-18.823-9.767-29.425c-0.416-26.542,20.722-48.416,47.262-48.908				c26.541,0.492,47.679,22.366,47.262,48.908c-0.018,10.602-3.442,20.917-9.767,29.425c-1.868,2.611-2.102,6.052-0.604,8.892				c1.508,2.881,4.494,4.683,7.746,4.675c32.789,0.59,58.918,27.601,58.421,60.392c0.09,16.437-6.479,32.21-18.208,43.725				c-2.122,2.085-3.004,5.124-2.328,8.021s2.812,5.232,5.637,6.163c32.774,11.46,52.753,44.622,47.565,78.952				s-34.072,60.109-68.769,61.373C198.293,418.052,176.669,406.131,164.176,386.502z M478.873,494.938H342.34v-25.6h136.533V494.938				z M478.873,452.271H342.34v-8.533h136.533V452.271z M478.873,426.671H342.34v-25.6h136.533V426.671z"></path>
+    <path d="M367.94,213.338h102.4c22.002-0.001,40.396-16.732,42.476-38.636c2.079-21.904-12.838-41.798-34.447-45.939				c-3.905-29.73-29.244-51.958-59.229-51.958s-55.324,22.228-59.229,51.958c-21.609,4.141-36.526,24.035-34.447,45.939				S345.937,213.337,367.94,213.338z M367.94,145.071c2.263,0.001,4.434-0.898,6.035-2.499c1.6-1.6,2.499-3.771,2.499-6.035				c0-23.564,19.103-42.667,42.667-42.667s42.667,19.102,42.667,42.667c-0.001,2.263,0.898,4.434,2.499,6.035				c1.6,1.6,3.771,2.499,6.035,2.499c14.138,0,25.6,11.462,25.6,25.6s-11.461,25.6-25.6,25.6h-102.4				c-14.138,0-25.6-11.461-25.6-25.6S353.801,145.071,367.94,145.071z"></path>
+  </svg>
+</div>
 <div class="container my-5">
   <div class="row">
     <div class="col-md-6">
       <div class="important-project text-center position-relative">
         <h3 class="text-primary">Dự án quan trọng</h3>
-        <img src="img/Demo_1.JPG" alt="Flood Relief" class="img-fluid custom-size" th:src="@{img/Demo_1.JPG}">
+        <img  class="img-fluid custom-size" >
         <div class="badge-position">
-          <span class="badge bg-primary p-2">Đang vận động</span>
+          <span class="badge bg-primary p-2" th:text="${ip.charityEvent.disbursed} ? 'Đã hoàn thành' : 'Đang hoạt động'"></span>
         </div>
       </div>
     </div>
 
     <div class="col-md-6">
-      <h4>Chung tay giúp đỡ các tỉnh miền Trung bị thiệt hại do mưa lũ.</h4>
-      <p>'Nhằm chia sẻ những khó khăn mà đồng bào miền Trung đang phải gánh chịu...'</p>
+      <h4 th:text="${ip.title}"></h4>
+      <p id="ipbodyText" th:text="${ip.body}" style="height:90px"></p>
       <div class="text-end">
         <a href="#" class="text-primary">Xem thêm >></a>
       </div>
 
+      <h6 class="text-center">Thời gian còn lại trước khi khóa sổ</h6>
+
       <div class="countdowns text-center mt-4">
-        <div>29 : 23 : 59 : 59</div>
-        <div class="small">Ngày Giờ Phút Giây</div>
+
+        <div th:text="${ip.charityEvent.timeLeft}">29 : 23 : 59 : 59</div>
+        <div class="small">Ngày</div>
       </div>
 
       <div class="progress-container">
-        <div class="progress-label mt-4">Đã góp được <span class="highlight">500,000,000đ</span> / 1,000,000,000đ</div>
+        <div class="progress-label mt-4">Đã góp được: <span class="highlight" th:text="${ip.charityEvent.currentAmount}"></span> / <span th:text="${ip.charityEvent.goalAmount}"></span></div>
         <div class="d-flex align-items-center justify-content-between mt-2">
           <div class="progress w-75 me-3">
-            <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar" role="progressbar"
+                 th:style="'width: ' + (${ip.charityEvent.currentAmount} / ${ip.charityEvent.goalAmount} * 100) + '%;'"
+                 th:aria-valuenow="${ip.charityEvent.currentAmount / ip.charityEvent.goalAmount * 100}"
+                 aria-valuemin="0" aria-valuemax="100">
+          </div>
           </div>
           <div class="donate-button">
-            <a th:href="@{/donate}">
+            <a  th:href="@{/donate/{id}(id=${ip.charityEvent.id})}">
               <button class="btn btn-outline-primary h-100 w-300">Đóng góp</button>
             </a>
           </div>
@@ -56,121 +84,176 @@
   </div>
 </div>
 
-<div class="container my-5">
+
+
+
+
+
+<div class="container my-5" id="post-container">
   <h2 class="mb-4">Các dự án khác</h2>
   <hr style="margin-top:-10px ; margin-bottom: 30px;width: 100%;">
   <div class="row">
     <!-- Dự án 1 -->
-    <div class="col-md-4">
+    <div class="col-md-4 custom-height mb-4" th:each="post : ${data}" >
       <div class="card">
         <img src="img/Demo_2.webp" class="card-img-top" alt="Project Image" th:src="@{img/Demo_2.webp}">
         <div class="badge-position-secondary">
-          <span class="badge bg-primary p-2">Đang vận động</span>
+          <span class="badge p-2" th:text="${post.charityEvent.disbursed} ? 'Đã hoàn thành' : 'Đang hoạt động'" th:classappend="${post.charityEvent.disbursed} ? 'bg-success' : 'bg-primary'"></span>
         </div>
         <div class="card-body">
-          <h5 class="card-title">Thời gian còn lại trước khi khóa sổ</h5>
+          <h6>Thời gian còn lại trước khi khóa sổ</h6>
           <div class="countdowns text-center mb-3">
-            <div>29 : 23 : 59 : 59</div>
-            <div class="small">Ngày Giờ Phút Giây</div>
+            <div class="countdown-time" th:text="${post.charityEvent.timeLeft}">29 : 23 : 59 : 59</div>
+            <div class="small">Ngày</div>
           </div>
-          <h5 class="card-title">Gây quỹ trao tặng cơ hội phẫu thuật cho 20 em bé hở môi, hàm ếch (Tháng 10/2024)</h5>
-          <p class="card-text">Năm 2024 đánh dấu năm thứ 35 Operation Smile hoạt động tại Việt Nam, hãy cùng chúng tôi tiếp sức cho 20 hoàn cảnh khó khăn ở các địa phương vùng cao phía Bắc có cơ hội tìm lại nụ cười cho con em mình.</p>
-          <p class="card-text">Đã góp được: 7,750,000đ / 12,000,000đ</p>
+          <h5 class="card-title" th:text="${post.title}"></h5>
+          <p class="card-text" th:text="${post.body}"></p>
+          <p>Đã góp được: <span th:text="${post.charityEvent.currentAmount}"></span> / <span th:text="${post.charityEvent.goalAmount}"></span></p>
           <div class="progress mb-3">
-            <div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-          <a th:href="@{/donate}" class="btn btn-outline-primary w-100">Đóng góp</a>
-        </div>
+            <div class="progress-bar" role="progressbar"  th:style="'width: ' + (${post.charityEvent.currentAmount} / ${post.charityEvent.goalAmount} * 100) + '%;'"
+                 th:aria-valuenow="${post.charityEvent.currentAmount / post.charityEvent.goalAmount * 100}"
+                 aria-valuemin="0" aria-valuemax="100"></div></div>
+            <div th:if="${post.charityEvent.disbursed == false}">
+              <a  th:href="@{/donate/{id}(id=${post.charityEvent.id})}" class="btn btn-outline-primary w-100">Đóng góp</a>
+            </div>
+            <div th:if="${post.charityEvent.disbursed == true}">
+              <a   th:href="@{/transaction/{id}(id=${post.charityEvent.id})}"  class="btn btn-outline-primary w-100">Cảm ơn đã đóng góp</a>
+            </div>
       </div>
     </div>
-
-    <!-- Dự án 2 -->
-    <div class="col-md-4">
-      <div class="card">
-        <img src="img/Demo_2.webp" class="card-img-top" alt="Project Image" th:src="@{'img/Demo_2.webp'}">
-        <div class="badge-position-secondary">
-          <span class="badge bg-success p-2">Đã hoàn thành</span>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Thời gian còn lại trước khi khóa sổ</h5>
-          <div class="countdowns text-center mb-3">
-            <div>29 : 23 : 59 : 59</div>
-            <div class="small">Ngày Giờ Phút Giây</div>
-          </div>
-          <h5 class="card-title">Gây quỹ trao tặng cơ hội phẫu thuật cho 20 em bé hở môi, hàm ếch (Tháng 10/2024)</h5>
-          <p class="card-text">Năm 2024 đánh dấu năm thứ 35 Operation Smile hoạt động tại Việt Nam, hãy cùng chúng tôi tiếp sức cho 20 hoàn cảnh khó khăn ở các địa phương vùng cao phía Bắc có cơ hội tìm lại nụ cười cho con em mình.</p>
-          <p class="card-text">Đã góp được: 12,000,000đ / 12,000,000đ</p>
-          <div class="progress mb-3">
-            <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-          <div class="done">
-          <a href="javascript:void(0);" class="btn btn-primary w-100">Cảm ơn vì đã từ thiện</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Dự án 3 -->
-    <div class="col-md-4">
-      <div class="card">
-        <img src="img/Demo_2.webp" class="card-img-top" alt="Project Image" th:src="@{'img/Demo_2.webp'}">
-        <div class="badge-position-secondary">
-          <span class="badge bg-primary p-2">Đang vận động</span>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Thời gian còn lại trước khi khóa sổ</h5>
-          <div class="countdowns text-center mb-3">
-            <div>29 : 23 : 59 : 59</div>
-            <div class="small">Ngày Giờ Phút Giây</div>
-          </div>
-          <h5 class="card-title">Gây quỹ trao tặng cơ hội phẫu thuật cho 20 em bé hở môi, hàm ếch (Tháng 10/2024)</h5>
-          <p class="card-text">Năm 2024 đánh dấu năm thứ 35 Operation Smile hoạt động tại Việt Nam, hãy cùng chúng tôi tiếp sức cho 20 hoàn cảnh khó khăn ở các địa phương vùng cao phía Bắc có cơ hội tìm lại nụ cười cho con em mình.</p>
-          <p class="card-text">Đã góp được: 7,750,000đ / 12,000,000đ</p>
-          <div class="progress mb-3">
-            <div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-          <a th:href="@{/donate}" class="btn btn-outline-primary w-100">Đóng góp</a>
-        </div>
-      </div>
     </div>
   </div>
 
   <!-- Xem thêm button -->
-  <div class="text-center mt-4">
-    <a href="#" class="btn btn-primary btn-lg">Xem thêm</a>
+  <div class="text-center mb-4">
+    <a id="load-more" class="btn btn-outline-primary btn-lg">Xem thêm</a>
   </div>
-</div>
 
-<div class="stats-container py-4">
-  <div class="container text-center">
-    <h2 class="mb-2">Đến bây giờ quỹ đã làm được:</h2>
-    <hr>
-    <div class="row">
-      <!-- Số trường hợp -->
-      <div class="col-md-6">
-        <div class="stat-item">
-          <img src="https://via.placeholder.com/50" alt="Charity Icon" th:src="@{'https://via.placeholder.com/50'}">
-          <h1>69</h1>
+
+
+<!--<div class="stats-container py-4">-->
+<!--  <div class="container text-center">-->
+<!--    <h2 class="mb-2">Đến bây giờ quỹ đã làm được:</h2>-->
+<!--    <hr>-->
+<!--    <div class="row">-->
+<!--      &lt;!&ndash; Số trường hợp &ndash;&gt;-->
+<!--      <div class="col-md-6">-->
+<!--        <div class="stat-item">-->
+<!--          <img src="https://via.placeholder.com/50" alt="Charity Icon" th:src="@{'https://via.placeholder.com/50'}">-->
+<!--          <h1>69</h1>-->
+<!--        </div>-->
+<!--        <div class="stat-item">-->
+<!--          <h3>TRƯỜNG HỢP</h3>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      &lt;!&ndash; Số tiền đã quyên góp &ndash;&gt;-->
+<!--      <div class="col-md-6">-->
+<!--        <div class="stat-item">-->
+<!--          <img src="https://via.placeholder.com/50" alt="Money Icon" th:src="@{'https://via.placeholder.com/50'}">-->
+<!--          <h1>500,000,000</h1>-->
+<!--        </div>-->
+<!--        <div class="stat-item">-->
+<!--          <h3>ĐỒNG</h3>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<div class="container my-5" id="done-container">
+  <h2 class="mb-4">Dự án đã hoàn thành</h2>
+  <hr style="margin-top:-10px ; margin-bottom: 30px;width: 100%;">
+  <div class="row">
+    <!-- Dự án 1 -->
+    <div class="col-md-4 custom-height mb-4" th:each="p : ${done}" >
+      <div class="card">
+        <img src="img/Demo_2.webp" class="card-img-top" alt="Project Image" th:src="@{img/Demo_2.webp}">
+        <div class="badge-position-secondary">
+          <span class="badge bg-success p-2" th:text="${p.charityEvent.disbursed} ? 'Đã hoàn thành' : 'Đang hoạt động'"></span>
         </div>
-        <div class="stat-item">
-          <h3>TRƯỜNG HỢP</h3>
-        </div>
-      </div>
-      <!-- Số tiền đã quyên góp -->
-      <div class="col-md-6">
-        <div class="stat-item">
-          <img src="https://via.placeholder.com/50" alt="Money Icon" th:src="@{'https://via.placeholder.com/50'}">
-          <h1>500,000,000</h1>
-        </div>
-        <div class="stat-item">
-          <h3>ĐỒNG</h3>
+        <div class="card-body">
+          <h5 class="card-title" th:text="${p.title}"></h5>
+          <p class="card-text" th:text="${p.body}"></p>
+          <p>Thời gian bắt đầu:<span th:text="${#dates.format(p.charityEvent.startTime,'MM/dd/YYYY')}"></span></p>
+          <p>Thời gian kết thúc:<span th:text="${#dates.format(p.charityEvent.endTime,'MM/dd/YYYY')}"></span></p>
+          <p>Đã góp được: <span th:text="${p.charityEvent.currentAmount}"></span> / <span th:text="${p.charityEvent.goalAmount}"></span></p>
+          <div class="progress mb-3">
+            <div class="progress-bar" role="progressbar"  th:style="'width: ' + (${p.charityEvent.currentAmount} / ${p.charityEvent.goalAmount} * 100) + '%;'"
+                 th:aria-valuenow="${p.charityEvent.currentAmount / p.charityEvent.goalAmount * 100}"
+                 aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <a th:href="@{/transaction/{id}(id=${p.charityEvent.id})}"  class="btn btn-outline-primary w-100">Cảm ơn đã đóng góp</a>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div th:replace="~{footer :: footer}"></div>
+
+<!-- Xem thêm button -->
+<div class="text-center mb-4">
+  <a id="done-more" class="btn btn-outline-primary btn-lg">Xem thêm</a>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+   let posts = document.querySelectorAll("#done-container .col-md-4");
+   let loadMoreBtn = document.getElementById("done-more");
+   let visiblePosts = 3;
+   posts.forEach((post, index) => {
+     if (index >= visiblePosts) post.style.display = "none";
+   });
+   loadMoreBtn.addEventListener("click", function () {
+     let hiddenPosts = Array.from(posts).filter(post => post.style.display === "none");
+     for (let i = 0; i < 3 && i < hiddenPosts.length; i++) {
+       hiddenPosts[i].style.display = "block";
+     }
+     if (hiddenPosts.length <= 3) {
+      loadMoreBtn.innerText = "Chuyển tới trang dự án";
+      loadMoreBtn.addEventListener("click", function () {
+        window.location.href = "/du-an";
+      });
+     }
+   });
+ });
+  document.addEventListener("DOMContentLoaded", function () {
+   let posts = document.querySelectorAll("#post-container .col-md-4");
+   let loadMoreBtn = document.getElementById("load-more");
+   let visiblePosts = 3;
+   posts.forEach((post, index) => {
+     if (index >= visiblePosts) post.style.display = "none";
+   });
+   loadMoreBtn.addEventListener("click", function () {
+     let hiddenPosts = Array.from(posts).filter(post => post.style.display === "none");
+     for (let i = 0; i < 3 && i < hiddenPosts.length; i++) {
+       hiddenPosts[i].style.display = "block";
+     }
+     if (hiddenPosts.length <= 3) {
+      loadMoreBtn.innerText = "Chuyển tới trang dự án";
+      loadMoreBtn.addEventListener("click", function () {
+        window.location.href = "/charities_events";
+      });
+     }
+   });
+ });
+ document.addEventListener("DOMContentLoaded", function () {
+       const bodyText = document.getElementById("ipbodyText");
+       const maxLength = 300; // Giới hạn độ dài
+
+       if (bodyText.textContent.length > maxLength) {
+           bodyText.textContent = bodyText.textContent.substring(0, maxLength) + "...";
+       }
+ });
+
+
+
+
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<df-messenger
+        intent="WELCOME"
+        chat-title="Charity-Chatbot"
+        agent-id="8428db8e-f5ca-430c-8e2d-93117688fb78"
+        language-code="en"
+</df-messenger>
 </html>

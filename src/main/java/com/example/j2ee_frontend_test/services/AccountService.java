@@ -17,6 +17,7 @@ public class AccountService {
     @Autowired
     AccountApi accountApi;
 
+
     public AccountListResponse getAllAccounts(int adminId, int page) {
         Call<AccountListResponse> call = accountApi.getAllAccounts(adminId, page);
         Response<AccountListResponse> response = null;
@@ -33,7 +34,22 @@ public class AccountService {
             throw new RuntimeException(e);
         }
     }
-
+    public AccountListResponse SearchNameAccounts(String query, int page) {
+        Call<AccountListResponse> call = accountApi.searchNameAccounts(query, page);
+        Response<AccountListResponse> response = null;
+        try {
+            response = call.execute();
+            if (response.isSuccessful() && response.body() != null) {
+                return response.body();
+            } else {
+                // Handle errors here, if needed
+                System.out.println("Error: " + response.errorBody());
+                return new AccountListResponse();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public String createAccount(Account account) {
         Call<ResponseEntity<Object>> call = accountApi.createAccount(account);
         try {

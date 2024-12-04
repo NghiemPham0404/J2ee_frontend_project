@@ -46,7 +46,7 @@
             flex-grow: 1;
         }
         .progress-bar {
-        background-image : linear-gradient(195deg, #c2e59c 0%, #64b3f4 100%) !important;
+        background-image :  linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%); !important;
         }
         .donate-button {
             flex-shrink: 0;
@@ -58,7 +58,7 @@
 
         }
         .bg-primary{
-        background-image : linear-gradient(195deg, #c2e59c 0%, #64b3f4 100%)
+        background-image :  linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%);
         }
         .bg-success{
         background-image:linear-gradient(45deg, #8a2387, #e94057, #f27121);
@@ -75,7 +75,7 @@
             right: -10px;
         }
         .stats-container {
-                     background-image: linear-gradient(195deg, #c2e59c 0%, #64b3f4 100%);
+                     background-image:  linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%);
                  color: #000;
                 }
 
@@ -151,13 +151,15 @@
             cursor: not-allowed;
             pointer-events: none;
         }
+
         .btn-outline-primary:hover{
-            background: linear-gradient(195deg, #c2e59c 0%, #64b3f4 100%);
+            background: linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%);
             outline:none;
             border:none;
+             box-shadow: 0 0 5px 3px rgba(138, 43, 226, 0.6), 0 0 10px 3px rgba(72, 0, 224, 0.6);
         }
         .btn-primary{
-           background: linear-gradient(195deg, #c2e59c 0%, #64b3f4 100%);
+           background: linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%);
            border:none;
         }
         .btn-outline-del {
@@ -170,4 +172,24 @@
             background-color: red;
             color: white;
             border-color: none;
+            box-shadow: 0 0 5px 3px rgba(255, 0, 0, 0.6), 0 0 10px 3px rgba(139, 0, 0, 0.6);
         }
+.card-text {
+    height: 150px;
+    overflow: hidden;               /* Không cho phép xuống dòng */
+    text-overflow: ellipsis;     /* Thêm dấu "..." nếu nội dung quá dài */
+}
+.card-title{
+font-weight: bold;
+  color: #6607F1;
+}
+
+.nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 2000;
+}
+.dropdown-menu{
+z-index: 2000;
+}
