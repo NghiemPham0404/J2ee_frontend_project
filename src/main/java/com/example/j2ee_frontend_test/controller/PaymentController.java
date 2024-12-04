@@ -1,6 +1,8 @@
 package com.example.j2ee_frontend_test.controller;
 
+import com.example.j2ee_frontend_test.DTOs.CertificateContext;
 import com.example.j2ee_frontend_test.models.CharityEvent;
+import com.example.j2ee_frontend_test.models.Email;
 import com.example.j2ee_frontend_test.models.TransferSession;
 import com.example.j2ee_frontend_test.services.CharityService;
 import com.example.j2ee_frontend_test.services.TransferSessionService;
@@ -9,10 +11,7 @@ import com.example.j2ee_frontend_test.services.EmailService; // Import EmailServ
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -21,6 +20,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.UUID;
 
+@SessionAttributes("fullName")
 @org.springframework.stereotype.Controller
 public class PaymentController {
 
@@ -36,6 +36,7 @@ public class PaymentController {
     @Autowired
     private EmailService emailService; // Inject EmailService
 
+
     @GetMapping("/donate/{event_id}")
     public String home(@PathVariable String event_id, Model model) {
         CharityEvent charityEvent = charityService.getCharityById(UUID.fromString(event_id));
@@ -49,7 +50,9 @@ public class PaymentController {
                               @RequestParam("orderInfo") String orderInfo,
                               @RequestParam("fullname") String fullname,
                               @RequestParam("eventId") String eventId,
-                              HttpServletRequest request) {
+                              HttpServletRequest request,
+                              Model model) {
+        model.addAttribute("fullName", fullname);
         orderInfo = fullname + "_" + eventId + "_" + orderInfo;
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         String vnpayUrl = vnPayService.createOrder(orderTotal, orderInfo, baseUrl);
@@ -87,8 +90,9 @@ public class PaymentController {
                         return "payment/orderfail";
                     }
 
-                    String fullname = orderInfoSplit[0];
+                    String fullname = model.getAttribute("fullName").toString();
                     String eventId = orderInfoSplit[1];
+                    String eventName = charityService.getCharityById(UUID.fromString(eventId)).getName();
                     String description = orderInfoSplit[2];
 
                     // Nếu trạng thái thanh toán là 1, xử lý thêm thông tin giao dịch
@@ -103,21 +107,11 @@ public class PaymentController {
 
                         // Lưu thông tin chuyển khoản
                         transferSessionService.recordTransferSession(eventId, transferSession);
-
-                        // Gửi email cho người dùng
-                        String emailSubject = "Xác nhận thanh toán thành công";
-                        String emailBody = "Cảm ơn bạn đã tham gia đóng góp!\n\n" +
-                                "Chi tiết giao dịch:\n" +
-                                "Mã đơn hàng: " + orderInfo + "\n" +
-                                "Tổng tiền: " + totalPrice + "\n" +
-                                "Thời gian thanh toán: " + formattedPaymentTime + "\n" +
-                                "Mã giao dịch: " + transactionId + "\n\n" +
-                                "Chúc bạn một ngày tốt lành!";
-                        String userEmail = request.getParameter("userEmail"); // Lấy email từ form (có thể thay đổi theo yêu cầu)
-                        emailService.sendEmail(Email,Subject, Body);
                     }
 
                     // Truyền thông tin vào model (áp dụng cho cả ordersuccess và orderfail)
+                    model.addAttribute("fullname", fullname);
+                    model.addAttribute("event", eventName);
                     model.addAttribute("orderId", orderInfo);
                     model.addAttribute("totalPrice", totalPrice);
                     model.addAttribute("paymentTime", formattedPaymentTime);
@@ -142,5 +136,37 @@ public class PaymentController {
             model.addAttribute("error", "Đã xảy ra lỗi khi xử lý thanh toán: " + e.getMessage());
             return "payment/orderfail";
         }
+    }
+
+    @PostMapping("/certification")
+    public String certification(@RequestParam("event") String event,
+                                @RequestParam("fullname") String fullname,
+                                @RequestParam("time") String time,
+                                @RequestParam("amount") String amount,
+                                @RequestParam("emailAddress") String emailAddress, Model model) {
+
+        // Gửi email cho người dùng
+        String emailSubject = "Minh chứng đã tham gia quyên góp từ thiện";
+
+        CertificateContext certificateContext = new CertificateContext();
+        certificateContext.setFullName(fullname);
+        certificateContext.setEvent(event);
+        certificateContext.setTime(time);
+        certificateContext.setDonation(amount);
+
+        Email email = new Email();
+        email.setSubject(emailSubject);
+        email.setToEmail(emailAddress);
+        email.setBody("Cảm ơn bạn vì đã tham gia hoạt động gây quỹ");
+
+        emailService.sendCertificate(email, certificateContext);
+
+        model.addAttribute("event", event);
+        model.addAttribute("fullname", fullname);
+        model.addAttribute("time", time);
+        model.addAttribute("donation", amount);
+        model.addAttribute("emailAddress", emailAddress);
+        model.addAttribute("emailSubject", emailSubject);
+        return "certification";
     }
 }
