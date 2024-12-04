@@ -27,4 +27,6 @@ public interface PostApi {
     @GET("posts")
     Call<PostListResponse> getAllPostsforUser(@Query("page") int page);
 
+    @GET("posts/search")
+    Call<PostListResponse> searchPosts(@Query("page") int page,@Query("query") String query);
 }

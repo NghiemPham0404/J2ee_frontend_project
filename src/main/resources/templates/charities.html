@@ -23,6 +23,13 @@
 
 
 <div class="container my-5" id="post-container">
+    <div class="d-flex justify-content-center">
+        <form class="d-flex mb-4 align-items-center" th:action="@{/charities_events}" method="get">
+            <label for="query" class="form-label me-2" style="margin-top: .5rem;">Tìm kiếm:</label>
+            <input class="form-control me-2" type="search" id="query" name="query" placeholder="Tìm kiếm dự án..." aria-label="Tìm kiếm" style="width:500px">
+            <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+        </form>
+    </div>
     <h2 class="mb-4">Dự án của chúng tôi</h2>
     <hr style="margin-top:-10px ; margin-bottom: 30px;width: 100%;">
     <div class="row">
@@ -36,8 +43,8 @@
                 <div class="card-body">
                     <h6>Thời gian còn lại trước khi khóa sổ</h6>
                     <div class="countdowns text-center mb-3">
-                        <div>29 : 23 : 59 : 59</div>
-                        <div class="small">Ngày Giờ Phút Giây</div>
+                        <div th:text="${post.charityEvent.timeLeft}"></div>
+                        <div class="small">Ngày</div>
                     </div>
                     <h5 class="card-title" th:text="${post.title}"></h5>
                     <p class="card-text" th:text="${post.body}"></p>
@@ -47,18 +54,30 @@
                              th:aria-valuenow="${post.charityEvent.currentAmount / post.charityEvent.goalAmount * 100}"
                              aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
-                    <a th:href="@{/donate}" class="btn btn-outline-primary w-100">Đóng góp</a>
+                    <div th:if="${post.charityEvent.disbursed == false}">
+                    <a  th:href="@{/donate/{id}(id=${post.charityEvent.id})}" class="btn btn-outline-primary w-100">Đóng góp</a>
+                </div>
+                    <div th:if="${post.charityEvent.disbursed == true}">
+                        <a   th:href="@{/transaction/{id}(id=${post.charityEvent.id})}"  class="btn btn-outline-primary w-100">Cảm ơn đã đóng góp</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="d-flex justify-content-center">
 
-<!-- Xem thêm button -->
-<div class="text-center mb-4">
-    <a id="load-more" class="btn btn-outline-primary btn-lg">Xem thêm</a>
-</div>
+        <a th:classappend="${page == 0} ? 'disabled'" class="btn btn-outline-primary"
+           th:href="@{/charities-events (query=${query},page=${page - 1})}">
+            Trang trước
+        </a>
+        &nbsp;
 
+        <a th:classappend="${page == total_pages} ? 'disabled'"  class="btn btn-outline-primary"
+           th:href="@{/charityties-events (query=${query},page=${page + 1})}">
+            Trang kế tiếp
+        </a>
+    </div>
+</div>
 
 
 <!--<div class="stats-container py-4">-->
@@ -92,9 +111,7 @@
 
 
 <!-- Xem thêm button -->
-<div class="text-center mb-4">
-    <a id="done-more" class="btn btn-outline-primary btn-lg">Xem thêm</a>
-</div>
+
 <script>
    document.addEventListener("DOMContentLoaded", function () {
          const bodyText = document.getElementById("ipbodyText");

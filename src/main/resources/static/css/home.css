@@ -183,3 +183,13 @@
 font-weight: bold;
   color: #6607F1;
 }
+
+.nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 2000;
+}
+.dropdown-menu{
+z-index: 2000;
+}

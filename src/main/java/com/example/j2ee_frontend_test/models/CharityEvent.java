@@ -49,5 +49,7 @@ public class CharityEvent {
         }
         return currentAmount;
     }
+
+    private String timeLeft;
 }
 
