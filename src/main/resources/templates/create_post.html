@@ -32,7 +32,7 @@
     <h1 class="text-center">Tạo bài viết mới</h1>
 
     <!-- Form to create a new post -->
-    <form action="#" th:action="@{/posts/save}" th:object="${post}" method="post" enctype="multipart/form-data" class="row mt-4">
+    <form action="#" th:action="@{/posts/save}" th:object="${post}" method="post" class="row mt-4">
         <div class="col-md-10 offset-md-1">
             <div class="mb-3">
                 <label for="title" class="form-label">Tiêu đề</label>
@@ -78,9 +78,7 @@
             <button type="submit" class="btn btn-primary">Tạo bài viết</button>
         </div>
     </form>
-
 </div>
-<div th:replace="~{footer :: footer}"></div>
 <!-- Add the following line to include the Toast UI Editor file -->
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <!-- Add the following line to include the Toast UI Editor Color Picker -->
@@ -151,10 +149,9 @@
     document.querySelector('form').addEventListener('submit', function (event) {
 
         // Get the content of the editor
-        document.getElementById('hidden-body').value = editor.getHTML();
-        document.getElementById('accountId').value = 1;
-        this.submit();
-
+        const content = editor.getHTML();
+        // Log the content to the console
+        console.log(content);
     });
 
 

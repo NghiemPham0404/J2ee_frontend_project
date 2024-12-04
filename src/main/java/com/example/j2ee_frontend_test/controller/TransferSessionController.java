@@ -53,7 +53,7 @@ public class TransferSessionController {
 
         List<TransferSession> transferSessions = transferSessionListResponse.getTransferSessionList();
         for (TransferSession transferSession : transferSessions) {
-            transferSession.setFormattedTime(transferSession.getTime().format(formatter));
+            transferSession.setFormattedTime(transferSession.getTime().toString());
         }
         model.addAttribute("data", transferSessions);
         System.out.println(transferSessions);

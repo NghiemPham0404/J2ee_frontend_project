@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+    <title>Certificate</title>
+</head>
+<body>
+<div id="my-background"
+     style="width: 800px; height: 566px; background: url('cid:v1_2') no-repeat center center; background-size: cover; ">
+    <mydiv style="width: 800px; height: 566px; margin: 0 auto; position: relative; top : 0; left :0">
+        <mydiv style="position: absolute; top: 68px; left: 204px; width: 436px;">
+            <span style="font-family: 'Times New Roman', cursive; font-size: 64px; text-align: center; display: block; ">Giấy chứng nhận</span>
+        </mydiv>
+        <mydiv style="position: absolute; top: 160px; left: 205px; width: 435px;">
+            <span style="font-family: 'Noto Serif', serif; font-size: 16px; text-align: center; display: block;">được trao cho</span>
+        </mydiv>
+        <mydiv style="position: absolute; top: 240px; left: 154px; width: 509px;">
+            <span style="font-family: 'Times New Roman', cursive; font-size: 48px; text-align: center; display: block;"
+                  th:text="${fullname}">Nguyễn Văn Anh</span>
+        </mydiv>
+        <mydiv style="position: absolute; top: 324px; left: 204px; width: 422px;">
+            <span style="font-family: 'Noto Serif', serif; font-weight: bold; font-size: 12px; text-align: center; display: block;">đã tham gia đóng góp ủng hộ chương trình</span>
+        </mydiv>
+        <mydiv style="position: absolute; top: 344px; left: 204px; width: 427px;">
+            <span style="font-family: 'Noto Serif', serif; font-size: 12px; text-align: center; display: block;"
+                  th:text="${event}">Gây quỹ trao tặng cơ hội phẫu thuật cho 20 em bé hở môi, hàm ếch (Tháng 10/2024)</span>
+        </mydiv>
+        <mydiv style="position: absolute; top: 397px; left: 204px; width: 422px;">
+            <span style="font-family: 'Noto Serif', serif; font-weight: bold; font-size: 12px; text-align: center; display: block;">với số tiền</span>
+        </mydiv>
+        <mydiv style="position: absolute; top: 416px; left: 204px; width: 427px;">
+            <span style="font-family: 'Noto Serif', serif; font-size: 12px; text-align: center; display: block;"
+                  th:text="${donation}">100000 đ (Một trăm nghìn đồng)</span>
+        </mydiv>
+        <mydiv style="position: absolute; top: 459px; left: 175px; width: 231px;">
+            <span style="font-family: 'Noto Serif', serif; font-size: 12px; text-align: center; display: block;"
+                  th:text="${time}">ngày tháng năm</span>
+        </mydiv>
+    </mydiv>
+</div>
+</body>
+</html>

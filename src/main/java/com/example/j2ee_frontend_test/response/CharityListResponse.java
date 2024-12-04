@@ -17,7 +17,7 @@ public class CharityListResponse {
     private int totalResults;
 
     @Expose
-    @SerializedName("total_pages")
+    @SerializedName("total_page")
     private int totalPages;
 }
 

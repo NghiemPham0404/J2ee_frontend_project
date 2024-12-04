@@ -19,7 +19,7 @@ public class Account {
     private String name;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     private Date birthDate;
 
     private String username;

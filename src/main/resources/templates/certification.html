@@ -1,0 +1,31 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet"/>
+
+    <link href="https://fonts.googleapis.com/css?family=Noto+Serif&display=swap" rel="stylesheet"/>
+    <link href="/css/certification.css" rel="stylesheet"/>
+    <title>Document</title></head>
+<body>
+<div class="v2_35">
+    <div class="v1_2"></div>
+    <div class="v1_3"></div>
+    <span class="v1_4">Giấy chứng nhận</span>
+    <div class="v1_5"></div>
+    <span class="v1_7">được trao cho</span>
+    <div class="v1_11"></div>
+    <span class="v1_13" th:text="${fullname}">Nguyễn Văn Anh</span>
+    <div class="v1_17"></div>
+    <span class="v1_15"> đã tham gia đóng góp ủng hộ chương trình </span>
+    <div class="v1_19"></div>
+    <span class="v1_21" th:text="${event}">Gây quỹ trao tặng cơ hội phẫu thuật cho 20 em bé hở môi, hàm ếch (Tháng 10/2024)</span>
+    <div class="v1_24"></div>
+    <span class="v1_26">với số tiền </span>
+    <span class="v2_30" th:text="${donation}">100000 đ (Một trăm nghìn đồng)</span>
+    <span class="v2_32">Đơn vị gây quỹ</span>
+    <span class="v2_33">Tên đơn vị gây quỹ, người đại diện</span>
+    <span class="v2_36" th:text="${time}">ngày tháng năm</span>
+</div>
+</body>
+</html>
