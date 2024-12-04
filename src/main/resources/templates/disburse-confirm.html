@@ -9,7 +9,7 @@
     <div class="card shadow-lg p-4">
         <div class="card-body text-center">
             <h2 class="card-title text-primary">Kết quả Giải Ngân</h2>
-            <p class="fs-4 fw-semibold" th:text="'Chương trình ID: ' + ${id}"></p>
+            <p class="fs-4 fw-semibold" th:text="'Chương trình : ' + ${name}"></p>
             <div class="alert alert-success mt-3" th:if="${message == 'Giải ngân thành công!'}" role="alert">
                 <i class="bi bi-check-circle"></i> <span th:text="${message}"></span>
             </div>

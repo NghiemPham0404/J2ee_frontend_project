@@ -19,4 +19,6 @@ public interface StatisticApi {
     Call<MostViewedPostListResponse> getMostViewedPost(@Query("startTime") String startDate, @Query("endTime") String endDate);
     @GET("statistic/charity-event/{ce_id}/most-charitatble-person")
     Call<MostCharitableListResponse> getMostCharitable(@Path("ce_id") UUID id, @Query("startTime") String startDate, @Query("endTime") String endDate);
+    @GET("statistic/charity-event/disburse")
+    Call<CharityListResponse> getDisburse(@Query("startTime") String startDate,@Query("endTime") String endDate);
 }

@@ -31,11 +31,11 @@ public class DisburseController {
     }
     @PostMapping("/{id}")
     public String disburse(@PathVariable("id") String id, Model model) {
-        String c=charityService.disburseCharity(id);
-        System.out.println(c);
+        charityService.disburseCharity(id);
+        String name=charityService.getCharityById(UUID.fromString(id)).getName();
         model.addAttribute("message", true ? "Giải ngân thành công!" : "Giải ngân thất bại!");
         model.addAttribute("id", id);
-
+        model.addAttribute("name",name);
         return "disburse-confirm";
     }
 }

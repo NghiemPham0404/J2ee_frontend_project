@@ -78,15 +78,17 @@ public class StatisticController {
             CharityListResponse response = charityService.getAllCharities( page);
             allCharities.addAll(response.getCharityList());
         }
+
+        CharityListResponse disburse= statisticService.disburseCharity(start,end);
         model.addAttribute("chart4", chart4);
         model.addAttribute("chart3",chart3);
         model.addAttribute("chart1",chart1);
         model.addAttribute("chart2",chart2);
+        model.addAttribute("disburse",disburse.getCharityList());
         model.addAttribute("list",allCharities);
         model.addAttribute("startDate",start);
         model.addAttribute("endDate",end);
         model.addAttribute("id",ce_id);
-
         return "statistic";
     }
 }
