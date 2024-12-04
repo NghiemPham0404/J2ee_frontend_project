@@ -18,6 +18,6 @@ public class AccountListResponse {
     private int totalResults;
 
     @Expose
-    @SerializedName("total_page")
+    @SerializedName("total_pages")
     private int totalPages;
 }

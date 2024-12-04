@@ -6,37 +6,26 @@
     <title>Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/home.css" th:href="@{/css/home.css}" rel="stylesheet">
-
-</head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm" th:fragment="navbar">
     <style>
-
+        /* CSS to ensure dropdown opens on hover */
         .nav-item.dropdown:hover .dropdown-menu {
             display: block;
             margin-top: 0;
         }
 
-        .dropdown-item:hover {
-        background:linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%); /* Thay đổi màu nền khi hover */
-        color: white;
-    }
+        /* Ensure caret still appears in the dropdown toggle on hover */
+        .nav-item.dropdown:hover .dropdown-toggle::after {
+            transform: rotate(180deg);
+        }
 
-
-
+        /* Custom spacing between nav items */
         .navbar-nav .nav-item {
             margin-right: 15px; /* Adjust this value as needed */
         }
-         .nav-item.active, .dropdown-item.active {
-         background:linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%);
-        color: white;
-    }
-        .nav-item:hover, .dropdown-item:hover,dropdown-menu:hover {
-    transform: scale(1.1);
-    transition: transform 0.2s ease-in-out;
-    z-index:2000;
-}
     </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-white" th:fragment="navbar">
     <div class="container">
         <a class="navbar-brand" href="#" th:href="@{/}">
             <img src="img/SGU-LOGO.png" alt="SGU Logo" style="height: 50px" th:src="@{/img/SGU-LOGO.png}">
@@ -47,35 +36,29 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link fw-bold" th:classappend="${currentUri == ''} ? 'active'" aria-current="page" th:href="@{/}">Trang chủ</a>
+                    <a class="nav-link fw-bold" th:classappend="${currentUri == '/home'} ? 'active'" aria-current="page" th:href="@{/home}">Trang chủ</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Quản lý
                     </a>
-                    <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item   " th:href="@{/posts}">Quản lý bài viết</a></li>
-                        <li><a class="dropdown-item   " th:href="@{/charity-events (query=null,page=0)}">Quản lý dự án</a></li>
-                        <li><a class="dropdown-item   " th:href="@{/role/all}">Quản lý vai trò</a></li>
-                        <li><a class="dropdown-item  " th:href="@{/account (role=0,page=0)}">Quản lý tài khoản</a></li>
-                        <li><a class="dropdown-item  " th:href="@{/disburse (page=0)}">Giải ngân</a></li>
-                        <li><a class="dropdown-item  " th:href="@{/statistic  }">Thống kê</a></li>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" th:href="@{/posts}">Quản lý bài viết</a></li>
+                        <li><a class="dropdown-item" th:href="@{/charities}">Quản lý dự án</a></li>
+                        <li><a class="dropdown-item" th:href="@{/roles}">Quản lý vai trò</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:classappend="${currentUri == '/introduce'} ? 'active'" th:href="@{/introduce}">Giới thiệu</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:classappend="${currentUri == '/introduce'} ? 'active'" th:href="@{/charities_events (page=0)}">Dự án</a>
+                    <a class="nav-link" href="#">Dự án</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link">Sao kê</a>
+                    <a class="nav-link" href="#">Sao kê</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link">Liên hệ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/profile}">Profile</a>
+                    <a class="nav-link" th:href="@{/contact}">Liên hệ</a>
                 </li>
             </ul>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Đăng nhập</button>

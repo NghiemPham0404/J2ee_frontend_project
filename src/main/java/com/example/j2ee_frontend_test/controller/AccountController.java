@@ -12,10 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/account")
@@ -28,36 +27,20 @@ public class AccountController {
     RoleService roleService;
 
     @GetMapping
-    public String viewAccountsPage(Model model,@PathParam("query") String query,@RequestParam(value = "role", defaultValue = "0") Integer role, @PathParam("page") Integer page) {
-        page = page != null ? page  : 0;
-        AccountListResponse accountListResponse;
-        if (query==null) {
-            accountListResponse = accountService.getAllAccounts(1, page);
-        } else
-        {
-            accountListResponse=accountService.SearchNameAccounts(query,page);
-        }
-        if(role != 0 ){
-            System.out.println(accountListResponse.getAccountList());
-            List<Account> filteredAccounts = accountListResponse.getAccountList().stream()
-                    .filter(account -> account.getRole().getId() == role)
-                    .collect(Collectors.toList());
-            System.out.println(filteredAccounts);
-            accountListResponse.getAccountList().clear();
-            accountListResponse.getAccountList().addAll(filteredAccounts);
-            System.out.println("r : "+role);
-        } else {
-            System.out.println("r : "+role);
-        }
+    public String viewAccountsPage(Model model, @PathParam("page") Integer page) {
+        page = page != null ? page - 1: 0;
+        AccountListResponse accountListResponse = accountService.getAllAccounts(1, page);
         model.addAttribute("data", accountListResponse.getAccountList());
         model.addAttribute("page", page);
         model.addAttribute("total_pages", accountListResponse.getTotalPages());
         model.addAttribute("total_results", accountListResponse.getTotalResults());
-        model.addAttribute("query",query);
-        model.addAttribute("role",role);
+
+        accountListResponse.getAccountList().forEach(account -> System.out.println(account.getName()));
+
         List<Role> roles = roleService.getAllRoles();
+        roles.forEach(role -> System.out.println(role.getName()));
         model.addAttribute("roles", roles);
-        return "accounts";
+        return "accounts";  // Thymeleaf template
     }
 
     @GetMapping("/new")
@@ -81,7 +64,6 @@ public class AccountController {
         String jString = objectMapper.writeValueAsString(account);
         System.out.println(jString);
         if (account.getId() != null) {
-            System.out.println(account);
             accountService.updateAccount(account.getId(), account);
         } else {
             accountService.createAccount(account);
@@ -93,9 +75,8 @@ public class AccountController {
     @GetMapping("/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         Account account = accountService.getAccountById(id);
-        System.out.println(account);
         model.addAttribute("account", account);
-        System.out.println("role id = " + account.getRole().getId());
+        System.out.println("role id = "+account.getRole().getId());
 
         List<Role> roles = roleService.getAllRoles();
         roles.forEach(role -> System.out.println(role.getName()));
@@ -105,8 +86,9 @@ public class AccountController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteAccount(@PathVariable("id") Integer id) {
+    public String deleteAccount(@PathVariable("id") Integer id){
         accountService.deleteAccount(id);
         return "redirect:/account";
     }
 }
+

@@ -32,9 +32,4 @@ public interface PostApi {
 
     @GET("posts/search/my-posts")
     Call<PostListResponse> searchMyPostsByTitle(@Query("page") int page, @Query("query") String query, @Query("ownerId") int ownerId);
-    @GET("posts")
-    Call<PostListResponse> getAllPostsforUser(@Query("page") int page);
-
-    @GET("posts/search")
-    Call<PostListResponse> searchPosts(@Query("page") int page,@Query("query") String query);
 }
