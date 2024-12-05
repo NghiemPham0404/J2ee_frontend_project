@@ -44,7 +44,7 @@
     <div class="col-md-6">
       <div class="important-project text-center position-relative">
         <h3 class="text-primary">Dự án quan trọng</h3>
-        <img  class="img-fluid custom-size" >
+        <img  class="img-fluid custom-size">
         <div class="badge-position">
           <span class="badge bg-primary p-2" th:text="${ip.charityEvent.disbursed} ? 'Đã hoàn thành' : 'Đang hoạt động'"></span>
         </div>
@@ -100,7 +100,7 @@
     <!-- Dự án 1 -->
     <div class="col-md-4 custom-height mb-4" th:each="post : ${data}" >
       <div class="card">
-        <img src="img/Demo_2.webp" class="card-img-top" alt="Project Image" th:src="@{img/Demo_2.webp}">
+        <img th:src="@{${post.thumbImg}}" class="card-img-top" alt="Project Image" >
         <div class="badge-position-secondary">
           <span class="badge p-2" th:text="${post.charityEvent.disbursed} ? 'Đã hoàn thành' : 'Đang hoạt động'" th:classappend="${post.charityEvent.disbursed} ? 'bg-success' : 'bg-primary'"></span>
         </div>

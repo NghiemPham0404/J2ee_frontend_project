@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -108,16 +109,12 @@ public class HomeController {
     }
 
     @GetMapping("/article/{id}")
-    public String article (Model model, HttpServletRequest request) throws JsonProcessingException {
+    public String article (Model model, HttpServletRequest request, @PathVariable("id") String id) throws JsonProcessingException {
         model.addAttribute("currentUri", request.getRequestURI());
-        int totalPages=postService.getAllPostsforuser(0).getTotalPages();
 
-        List<Post> allPost= new ArrayList<>();
-        for (int page=0;page<totalPages;page++){
-            PostListResponse postListResponse=postService.getAllPostsforuser(page);
-            allPost.addAll(postListResponse.getPostList());
-        }
-        Post post=postService.getPostById(UUID.fromString("6eb66d3f-48bb-4d76-8eae-993d5a2d10b0"));
+
+
+        Post post=postService.getPostById(UUID.fromString(id));
         timeLeft(post);
         PostListResponse postListResponse=postService.getAllPostsforuser(0);
         List<Post> data=postListResponse.getPostList();
@@ -131,7 +128,7 @@ public class HomeController {
         model.addAttribute("ip",post);
         model.addAttribute("data", data);
         model.addAttribute("done", done);
-        model.addAttribute("total_pages", totalPages);
+
         return "article";
     }
 }

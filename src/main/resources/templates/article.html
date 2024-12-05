@@ -37,10 +37,10 @@
 <div th:replace="~{header :: navbar}"></div>
 <div th:replace="~{login :: loginModal}"></div>
 
-<div class="content-center">
-    <img src="img/Demo_2.webp" class="card-img-top" alt="Project Image" th:src="@{img/Demo_2.webp}">
+<div class="content-center col-md-12">
+    <img th:src="@{${ip.thumbImg}}" class="card-img-top" alt="Project Image" >
     <h4 th:text="${ip.title}"></h4>
-    <p id="ipbodyText" th:text="${ip.body}" style="height:90px"></p>
+    <p id="ipbodyText" th:utext="${ip.body}" style="height:90px"></p>
 
     <h6>Thời gian còn lại trước khi khóa sổ</h6>
 

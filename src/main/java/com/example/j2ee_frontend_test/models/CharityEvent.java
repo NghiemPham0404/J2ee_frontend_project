@@ -38,17 +38,19 @@ public class CharityEvent {
 
     List<TransferSession> transferSessions;
 
-    public BigDecimal getCurrentAmount() {
-        BigDecimal currentAmount = BigDecimal.ZERO;
-        if (transferSessions != null) {
-            for (TransferSession session : transferSessions) {
-                if (session != null && session.getAmount() != null) {
-                    currentAmount = currentAmount.add(session.getAmount());
-                }
-            }
-        }
-        return currentAmount;
-    }
+//    public BigDecimal getCurrentAmount() {
+//        BigDecimal currentAmount = BigDecimal.ZERO;
+//        if (transferSessions != null) {
+//            for (TransferSession session : transferSessions) {
+//                if (session != null && session.getAmount() != null) {
+//                    currentAmount = currentAmount.add(session.getAmount());
+//                }
+//            }
+//        }
+//        return currentAmount;
+//    }
+
+    private BigDecimal currentAmount;
 
     private String timeLeft;
 }
