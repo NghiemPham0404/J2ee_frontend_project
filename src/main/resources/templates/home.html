@@ -15,6 +15,9 @@
   font-weight: bold;
   color: #6607F1;
 }
+  h5 {
+  cursor:pointer;
+  }
 </style>
 <link href="/css/home.css" th:href="@{/css/home.css}" rel="stylesheet">
 <link href="/css/animation.css" th:href="@{/css/animation.css}" rel="stylesheet">
@@ -106,7 +109,7 @@
             <div class="countdown-time" th:text="${post.charityEvent.timeLeft}">29 : 23 : 59 : 59</div>
             <div class="small">Ngày</div>
           </div>
-          <h5 class="card-title" th:text="${post.title}"></h5>
+          <h5 class="card-title" th:text="${post.title}" th:onclick="window.location.href='/charity-events/' + /*[[${post.charityEvent.id}]]*/ ''"></h5>
           <p class="card-text" th:text="${post.body}"></p>
           <p>Đã góp được: <span th:text="${post.charityEvent.currentAmount}"></span> / <span th:text="${post.charityEvent.goalAmount}"></span></p>
           <div class="progress mb-3">

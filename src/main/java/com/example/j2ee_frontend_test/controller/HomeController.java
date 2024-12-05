@@ -53,6 +53,7 @@ public class HomeController {
         model.addAttribute("total_pages", totalPages);
         return "home";
     }
+
     @GetMapping("/charities_events")
     public String charities_events(Model model,@PathParam("page") Integer page,@PathParam("query") String query){
         page = page != null ? page : 0;
