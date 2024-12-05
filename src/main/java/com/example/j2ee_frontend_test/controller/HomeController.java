@@ -106,4 +106,32 @@ public class HomeController {
             p.getCharityEvent().setTimeLeft("Dự án đã kết thúc.");
         }
     }
+
+    @GetMapping("/article/{id}")
+    public String article (Model model, HttpServletRequest request) throws JsonProcessingException {
+        model.addAttribute("currentUri", request.getRequestURI());
+        int totalPages=postService.getAllPostsforuser(0).getTotalPages();
+
+        List<Post> allPost= new ArrayList<>();
+        for (int page=0;page<totalPages;page++){
+            PostListResponse postListResponse=postService.getAllPostsforuser(page);
+            allPost.addAll(postListResponse.getPostList());
+        }
+        Post post=postService.getPostById(UUID.fromString("6eb66d3f-48bb-4d76-8eae-993d5a2d10b0"));
+        timeLeft(post);
+        PostListResponse postListResponse=postService.getAllPostsforuser(0);
+        List<Post> data=postListResponse.getPostList();
+        List<Post> done= data.stream().filter(p-> p.getCharityEvent().isDisbursed()==true).collect(Collectors.toList());
+        System.out.println("Done:" + done);
+
+        for (Post p : data) {
+            timeLeft(p);
+        }
+
+        model.addAttribute("ip",post);
+        model.addAttribute("data", data);
+        model.addAttribute("done", done);
+        model.addAttribute("total_pages", totalPages);
+        return "article";
+    }
 }

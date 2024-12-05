@@ -14,6 +14,7 @@
   h4 {
   font-weight: bold;
   color: #6607F1;
+  cursor:pointer;
 }
   h5 {
   cursor:pointer;
@@ -52,9 +53,9 @@
 
     <div class="col-md-6">
       <h4 th:text="${ip.title}"></h4>
-      <p id="ipbodyText" th:text="${ip.body}" style="height:90px"></p>
+      <p id="ipbodyText" th:text="${ip.body}" style="height:90px" th:onclick="window.location.href='/article/' + /*[[${ip.id}]]*/ ''"></p>
       <div class="text-end">
-        <a href="#" class="text-primary">Xem thêm >></a>
+        <a class="text-primary" th:href="@{/article/{id}(id=${ip.id})}">Xem thêm >> </a>
       </div>
 
       <h6 class="text-center">Thời gian còn lại trước khi khóa sổ</h6>
@@ -109,7 +110,7 @@
             <div class="countdown-time" th:text="${post.charityEvent.timeLeft}">29 : 23 : 59 : 59</div>
             <div class="small">Ngày</div>
           </div>
-          <h5 class="card-title" th:text="${post.title}" th:onclick="window.location.href='/charity-events/' + /*[[${post.charityEvent.id}]]*/ ''"></h5>
+          <h5 class="card-title" th:text="${post.title}" th:onclick="window.location.href='/article/' + /*[[${post.id}]]*/ ''"></h5>
           <p class="card-text" th:text="${post.body}"></p>
           <p>Đã góp được: <span th:text="${post.charityEvent.currentAmount}"></span> / <span th:text="${post.charityEvent.goalAmount}"></span></p>
           <div class="progress mb-3">
