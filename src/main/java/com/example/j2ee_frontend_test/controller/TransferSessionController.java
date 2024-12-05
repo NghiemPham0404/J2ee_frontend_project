@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -119,14 +120,14 @@ public class TransferSessionController {
         htmlContent.append("<tbody>");
 
         // Duyệt qua danh sách sao kê và tạo các dòng trong bảng HTML
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         for (TransferSession transferSession : transferSessions) {
             htmlContent.append("<tr>");
             htmlContent.append("<td>").append(transferSession.getId()).append("</td>");
             htmlContent.append("<td>").append(transferSession.getName()).append("</td>");
             htmlContent.append("<td>").append(transferSession.getAmount()).append(" VND</td>");
             htmlContent.append("<td>").append(transferSession.getDescription()).append("</td>");
-            htmlContent.append("<td>").append(transferSession.getTime().format(formatter)).append("</td>");
+            htmlContent.append("<td>").append(formatter.format(transferSession.getTime())).append("</td>");
             htmlContent.append("</tr>");
         }
 

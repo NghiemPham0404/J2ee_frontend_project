@@ -38,9 +38,9 @@
 <div th:replace="~{login :: loginModal}"></div>
 
 <div class="content-center col-md-12">
-    <img th:src="@{${ip.thumbImg}}" class="card-img-top" alt="Project Image" >
+    <img th:src="@{${ip.thumbImg}}" class="card-img-top" alt="Project Image" style="width:600px;">
     <h4 th:text="${ip.title}"></h4>
-    <p id="ipbodyText" th:utext="${ip.body}" style="height:90px"></p>
+    <p id="ipbodyText" th:utext="${ip.body}" style="width:600px;"></p>
 
     <h6>Thời gian còn lại trước khi khóa sổ</h6>
 

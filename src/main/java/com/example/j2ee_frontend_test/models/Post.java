@@ -3,6 +3,7 @@ package com.example.j2ee_frontend_test.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,7 @@ public class Post {
 
     private String body;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date timePost;
 
     private String thumbImg;

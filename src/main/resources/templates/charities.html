@@ -35,8 +35,8 @@
     <div class="row">
         <!-- Dự án 1 -->
         <div class="col-md-4 custom-height mb-4" th:each="post : ${data}" >
-            <div class="card">
-                <img src="img/Demo_2.webp" class="card-img-top" alt="Project Image" th:src="@{img/tuthien.jpg}">
+            <div class="card" th:onclick="window.location.href='/article/' + /*[[${post.id}]]*/ ''">
+                <img th:src="@{${post.thumbImg}}" class="card-img-top" alt="Project Image">
                 <div class="badge-position-secondary">
                     <span class="badge p-2" th:text="${post.charityEvent.disbursed} ? 'Đã hoàn thành' : 'Đang hoạt động'" th:classappend="${post.charityEvent.disbursed} ? 'bg-success' : 'bg-primary'"></span>
                 </div>
@@ -47,7 +47,7 @@
                         <div class="small">Ngày</div>
                     </div>
                     <h5 class="card-title" th:text="${post.title}"></h5>
-                    <p class="card-text" th:text="${post.body}"></p>
+                    <p class="card-text" th:text="${post.charityEvent.description}"></p>
                     <p>Đã góp được: <span th:text="${post.charityEvent.currentAmount}"></span> / <span th:text="${post.charityEvent.goalAmount}"></span></p>
                     <div class="progress mb-3">
                         <div class="progress-bar" role="progressbar"  th:style="'width: ' + (${post.charityEvent.currentAmount} / ${post.charityEvent.goalAmount} * 100) + '%;'"

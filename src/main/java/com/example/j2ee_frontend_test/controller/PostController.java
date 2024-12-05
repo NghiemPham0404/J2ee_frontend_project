@@ -88,7 +88,7 @@ public class PostController {
     public String showNewPostPage(Model model) {
         Post post = new Post();
         model.addAttribute("post", post);
-        model.addAttribute("charityEvents", charityService.getAllCharities(1, 0).getCharityList());
+        model.addAttribute("charityEvents", charityService.getAllCharities(0).getCharityList());
 
         return "create_post";
     }
@@ -131,7 +131,7 @@ public class PostController {
         Post post = postService.getPostById(id);
         System.out.println(post);
         model.addAttribute("post", post);
-        model.addAttribute("charityEvents", charityService.getAllCharities(1, 0).getCharityList());
+        model.addAttribute("charityEvents", charityService.getAllCharities(0).getCharityList());
         return "detail_post";
     }
 
@@ -140,8 +140,6 @@ public class PostController {
         postService.deletePost(id);
         return "redirect:/posts";
     }
-
-
 
 
 
