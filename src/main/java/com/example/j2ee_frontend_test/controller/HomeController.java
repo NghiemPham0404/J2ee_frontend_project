@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -53,6 +54,7 @@ public class HomeController {
         model.addAttribute("total_pages", totalPages);
         return "home";
     }
+
     @GetMapping("/charities_events")
     public String charities_events(Model model,@PathParam("page") Integer page,@PathParam("query") String query){
         page = page != null ? page : 0;
@@ -104,5 +106,29 @@ public class HomeController {
         } else {
             p.getCharityEvent().setTimeLeft("Dự án đã kết thúc.");
         }
+    }
+
+    @GetMapping("/article/{id}")
+    public String article (Model model, HttpServletRequest request, @PathVariable("id") String id) throws JsonProcessingException {
+        model.addAttribute("currentUri", request.getRequestURI());
+
+
+
+        Post post=postService.getPostById(UUID.fromString(id));
+        timeLeft(post);
+        PostListResponse postListResponse=postService.getAllPostsforuser(0);
+        List<Post> data=postListResponse.getPostList();
+        List<Post> done= data.stream().filter(p-> p.getCharityEvent().isDisbursed()==true).collect(Collectors.toList());
+        System.out.println("Done:" + done);
+
+        for (Post p : data) {
+            timeLeft(p);
+        }
+
+        model.addAttribute("ip",post);
+        model.addAttribute("data", data);
+        model.addAttribute("done", done);
+
+        return "article";
     }
 }

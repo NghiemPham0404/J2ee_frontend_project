@@ -36,7 +36,7 @@
         <!-- Dự án 1 -->
         <div class="col-md-4 custom-height mb-4" th:each="post : ${data}" >
             <div class="card">
-                <img src="img/Demo_2.webp" class="card-img-top" alt="Project Image" th:src="@{img/Demo_2.webp}">
+                <img src="img/Demo_2.webp" class="card-img-top" alt="Project Image" th:src="@{img/tuthien.jpg}">
                 <div class="badge-position-secondary">
                     <span class="badge p-2" th:text="${post.charityEvent.disbursed} ? 'Đã hoàn thành' : 'Đang hoạt động'" th:classappend="${post.charityEvent.disbursed} ? 'bg-success' : 'bg-primary'"></span>
                 </div>

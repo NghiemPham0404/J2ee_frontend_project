@@ -14,7 +14,11 @@
   h4 {
   font-weight: bold;
   color: #6607F1;
+  cursor:pointer;
 }
+  h5 {
+  cursor:pointer;
+  }
 </style>
 <link href="/css/home.css" th:href="@{/css/home.css}" rel="stylesheet">
 <link href="/css/animation.css" th:href="@{/css/animation.css}" rel="stylesheet">
@@ -40,7 +44,7 @@
     <div class="col-md-6">
       <div class="important-project text-center position-relative">
         <h3 class="text-primary">Dự án quan trọng</h3>
-        <img  class="img-fluid custom-size" >
+        <img  class="img-fluid custom-size">
         <div class="badge-position">
           <span class="badge bg-primary p-2" th:text="${ip.charityEvent.disbursed} ? 'Đã hoàn thành' : 'Đang hoạt động'"></span>
         </div>
@@ -49,9 +53,9 @@
 
     <div class="col-md-6">
       <h4 th:text="${ip.title}"></h4>
-      <p id="ipbodyText" th:text="${ip.body}" style="height:90px"></p>
+      <p id="ipbodyText" th:text="${ip.body}" style="height:90px" th:onclick="window.location.href='/article/' + /*[[${ip.id}]]*/ ''"></p>
       <div class="text-end">
-        <a href="#" class="text-primary">Xem thêm >></a>
+        <a class="text-primary" th:href="@{/article/{id}(id=${ip.id})}">Xem thêm >> </a>
       </div>
 
       <h6 class="text-center">Thời gian còn lại trước khi khóa sổ</h6>
@@ -96,7 +100,7 @@
     <!-- Dự án 1 -->
     <div class="col-md-4 custom-height mb-4" th:each="post : ${data}" >
       <div class="card">
-        <img src="img/Demo_2.webp" class="card-img-top" alt="Project Image" th:src="@{img/Demo_2.webp}">
+        <img th:src="@{${post.thumbImg}}" class="card-img-top" alt="Project Image" >
         <div class="badge-position-secondary">
           <span class="badge p-2" th:text="${post.charityEvent.disbursed} ? 'Đã hoàn thành' : 'Đang hoạt động'" th:classappend="${post.charityEvent.disbursed} ? 'bg-success' : 'bg-primary'"></span>
         </div>
@@ -106,7 +110,7 @@
             <div class="countdown-time" th:text="${post.charityEvent.timeLeft}">29 : 23 : 59 : 59</div>
             <div class="small">Ngày</div>
           </div>
-          <h5 class="card-title" th:text="${post.title}"></h5>
+          <h5 class="card-title" th:text="${post.title}" th:onclick="window.location.href='/article/' + /*[[${post.id}]]*/ ''"></h5>
           <p class="card-text" th:text="${post.body}"></p>
           <p>Đã góp được: <span th:text="${post.charityEvent.currentAmount}"></span> / <span th:text="${post.charityEvent.goalAmount}"></span></p>
           <div class="progress mb-3">
