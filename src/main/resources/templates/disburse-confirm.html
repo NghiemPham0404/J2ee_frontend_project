@@ -20,7 +20,17 @@
         </div>
     </div>
 </div>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+       const charityEventId = "[[${id}]]";
+       if (charityEventId) {
+           const downloadUrl = `/transaction/export/${charityEventId}`;
+           window.location.href = downloadUrl; // Tự động tải file
+       } else {
+           console.error("ID không được truyền từ Thymeleaf!");
+       }
+   });
+</script>
 <!-- Bootstrap Icons -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </body>
