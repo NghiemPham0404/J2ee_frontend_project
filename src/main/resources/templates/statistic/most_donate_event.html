@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thống kê</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <style>
+    .table th, .table td {
+     text-align: center;
+     vertical-align: middle;
+    }
+
+    .table tbody tr:hover {
+    background:#D3D3D3;
+    cursor: pointer;
+    color:white;
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+    }
+    .table tr:nth-child(odd) {
+    background-color: white;
+    }
+    .table tr:nth-child(even) {
+    background-color: #f2f2f2;
+    }
+    .table th {
+    background: linear-gradient(195deg, #8E2DE2, #4A00E0);
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    }
+    td.description {
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    }
+    .stat-box {
+  width: 70%; /* Chiều rộng tối đa là 50% màn hình */
+  max-width: 1000px; /* Chiều rộng tối đa cụ thể */
+  min-width: 400px; /* Chiều rộng tối thiểu */
+}
+
+.border {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+}
+
+canvas {
+
+  width: 100%;
+  height: auto; /* Giữ tỷ lệ khi thu phóng */
+}
+
+.vh-100 {
+  height: 100vh; /* Chiều cao toàn màn hình */
+}
+  </style>
+  <link href="/css/home.css" th:href="@{/css/home.css}" rel="stylesheet">
+</head>
+<body>
+
+<div th:replace="~{header :: navbar}"></div>
+<div class="container-fluid p-4">
+  <!-- Header -->
+  <div class="text-center mb-4">
+    <h1 class="fw-bold">Thống kê dự án được ủng hộ</h1>
+  </div>
+
+  <form th:action="@{/statistic/most_donate_events }" method="get">
+    <div class="row justify-content-center align-items-center g-3 mb-4">
+      <div class="col-auto">
+        <label for="startDate" class="form-label mb-0">Ngày bắt đầu:</label>
+      </div>
+      <div class="col-auto">
+        <input type="date" id="startDatetemp"  class="form-control" th:value="${#dates.format(startDate,'YYYY-MM-dd')}">
+        <input type="hidden" id="startDate" name="startDate" th:value="${#dates.format(startDate,'YYYY/MM/dd')}"/>
+      </div>
+      <div class="col-auto">
+        <label for="endDate" class="form-label mb-0">Ngày kết thúc:</label>
+      </div>
+      <div class="col-auto">
+        <input type="date" id="endDatetemp"  class="form-control" th:value="${#dates.format(endDate,'YYYY-MM-dd')}">
+        <input type="hidden" id="endDate" name="endDate" th:value="${#dates.format(endDate,'YYYY/MM/dd')}"/>
+      </div>
+
+      <div class="col-auto">
+
+        <button class="btn btn-primary" type="submit">Thống kê</button>
+      </div>
+      <div class="col-auto">
+
+        <a class="btn btn-outline-del" th:href="@{/statistic/most_donate_events/export (start=${start},end=${end})}">Xuất PDF</a>
+      </div>
+    </div>
+  </form>
+
+  <div class="d-flex justify-content-center  mb-5">
+    <div class="stat-box" style="width: 50%; max-width: 400px;">
+      <div class="border rounded p-4 text-center bg-light">
+        <h4 class="fw-bold">Những dự án được ủng hộ nhất</h4>
+        <canvas id="donationChart" width="300" height="300"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-bordered" >
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Tên dự án</th>
+      <th>Mục tiêu số tiền</th>
+      <th>Số tiền đạt được</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="d : ${data}" th:onclick="window.location.href='/transaction/' + /*[[${d.charityEventId}]]*/ ''" >
+      <td th:text="${d.charityEventId}"></td>
+      <td th:text="${d.name}"></td>
+      <td th:text="${d.goalAmount}"></td>
+      <td th:text="${d.totalDonationAmount}"></td>
+    </tr>
+    </tbody>
+
+  </table>
+
+</div>
+<script th:inline="javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+      const data3 = /*[[${data}]]*/ []; // Đảm bảo rằng data3 có dữ liệu hợp lệ từ backend
+
+      if (data3.length === 0) {
+          console.error("Dữ liệu không hợp lệ hoặc trống!");
+          return;
+      }
+
+      // Hàm rút gọn tên nếu vượt quá số ký tự tối đa
+      function truncateString(str, maxLength) {
+          return str.length > maxLength ? str.slice(0, maxLength) + '...' : str;
+      }
+
+      // Chuẩn bị dữ liệu cho biểu đồ
+      const labels3 = data3.map(item => truncateString(item.name, 10)); // Rút gọn tên dài hơn 10 ký tự
+      const goalAmounts3 = data3.map(item => item.goalAmount || 0); // Mục tiêu
+      const totalDonations3 = data3.map(item => item.totalDonationAmount || 0); // Quyên góp thực tế
+
+      // Kiểm tra điều kiện để thay đổi viền goal khi donation lớn hơn goal
+      const borderColors3 = data3.map(item => item.totalDonationAmount > item.goalAmount ? '#ffffff' : '#8E2DE2'); // Viền goal khi donation lớn hơn goal
+
+      // Lấy đối tượng canvas
+      const ctx3 = document.getElementById('donationChart').getContext('2d');
+
+      // Tạo gradient cho màu sắc
+      var gradient4 = ctx3.createLinearGradient(0, 0, 0, 400); // Gradient theo chiều dọc
+      gradient4.addColorStop(0, '#8E2DE2');
+      gradient4.addColorStop(1, '#4A00E0');
+
+      // Tạo biểu đồ
+      const donationChart3 = new Chart(ctx3, {
+          type: 'bar',
+          data: {
+              labels: labels3,
+              datasets: [
+                  {
+                      label: 'Quyên góp',
+                      data: totalDonations3,
+                      backgroundColor: gradient4, // Màu gradient xanh tím
+                      borderColor: '#4A00E0',
+                      borderWidth: 1,
+                      datalabels: {
+                          align: 'center',
+                          color: '#fff',
+                          font: { weight: 'bold', size: 14 },
+                          formatter: (value) => value.toLocaleString()
+                      }
+                  },
+                  {
+                      label: 'Mục tiêu',
+                      data: goalAmounts3,
+                      backgroundColor: 'rgba(211, 211, 211, 0.6)', // Màu xám nhạt
+                      borderColor: 'red',
+                      borderWidth: 1,
+                      datalabels: {
+                          align: 'end',
+                          color: '#000',
+                          font: { weight: 'bold', size: 14 },
+                          formatter: (value) => value.toLocaleString()
+                      }
+                  }
+              ]
+          },
+          options: {
+              responsive: true,
+              plugins: {
+                  tooltip: {
+                      mode: 'index',
+                      intersect: false
+                  },
+                  datalabels: {
+                      display: true
+                  }
+              },
+              scales: {
+                  x: {
+                      stacked: true,
+                      ticks: { font: { weight: 'bold', size: 14 } }
+                  },
+                  y: {
+                      ticks: {
+                          callback: function(value) {
+                              return Number.isInteger(value) ? value : null;
+                          },
+                          font: { weight: 'bold', size: 14 }
+                      },
+                      beginAtZero: true
+                  }
+              }
+          }
+      });
+  });
+
+
+
+
+    function formatDate(date) {
+         if (!date) return '';
+         const [yyyy, mm, dd] = date.split('-');
+         const d = new Date(Number(yyyy), Number(mm) - 1, Number(dd));
+         const formattedYear = d.getFullYear();
+         const formattedMonth = String(d.getMonth() + 1).padStart(2, '0');
+         const formattedDay = String(d.getDate()).padStart(2, '0');
+         return `${formattedYear}/${formattedMonth}/${formattedDay}`;
+     }
+
+       document.getElementById('startDatetemp').addEventListener('input', function () {
+         const formattedDate = formatDate(this.value);
+         document.getElementById('startDate').value = formattedDate;
+       });
+
+       document.getElementById('endDatetemp').addEventListener('input', function () {
+         const formattedDate = formatDate(this.value);
+         document.getElementById('endDate').value = formattedDate;
+       });
+</script>
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

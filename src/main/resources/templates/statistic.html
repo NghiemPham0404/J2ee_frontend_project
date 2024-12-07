@@ -299,101 +299,101 @@ text-overflow: ellipsis;
         }
       });
 
-  const chart1 = /*[[${chart1}]]*/ [];
+    const chart1 = /*[[${chart1}]]*/ [];
 
-  // Trích xuất tiêu đề và số liệu từ dữ liệu
-  const labels = chart1.map(item => item.title); // Lấy danh sách tiêu đề
-  const counts = chart1.map(item => item.count); // Lấy danh sách số liệu
+          // Trích xuất tiêu đề và số liệu từ dữ liệu
+          const labels = chart1.map(item => item.title); // Lấy danh sách tiêu đề
+          const counts = chart1.map(item => item.count); // Lấy danh sách số liệu
 
-  // Tạo biểu đồ cột
-  const ctx = document.getElementById('columnChart').getContext('2d');
-  const columnChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Lượt xem',
-        data: counts,
-        backgroundColor: gradient4, // Màu nền
-        borderColor: '#4A00E0', // Màu viền
-        borderWidth: 1 // Độ rộng viền
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        tooltip: {
-          enabled: true // Hiển thị tooltip khi di chuột
+          // Tạo biểu đồ cột
+          const ctx = document.getElementById('columnChart').getContext('2d');
+          const columnChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Lượt xem',
+                data: counts,
+                backgroundColor: gradient4, // Màu nền
+                borderColor: '#4A00E0', // Màu viền
+                borderWidth: 1 // Độ rộng viền
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                tooltip: {
+                  enabled: true // Hiển thị tooltip khi di chuột
+                },
+                legend: {
+                  display: true // Hiển thị chú thích
+                }
+              },
+              scales: {
+               x: {
+                ticks: {
+                  font: {
+                    weight: 'bold', // In đậm chữ trên trục X
+                    size: 16 // Tăng kích thước chữ trục X
+                  }
+                }
+              },
+               y: {
+                beginAtZero: true, // Bắt đầu trục Y từ 0
+                ticks: {
+                  stepSize: 1, // Khoảng cách giữa các giá trị trục Y
+                  font: {
+                    weight: 'bold', // In đậm số liệu trên trục Y
+                    size: 16 // Tăng kích thước chữ trục Y
+                  }
+                }
+              }
+            }
+          }
+        });
+
+      // Biểu đồ 2: Biểu đồ tròn cho số tiền ủng hộ
+      const chart2Data = /*[[${chart2}]]*/ [];
+      // Lấy các tên và số tiền từ dữ liệu
+      const labels2 = chart2Data.map(item => item.name);  // Lấy tên người ủng hộ
+      const amounts2 = chart2Data.map(item => item.amount);  // Lấy số tiền từ dữ liệu
+
+      // Tạo biểu đồ tròn
+      const ctx2 = document.getElementById('pieChart').getContext('2d');
+      const pieChart = new Chart(ctx2, {
+        type: 'pie',  // Chọn loại biểu đồ tròn
+        data: {
+          labels: labels2,  // Nhãn (tên người ủng hộ)
+          datasets: [{
+            data: amounts2,  // Dữ liệu (số tiền ủng hộ)
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#F7464A'],  // Các màu cho từng phần của biểu đồ
+            borderColor: '#fff',  // Màu viền của biểu đồ
+            borderWidth: 1  // Độ rộng viền
+          }]
         },
-        legend: {
-          display: true // Hiển thị chú thích
-        }
-      },
-      scales: {
-       x: {
-        ticks: {
-          font: {
-            weight: 'bold', // In đậm chữ trên trục X
-            size: 16 // Tăng kích thước chữ trục X
-          }
-        }
-      },
-       y: {
-        beginAtZero: true, // Bắt đầu trục Y từ 0
-        ticks: {
-          stepSize: 1, // Khoảng cách giữa các giá trị trục Y
-          font: {
-            weight: 'bold', // In đậm số liệu trên trục Y
-            size: 16 // Tăng kích thước chữ trục Y
-          }
-        }
-      }
-    }
-  }
-});
+        options: {
+          responsive: true,
 
-    // Biểu đồ 2: Biểu đồ tròn cho số tiền ủng hộ
-    const chart2Data = /*[[${chart2}]]*/ [];
-    // Lấy các tên và số tiền từ dữ liệu
-    const labels2 = chart2Data.map(item => item.name);  // Lấy tên người ủng hộ
-    const amounts2 = chart2Data.map(item => item.amount);  // Lấy số tiền từ dữ liệu
-
-    // Tạo biểu đồ tròn
-    const ctx2 = document.getElementById('pieChart').getContext('2d');
-    const pieChart = new Chart(ctx2, {
-      type: 'pie',  // Chọn loại biểu đồ tròn
-      data: {
-        labels: labels2,  // Nhãn (tên người ủng hộ)
-        datasets: [{
-          data: amounts2,  // Dữ liệu (số tiền ủng hộ)
-          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#F7464A'],  // Các màu cho từng phần của biểu đồ
-          borderColor: '#fff',  // Màu viền của biểu đồ
-          borderWidth: 1  // Độ rộng viền
-        }]
-      },
-      options: {
-        responsive: true,
-
-        plugins: {
-          tooltip: {
-            callbacks: {
-              label: function(tooltipItem) {
-                return tooltipItem.label + ': ' + tooltipItem.raw.toLocaleString(); // Hiển thị số tiền trong tooltip
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(tooltipItem) {
+                  return tooltipItem.label + ': ' + tooltipItem.raw.toLocaleString(); // Hiển thị số tiền trong tooltip
+                }
               }
-            }
-          },
-          legend: {
-            position: 'top',  // Vị trí của chú thích
-            labels: {
-              font: {
-                weight: 'bold',  // In đậm chữ trong chú thích
-                size: 14  // Kích thước chữ
+            },
+            legend: {
+              position: 'top',  // Vị trí của chú thích
+              labels: {
+                font: {
+                  weight: 'bold',  // In đậm chữ trong chú thích
+                  size: 14  // Kích thước chữ
+                }
               }
             }
           }
         }
-      }
-    });
+          });
 
 
 

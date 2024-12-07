@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thống kê</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <style>
+    .table th, .table td {
+     text-align: center;
+     vertical-align: middle;
+    }
+
+    .table tbody tr:hover {
+    background:#D3D3D3;
+    cursor: pointer;
+    color:white;
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+    }
+    .table tr:nth-child(odd) {
+    background-color: white;
+    }
+    .table tr:nth-child(even) {
+    background-color: #f2f2f2;
+    }
+    .table th {
+    background: linear-gradient(195deg, #8E2DE2, #4A00E0);
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    }
+    td.description {
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    }
+    .stat-box {
+  width: 70%; /* Chiều rộng tối đa là 50% màn hình */
+  max-width: 1000px; /* Chiều rộng tối đa cụ thể */
+  min-width: 400px; /* Chiều rộng tối thiểu */
+}
+
+.border {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+}
+
+canvas {
+
+  width: 100%;
+  height: auto; /* Giữ tỷ lệ khi thu phóng */
+}
+
+.vh-100 {
+  height: 100vh; /* Chiều cao toàn màn hình */
+}
+  </style>
+  <link href="/css/home.css" th:href="@{/css/home.css}" rel="stylesheet">
+</head>
+<body>
+
+<div th:replace="~{header :: navbar}"></div>
+<div class="container-fluid p-4">
+  <!-- Header -->
+  <div class="text-center mb-4">
+    <h1 class="fw-bold">Thống kê số bài viết của tài khoản</h1>
+  </div>
+
+  <form th:action="@{/statistic/most_post_account}" method="get">
+    <div class="row justify-content-center align-items-center g-3 mb-4">
+      <div class="col-auto">
+        <label for="startDate" class="form-label mb-0">Ngày bắt đầu:</label>
+      </div>
+      <div class="col-auto">
+        <input type="date" id="startDatetemp"  class="form-control" th:value="${#dates.format(startDate,'YYYY-MM-dd')}">
+        <input type="hidden" id="startDate" name="startDate" th:value="${#dates.format(startDate,'YYYY/MM/dd')}"/>
+      </div>
+      <div class="col-auto">
+        <label for="endDate" class="form-label mb-0">Ngày kết thúc:</label>
+      </div>
+      <div class="col-auto">
+        <input type="date" id="endDatetemp"  class="form-control" th:value="${#dates.format(endDate,'YYYY-MM-dd')}">
+        <input type="hidden" id="endDate" name="endDate" th:value="${#dates.format(endDate,'YYYY/MM/dd')}"/>
+      </div>
+
+      <div class="col-auto">
+
+        <button class="btn btn-primary" type="submit">Thống kê</button>
+      </div>
+      <div class="col-auto">
+
+        <a class="btn btn-outline-del" th:href="@{/statistic/most_post_account/export (start=${start},end=${end})}">Xuất PDF</a>
+      </div>
+    </div>
+  </form>
+
+  <div class="d-flex justify-content-center  mb-5">
+    <div class="stat-box" style="width: 50%; max-width: 400px;">
+      <div class="border rounded p-4 text-center bg-light">
+        <h4 class="fw-bold">Những tài khoản có nhiều bài viết nhất</h4>
+        <canvas id="barChart4" width="300" height="300"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-bordered" >
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Tên tài khoản</th>
+      <th>Số bài viết</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="d : ${data}"  >
+      <td th:text="${d.accountId}"></td>
+      <td th:text="${d.accountName}"></td>
+      <td th:text="${d.postCount}"></td>
+    </tr>
+    </tbody>
+
+  </table>
+
+</div>
+<script th:inline="javascript">
+
+  document.addEventListener("DOMContentLoaded", function () {
+      // Biểu đồ 4: Đồ thị số bài viết theo tài khoản
+      var chartData4 = /*[[${data}]]*/ [];
+      var labels4 = chartData4.map(function(item) {
+          return item.accountName;
+      });
+      var postCounts4 = chartData4.map(function(item) {
+          return item.postCount;
+      });
+      var ctx4 = document.getElementById('barChart4').getContext('2d');
+
+      // Tạo màu gradient cho biểu đồ 1
+      var gradient4 = ctx4.createLinearGradient(0, 0, 0, 400); // Gradient theo chiều dọc
+      gradient4.addColorStop(0, '#8E2DE2');
+      gradient4.addColorStop(1, '#4A00E0');
+
+      var barChart4 = new Chart(ctx4, {
+          type: 'bar',
+          data: {
+              labels: labels4,
+              datasets: [{
+                  label: 'Số bài viết',
+                  data: postCounts4,
+                  backgroundColor: gradient4, // Áp dụng màu gradient
+                  borderColor: '#4A00E0', // Viền cột
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              responsive: true,
+              scales: {
+                  x: {
+                      ticks: {
+                          font: {
+                              weight: 'bold', // In đậm chữ
+                              size: 14 // Kích thước chữ lớn hơn
+                          }
+                      }
+                  },
+                  y: {
+                      beginAtZero: true,
+                      ticks: {
+                          callback: function(value) {
+                              return Number.isInteger(value) ? value : null; // Chỉ hiển thị số nguyên
+                          },
+                          stepSize: 1, // Bước nhảy giữa các giá trị
+                          font: {
+                              weight: 'bold', // In đậm số
+                              size: 14 // Kích thước số lớn hơn
+                          }
+                      }
+                  }
+              }
+          }
+
+      });
+
+const canvas = document.getElementById('barChart');
+const imageBase64 = canvas.toDataURL('image/png'); // Chuyển canvas thành Base64
+console.log(imageBase64);
+
+
+
+
+
+  });
+function formatDate(date) {
+      if (!date) return '';
+      const [yyyy, mm, dd] = date.split('-');
+      const d = new Date(Number(yyyy), Number(mm) - 1, Number(dd));
+      const formattedYear = d.getFullYear();
+      const formattedMonth = String(d.getMonth() + 1).padStart(2, '0');
+      const formattedDay = String(d.getDate()).padStart(2, '0');
+      return `${formattedYear}/${formattedMonth}/${formattedDay}`;
+  }
+
+    document.getElementById('startDatetemp').addEventListener('input', function () {
+      const formattedDate = formatDate(this.value);
+      document.getElementById('startDate').value = formattedDate;
+    });
+
+    document.getElementById('endDatetemp').addEventListener('input', function () {
+      const formattedDate = formatDate(this.value);
+      document.getElementById('endDate').value = formattedDate;
+    });
+</script>
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
