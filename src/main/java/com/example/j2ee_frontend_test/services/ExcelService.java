@@ -1,11 +1,17 @@
 package com.example.j2ee_frontend_test.services;
 
+import com.example.j2ee_frontend_test.Repository.roleRepository;
+
+import com.example.j2ee_frontend_test.models.Account;
 import com.example.j2ee_frontend_test.models.Role;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import com.example.j2ee_frontend_test.models.Account;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +19,11 @@ import java.util.List;
 @Service
 public class ExcelService {
 
+
+    private Object userRepository;
+
+    @Autowired
+    private roleRepository roleRepository;
 
     public void importExcelData(MultipartFile file) throws Exception {
         try (InputStream is = file.getInputStream()) {
@@ -33,12 +44,16 @@ public class ExcelService {
                 accounts.add(account);
             }
 
-            userRepository.saveAll(accounts); // Lưu vào cơ sở dữ liệu
+            userRepository.equals(accounts); // Lưu vào cơ sở dữ liệu
         }
     }
 
     private Role getRoleFromExcel(String roleName) {
-        // Tìm kiếm role từ tên role trong Excel (cần có logic tùy chỉnh cho trường hợp này)
-        return new Role(roleName);
+        return com.example.j2ee_frontend_test.Repository.roleRepository.findByName(roleName).orElseGet(() -> {
+            Role newRole = new Role();
+            newRole.setName(roleName);
+            return roleRepository.save(newRole);
+        });
     }
+
 }
