@@ -4,6 +4,7 @@ import com.example.j2ee_frontend_test.models.Account;
 import com.example.j2ee_frontend_test.models.Role;
 import com.example.j2ee_frontend_test.response.AccountListResponse;
 import com.example.j2ee_frontend_test.services.AccountService;
+import com.example.j2ee_frontend_test.services.ExcelService;
 import com.example.j2ee_frontend_test.services.RoleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.websocket.server.PathParam;
@@ -11,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,9 @@ public class AccountController {
 
     @Autowired
     RoleService roleService;
+
+    @Autowired
+    private ExcelService excelService;
 
     @GetMapping
     public String viewAccountsPage(Model model,@PathParam("query") String query,@RequestParam(value = "role", defaultValue = "0") Integer role, @PathParam("page") Integer page) {
@@ -109,4 +113,16 @@ public class AccountController {
         accountService.deleteAccount(id);
         return "redirect:/account";
     }
+
+    @PostMapping("/import")
+    public String importExcelFile(@RequestParam("file") MultipartFile file) {
+        try {
+            excelService.importExcelData(file); // Gọi service để xử lý file Excel
+            return "redirect:/account"; // Quay lại trang danh sách tài khoản sau khi import
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/account?error=true"; // Thêm thông báo lỗi nếu có
+        }
+    }
+
 }

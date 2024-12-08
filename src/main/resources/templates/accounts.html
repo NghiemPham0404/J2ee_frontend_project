@@ -70,6 +70,10 @@
     </div>
     </div>
     <div class="text-end mb-3">
+        <form action="/account/import" method="post" enctype="multipart/form-data" class="d-inline">
+            <input type="file" name="file" accept=".xls,.xlsx" required />
+            <button type="submit" class="btn btn-outline-success">Import</button>
+        </form>
         <a class="btn btn-outline-primary" href="/account/new">Thêm tài khoản</a>
     </div>
 
