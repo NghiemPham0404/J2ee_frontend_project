@@ -153,8 +153,8 @@
         <td th:text="${charity.goalAmount}"></td>
         <td th:text="${charity.getCurrentAmount()}"></td>
         <td>
-    <span th:classappend="${charity.disbursed} ? 'text-danger fw-bold' : 'text-success fw-bold'"
-          th:text="${charity.disbursed ? 'Đã giải ngân' : 'Đang hoạt động'}">
+    <span th:classappend="${charity.isDisbursed != null} ? 'text-danger fw-bold' : 'text-success fw-bold'"
+          th:text="${charity.isDisbursed != null ? 'Đã giải ngân' : 'Đang hoạt động'}">
     </span>
         </td>
       </tr>

@@ -35,7 +35,6 @@
 <link href="/css/animation.css" th:href="@{/css/animation.css}" rel="stylesheet">
 
 <div th:replace="~{header :: navbar}"></div>
-<div th:replace="~{login :: loginModal}"></div>
 
 <div class="content-center col-md-12">
     <img th:src="@{${ip.thumbImg}}" class="card-img-top" alt="Project Image" style="width:600px;">
@@ -63,7 +62,7 @@
                 </div>
             </div>
             <div class="donate-button">
-                <a th:href="@{/donate/{id}(id=${ip.charityEvent.id})}">
+                <a th:href="@{/donate/{id}(id=${ip.id})}">
                     <button class="btn btn-outline-primary h-100 w-700">Đóng góp</button>
                 </a>
             </div>

@@ -119,6 +119,20 @@ public class PostService {
         }
     }
 
+    public Post getPostByIdForUser(UUID id) {
+        Call<Post> call = postApi.getPostByIdForUser(id);
+        try {
+            Response<Post> response = call.execute();
+            if (response.isSuccessful() && response.body() != null) {
+                return response.body();
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public String updatePost(UUID id, Post post) {
         Call<ResponseEntity<Object>> call = postApi.updatePost(id, post);
         try {

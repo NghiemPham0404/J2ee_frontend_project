@@ -1,4 +1,27 @@
-.modal-header {
-    background-image: linear-gradient(195deg, #c2e59c 0%, #64b3f4 100%) !important;
-    color: black;
-  }
+body {
+    background-image: linear-gradient(to right, #8E2DE2, #4A00E0); /* Light gray background for contrast */
+    height: 100vh; /* Ensure full viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container { /* Blue background */
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    max-width: 400px;
+    width: 100%;
+}
+
+.login-btn {
+    background-image: linear-gradient(to right, #8E2DE2, #4A00E0);
+    color: white;
+}
+
+.forgot-btn {
+    background: -webkit-linear-gradient(#8E2DE2, #4A00E0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

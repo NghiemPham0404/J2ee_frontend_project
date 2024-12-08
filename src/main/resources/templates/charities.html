@@ -19,8 +19,6 @@
   }
 </style>
 <div th:replace="~{header :: navbar}"></div>
-<div th:replace="~{login :: loginModal}"></div>
-
 
 <div class="container my-5" id="post-container">
     <div class="d-flex justify-content-center">
@@ -38,7 +36,7 @@
             <div class="card" th:onclick="window.location.href='/article/' + /*[[${post.id}]]*/ ''">
                 <img th:src="@{${post.thumbImg}}" class="card-img-top" alt="Project Image">
                 <div class="badge-position-secondary">
-                    <span class="badge p-2" th:text="${post.charityEvent.disbursed} ? 'Đã hoàn thành' : 'Đang hoạt động'" th:classappend="${post.charityEvent.disbursed} ? 'bg-success' : 'bg-primary'"></span>
+                    <span class="badge p-2" th:text="${post.charityEvent.isDisbursed!=null} ? 'Đã hoàn thành' : 'Đang hoạt động'" th:classappend="${post.charityEvent.isDisbursed} ? 'bg-success' : 'bg-primary'"></span>
                 </div>
                 <div class="card-body">
                     <h6>Thời gian còn lại trước khi khóa sổ</h6>
@@ -54,10 +52,10 @@
                              th:aria-valuenow="${post.charityEvent.currentAmount / post.charityEvent.goalAmount * 100}"
                              aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
-                    <div th:if="${post.charityEvent.disbursed == false}">
-                    <a  th:href="@{/donate/{id}(id=${post.charityEvent.id})}" class="btn btn-outline-primary w-100">Đóng góp</a>
+                    <div th:if="${post.charityEvent.isDisbursed == null}">
+                    <a  th:href="@{/donate/{id}(id=${post.id})}" class="btn btn-outline-primary w-100">Đóng góp</a>
                 </div>
-                    <div th:if="${post.charityEvent.disbursed == true}">
+                    <div th:if="${post.charityEvent.isDisbursed != null}">
                         <a   th:href="@{/transaction/{id}(id=${post.charityEvent.id})}"  class="btn btn-outline-primary w-100">Cảm ơn đã đóng góp</a>
                     </div>
                 </div>

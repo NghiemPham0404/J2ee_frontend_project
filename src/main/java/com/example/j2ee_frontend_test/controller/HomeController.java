@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,11 +38,12 @@ public class HomeController {
             PostListResponse postListResponse=postService.getAllPostsforuser(page);
             allPost.addAll(postListResponse.getPostList());
         }
-        Post post=postService.getPostById(UUID.fromString("6eb66d3f-48bb-4d76-8eae-993d5a2d10b0"));
+        Post post=postService.getPostByIdForUser(UUID.fromString("6eb66d3f-48bb-4d76-8eae-993d5a2d10b0"));
+        System.out.println("bài post tên : " + post.getTitle());
         timeLeft(post);
         PostListResponse postListResponse=postService.getAllPostsforuser(0);
         List<Post> data=postListResponse.getPostList();
-        List<Post> done= data.stream().filter(p-> p.getCharityEvent().isDisbursed()==true).collect(Collectors.toList());
+        List<Post> done= data.stream().filter(p-> p.getCharityEvent().getIsDisbursed()!=null).collect(Collectors.toList());
         System.out.println("Done:" + done);
 
         for (Post p : data) {
@@ -112,13 +114,11 @@ public class HomeController {
     public String article (Model model, HttpServletRequest request, @PathVariable("id") String id) throws JsonProcessingException {
         model.addAttribute("currentUri", request.getRequestURI());
 
-
-
-        Post post=postService.getPostById(UUID.fromString(id));
+        Post post=postService.getPostByIdForUser(UUID.fromString(id));
         timeLeft(post);
         PostListResponse postListResponse=postService.getAllPostsforuser(0);
         List<Post> data=postListResponse.getPostList();
-        List<Post> done= data.stream().filter(p-> p.getCharityEvent().isDisbursed()==true).collect(Collectors.toList());
+        List<Post> done= data.stream().filter(p-> p.getCharityEvent().getIsDisbursed()!=null).collect(Collectors.toList());
         System.out.println("Done:" + done);
 
         for (Post p : data) {

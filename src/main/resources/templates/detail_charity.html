@@ -52,10 +52,10 @@
           <input type="number" class="form-control" id="currentAmount" name="currentAmount" th:value="${data.currentAmount}" readonly>
         </div></div>
         <div class="mb-3">
-          <label for="disbursed" class="form-label">Trạng thái</label>
-          <select class="form-control" id="disbursed" name="disbursed" disabled>
-            <option value="true" th:selected="${data.disbursed == true}">Đã giải ngân</option>
-            <option value="false" th:selected="${data.disbursed == false}">Đang hoạt động</option>
+          <label for="isDisbursed" class="form-label">Trạng thái</label>
+          <select class="form-control" id="isDisbursed" name="isDisbursed" disabled>
+            <option value="true" th:selected="${data.isDisbursed != null}">Đã giải ngân</option>
+            <option value="false" th:selected="${data.isDisbursed == null}">Đang hoạt động</option>
           </select>
         </div>
       </div>

@@ -29,7 +29,7 @@ public class RoleService {
             if(response.isSuccessful() && response.body() != null) {
                 return response.body().getRoles();
             }else{
-                System.out.println("Error: " + response.errorBody());
+                System.out.println("Error: " + response.errorBody().string());
                 return null;
             }
         }catch (IOException e){

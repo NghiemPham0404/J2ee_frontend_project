@@ -21,6 +21,9 @@ public interface PostApi {
     @GET("posts/{id}")
     Call<Post> getPostById(@Path("id") UUID id);
 
+    @GET("posts/approved/{id}")
+    Call<Post> getPostByIdForUser(@Path("id") UUID id);
+
     @PUT("posts/{id}")
     Call<ResponseEntity<Object>> updatePost(@Path("id") UUID id, @Body Post post);
 

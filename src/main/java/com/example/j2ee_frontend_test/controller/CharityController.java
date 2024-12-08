@@ -7,6 +7,7 @@ import com.example.j2ee_frontend_test.services.CharityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,6 @@ public class CharityController {
         model.addAttribute("total_results", charityListResponse.getTotalResults());
         model.addAttribute("query",query);
         return "charity";
-
     }
     @GetMapping("/new")
     public String showNewCharityPage(Model model) {

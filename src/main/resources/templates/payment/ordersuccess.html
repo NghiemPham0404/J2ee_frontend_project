@@ -106,10 +106,7 @@
                     <div class="card">
                         <div class="card-body">
                             <form th:action="@{/certification}" method="post">
-                                <input name="event" th:value="${event}" hidden>
-                                <input name="fullname" th:value="${fullname}" hidden>
-                                <input name="time" th:value="${paymentTime}" hidden>
-                                <input name="amount" th:value="${totalPrice}" hidden>
+                                <input name="transferId" th:value="${transferId}" hidden>
 
                                 <!-- Form nhập email -->
                                 <div class="form-group">

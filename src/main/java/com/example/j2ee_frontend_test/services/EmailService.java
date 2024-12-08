@@ -2,6 +2,7 @@ package com.example.j2ee_frontend_test.services;
 
 import com.example.j2ee_frontend_test.DTOs.CertificateContext;
 import com.example.j2ee_frontend_test.models.Email;
+import com.example.j2ee_frontend_test.services.apis.EmailApi;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -33,6 +37,9 @@ public class EmailService {
     @Autowired
     private TemplateEngine templateEngine;
 
+    @Autowired
+    private EmailApi emailApi;
+
     public void sendEmail(Email email) {
         MimeMessage message = mailSender.createMimeMessage();
         try {
@@ -46,34 +53,17 @@ public class EmailService {
         }
     }
 
-    public void sendCertificate(Email email, CertificateContext certificateContext) {
+    public void sendCertification(String recipientAddress, String transferId) {
+        Call<Void> call = emailApi.getCertification(transferId, recipientAddress);
         try {
-            // Create email message
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-
-            // Prepare the data for Thymeleaf template
-            Context context = new Context();
-            context.setVariable("fullname", certificateContext.getFullName());
-            context.setVariable("event", certificateContext.getEvent());
-            context.setVariable("donation", certificateContext.getDonation());
-            context.setVariable("time", certificateContext.getTime());
-
-            String htmlContent = templateEngine.process("certification_template", context);
-            helper.setText(htmlContent, true);
-
-            // Attach the image as an inline resource
-            Resource resource = new ClassPathResource("/static/img/v1_2.png");
-            helper.addInline("v1_2", resource);
-
-            helper.setTo(email.getToEmail());
-            helper.setSubject(email.getSubject());
-
-            // Send email
-            mailSender.send(message);
-        } catch (MessagingException e) {
+            Response<Void> response = call.execute();
+            if(!response.isSuccessful()) {
+                throw new RuntimeException("send certification fail");
+            }
+        }catch (IOException e){
             e.printStackTrace();
-            throw new RuntimeException("Failed to send email");
         }
     }
+
+
 }

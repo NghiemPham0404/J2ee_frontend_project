@@ -12,86 +12,100 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm" th:fragment="navbar">
     <style>
 
-        .dropdown-menu .dropend> .dropdown-menu {
-   display: none;
-   margin-top: 0;
-   left: 100%;
-   top: 0;
-}
-       .dropdown-menu .dropend:hover > .dropdown-menu {
-   display: block;
-   margin-top: 0;
-   left: 100%;
-   top: 0;
-}
+        .dropdown-menu .dropend > .dropdown-menu {
+            display: none;
+            margin-top: 0;
+            left: 100%;
+            top: 0;
+        }
 
-               .nav-item.dropdown:hover .dropdown-menu {
-                   display: block;
-                   margin-top: 0;
-               }
+        .dropdown-menu .dropend:hover > .dropdown-menu {
+            display: block;
+            margin-top: 0;
+            left: 100%;
+            top: 0;
+        }
 
-               .dropdown-item:hover {
-               background:linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%); /* Thay đổi màu nền khi hover */
-               color: white;
-           }
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+        }
+
+        .dropdown-item:hover {
+            background: linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%); /* Thay đổi màu nền khi hover */
+            color: white;
+        }
 
 
+        .navbar-nav .nav-item {
+            margin-right: 15px; /* Adjust this value as needed */
+        }
 
-               .navbar-nav .nav-item {
-                   margin-right: 15px; /* Adjust this value as needed */
-               }
-                .nav-item.active, .dropdown-item.active {
-                background:linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%);
-               color: white;
-           }
-               .nav-item:hover, .dropdown-item:hover,dropdown-menu:hover {
-           transform: scale(1.1);
-           transition: transform 0.2s ease-in-out;
-           z-index:2000;
-       }
+        .nav-item.active, .dropdown-item.active {
+            background: linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%);
+            color: white;
+        }
+
+        .nav-item:hover, .dropdown-item:hover, dropdown-menu:hover {
+            transform: scale(1.1);
+            transition: transform 0.2s ease-in-out;
+            z-index: 2000;
+        }
     </style>
     <div class="container">
         <a class="navbar-brand" href="#" th:href="@{/}">
             <img src="img/SGU-LOGO.png" alt="SGU Logo" style="height: 50px" th:src="@{/img/SGU-LOGO.png}">
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link fw-bold" th:classappend="${currentUri == ''} ? 'active'" aria-current="page" th:href="@{/}">Trang chủ</a>
+                    <a class="nav-link fw-bold" th:classappend="${currentUri == ''} ? 'active'" aria-current="page"
+                       th:href="@{/}">Trang chủ</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <li class="nav-item dropdown" th:if="${#ctx.session.get('jwtToken')!=null}">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
                         Quản lý
                     </a>
                     <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item   " th:href="@{/posts}">Quản lý bài viết</a></li>
-                        <li><a class="dropdown-item   " th:href="@{/charity-events (query=null,page=0)}">Quản lý dự án</a></li>
+                        <li><a class="dropdown-item   " th:href="@{/charity-events (query=null,page=0)}">Quản lý dự
+                            án</a></li>
                         <li><a class="dropdown-item   " th:href="@{/role/all}">Quản lý vai trò</a></li>
-                        <li><a class="dropdown-item  " th:href="@{/account (role=0,page=0)}">Quản lý tài khoản</a></li>
+                        <li><a class="dropdown-item  " th:href="@{/account (page=0)}">Quản lý tài khoản</a></li>
                         <li><a class="dropdown-item  " th:href="@{/disburse (page=0)}">Giải ngân</a></li>
-<!--                        <li><a class="dropdown-item  " th:href="@{/statistic  }">Thống kê</a></li>-->
+                        <!--                        <li><a class="dropdown-item  " th:href="@{/statistic  }">Thống kê</a></li>-->
                         <li class=" dropdown-item dropend">
-                            <a class="nav-link dropdown-toggle" id="statisticDropdown" role="button"  data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" id="statisticDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
                                 Thống kê
                             </a>
-                            <ul class="dropdown-menu dropend-item" aria-labelledby="statisticDropdown" >
-                                <li><a class="dropdown-item   " th:href="@{/statistic/most_charitable_person}">Thống kê người ủng hộ nhiều nhất</a></li>
-                                <li><a class="dropdown-item   " th:href="@{/statistic/most_viewed_posts}">Thống kê lượt xem của bài viết</a></li>
-                                <li><a class="dropdown-item   " th:href="@{/statistic/most_donate_events}">Thống kê dự án được ủng hộ</a></li>
-                                <li><a class="dropdown-item  " th:href="@{/statistic/most_post_account }">Thống kê số bài viết của tài khoản</a></li>
-                                <li><a class="dropdown-item  " th:href="@{/statistic/disburse }"> Thống kê giải ngân</a></li>
+                            <ul class="dropdown-menu dropend-item" aria-labelledby="statisticDropdown">
+                                <li><a class="dropdown-item   " th:href="@{/statistic/most_charitable_person}">Thống kê
+                                    người ủng hộ nhiều nhất</a></li>
+                                <li><a class="dropdown-item   " th:href="@{/statistic/most_viewed_posts}">Thống kê lượt
+                                    xem của bài viết</a></li>
+                                <li><a class="dropdown-item   " th:href="@{/statistic/most_donate_events}">Thống kê dự
+                                    án được ủng hộ</a></li>
+                                <li><a class="dropdown-item  " th:href="@{/statistic/most_post_account }">Thống kê số
+                                    bài viết của tài khoản</a></li>
+                                <li><a class="dropdown-item  " th:href="@{/statistic/disburse }"> Thống kê giải ngân</a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:classappend="${currentUri == '/introduce'} ? 'active'" th:href="@{/introduce}">Giới thiệu</a>
+                    <a class="nav-link" th:classappend="${currentUri == '/introduce'} ? 'active'"
+                       th:href="@{/introduce}">Giới thiệu</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:classappend="${currentUri == '/introduce'} ? 'active'" th:href="@{/charities_events (page=0)}">Dự án</a>
+                    <a class="nav-link" th:classappend="${currentUri == '/introduce'} ? 'active'"
+                       th:href="@{/charities_events (page=0)}">Dự án</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link">Sao kê</a>
@@ -99,11 +113,17 @@
                 <li class="nav-item">
                     <a class="nav-link">Liên hệ</a>
                 </li>
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" th:href="@{/profile}">Profile</a>-->
-<!--                </li>-->
+                <li class="nav-item" th:if="${#ctx.session.username}">
+                    <a class="nav-link" th:href="@{/profile}" th:text="${#ctx.session.username.toString()}" style="color : #4A00E0;"></a>
+                </li>
+                <li class="nav-item" th:if="${#ctx.session.username}">
+                    <a class="nav-link" th:href="@{/logout}">Đăng xuất</a>
+                </li>
             </ul>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Đăng nhập</button>
+            <li class="btn btn-primary" th:unless="${#ctx.session.username}">
+                <a class="nav-link" th:href="@{/login}">Đăng nhập</a>
+            </li>
+
         </div>
     </div>
 </nav>
