@@ -19,6 +19,7 @@
   h5 {
   cursor:pointer;
   }
+
 </style>
 <link href="/css/home.css" th:href="@{/css/home.css}" rel="stylesheet">
 <link href="/css/animation.css" th:href="@{/css/animation.css}" rel="stylesheet">
@@ -38,12 +39,12 @@
     <path d="M367.94,213.338h102.4c22.002-0.001,40.396-16.732,42.476-38.636c2.079-21.904-12.838-41.798-34.447-45.939				c-3.905-29.73-29.244-51.958-59.229-51.958s-55.324,22.228-59.229,51.958c-21.609,4.141-36.526,24.035-34.447,45.939				S345.937,213.337,367.94,213.338z M367.94,145.071c2.263,0.001,4.434-0.898,6.035-2.499c1.6-1.6,2.499-3.771,2.499-6.035				c0-23.564,19.103-42.667,42.667-42.667s42.667,19.102,42.667,42.667c-0.001,2.263,0.898,4.434,2.499,6.035				c1.6,1.6,3.771,2.499,6.035,2.499c14.138,0,25.6,11.462,25.6,25.6s-11.461,25.6-25.6,25.6h-102.4				c-14.138,0-25.6-11.461-25.6-25.6S353.801,145.071,367.94,145.071z"></path>
   </svg>
 </div>
-<div class="container my-5"  style="display : none;">
+<div class="container my-5" >
   <div class="row">
     <div class="col-md-6">
       <div class="important-project text-center position-relative">
         <h3 class="text-primary">Dự án quan trọng</h3>
-        <img  class="img-fluid custom-size">
+        <img th:src="@{${ip.thumbImg}}" class="img-fluid custom-size-ip" th:onclick="window.location.href='/article/' + /*[[${ip.id}]]*/ ''">
         <div class="badge-position">
           <span class="badge bg-primary p-2" th:text="${ip.charityEvent.isDisbursed!=null} ? 'Đã hoàn thành' : 'Đang hoạt động'"></span>
         </div>
@@ -51,11 +52,9 @@
     </div>
 
     <div class="col-md-6">
-      <h4 th:text="${ip.title}"></h4>
-      <p id="ipbodyText" th:utext="${ip.body}" style="height:90px" th:onclick="window.location.href='/article/' + /*[[${ip.id}]]*/ ''" ></p>
-      <div class="text-end">
-        <a class="text-primary" th:href="@{/article/{id}(id=${ip.id})}">Xem thêm >> </a>
-      </div>
+      <h4 th:text="${ip.title}" th:onclick="window.location.href='/article/' + /*[[${ip.id}]]*/ ''"></h4>
+      <p id="ipbodyText" th:text="${ip.charityEvent.description}" style="height:90px" th:onclick="window.location.href='/article/' + /*[[${ip.id}]]*/ ''" ></p>
+
 
       <h6 class="text-center">Thời gian còn lại trước khi khóa sổ</h6>
 
@@ -93,17 +92,17 @@
 
 
 <div class="container my-5" id="post-container">
-  <h2 class="mb-4">Các dự án khác</h2>
+  <h2 class="mb-4">Các dự án</h2>
   <hr style="margin-top:-10px ; margin-bottom: 30px;width: 100%;">
   <div class="row">
     <!-- Dự án 1 -->
     <div class="col-md-4 custom-height mb-4" th:each="post : ${data}" >
       <div class="card">
-        <img th:src="@{${post.thumbImg}}" class="card-img-top" alt="Project Image" >
+        <img th:src="@{${post.thumbImg}}" class="card-img-top custom-size" alt="Project Image" >
         <div class="badge-position-secondary">
           <span class="badge p-2" th:text="${post.charityEvent.isDisbursed!=null} ? 'Đã hoàn thành' : 'Đang hoạt động'" th:classappend="${post.charityEvent.isDisbursed} ? 'bg-success' : 'bg-primary'"></span>
         </div>
-        <div class="card-body">
+        <div class="card-body" style="height:530px;">
           <h6>Thời gian còn lại trước khi khóa sổ</h6>
           <div class="countdowns text-center mb-3">
             <div class="countdown-time" th:text="${post.charityEvent.timeLeft}">29 : 23 : 59 : 59</div>
@@ -111,6 +110,7 @@
           </div>
           <h5 class="card-title" th:text="${post.title}" th:onclick="window.location.href='/article/' + /*[[${post.id}]]*/ ''"></h5>
           <p class="card-text" th:text="${post.charityEvent.description}"></p>
+          <div style="position:absolute;width:92.5%;bottom:24px">
           <p>Đã góp được: <span th:text="${post.charityEvent.currentAmount}"></span> / <span th:text="${post.charityEvent.goalAmount}"></span></p>
           <div class="progress mb-3">
             <div class="progress-bar" role="progressbar"  th:style="'width: ' + (${post.charityEvent.currentAmount} / ${post.charityEvent.goalAmount} * 100) + '%;'"
@@ -122,6 +122,7 @@
             <div th:if="${post.charityEvent.isDisbursed !=null}">
               <a   th:href="@{/transaction/{id}(id=${post.charityEvent.id})}"  class="btn btn-outline-primary w-100">Cảm ơn đã đóng góp</a>
             </div>
+          </div>
       </div>
     </div>
     </div>
@@ -167,17 +168,19 @@
   <hr style="margin-top:-10px ; margin-bottom: 30px;width: 100%;">
   <div class="row">
     <!-- Dự án 1 -->
-    <div class="col-md-4 custom-height mb-4" th:each="p : ${done}" >
-      <div class="card">
-        <img src="img/Demo_2.webp" class="card-img-top" alt="Project Image" th:src="@{img/Demo_2.webp}">
+    <div class="col-md-4 custom-height mb-4" th:each="p : ${data}" >
+      <div class="card" >
+        <img  class="card-img-top custom-size" alt="Project Image" th:src="@{${p.thumbImg}}">
         <div class="badge-position-secondary">
           <span class="badge bg-success p-2" th:text="${p.charityEvent.isDisbursed!=null} ? 'Đã hoàn thành' : 'Đang hoạt động'"></span>
         </div>
-        <div class="card-body">
+        <div class="card-body" style="height:530px;">
           <h5 class="card-title" th:text="${p.title}"></h5>
-          <p class="card-text" th:text="${p.body}"></p>
-          <p>Thời gian bắt đầu:<span th:text="${#dates.format(p.charityEvent.startTime,'MM/dd/YYYY')}"></span></p>
-          <p>Thời gian kết thúc:<span th:text="${#dates.format(p.charityEvent.endTime,'MM/dd/YYYY')}"></span></p>
+          <p class="card-text" th:text="${p.charityEvent.description}"></p>
+
+          <div style="position:absolute;width:92.5%;bottom:24px">
+            <p>Thời gian bắt đầu:<span th:text="${#dates.format(p.charityEvent.startTime,'MM/dd/YYYY')}"></span></p>
+            <p>Thời gian kết thúc:<span th:text="${#dates.format(p.charityEvent.endTime,'MM/dd/YYYY')}"></span></p>
           <p>Đã góp được: <span th:text="${p.charityEvent.currentAmount}"></span> / <span th:text="${p.charityEvent.goalAmount}"></span></p>
           <div class="progress mb-3">
             <div class="progress-bar" role="progressbar"  th:style="'width: ' + (${p.charityEvent.currentAmount} / ${p.charityEvent.goalAmount} * 100) + '%;'"
@@ -185,6 +188,7 @@
                  aria-valuemin="0" aria-valuemax="100"></div>
           </div>
           <a th:href="@{/transaction/{id}(id=${p.charityEvent.id})}"  class="btn btn-outline-primary w-100">Cảm ơn đã đóng góp</a>
+        </div>
         </div>
       </div>
     </div>
@@ -197,45 +201,69 @@
 </div>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-   let posts = document.querySelectorAll("#done-container .col-md-4");
-   let loadMoreBtn = document.getElementById("done-more");
-   let visiblePosts = 3;
-   posts.forEach((post, index) => {
-     if (index >= visiblePosts) post.style.display = "none";
-   });
-   loadMoreBtn.addEventListener("click", function () {
-     let hiddenPosts = Array.from(posts).filter(post => post.style.display === "none");
-     for (let i = 0; i < 3 && i < hiddenPosts.length; i++) {
-       hiddenPosts[i].style.display = "block";
-     }
-     if (hiddenPosts.length <= 3) {
+  let posts = document.querySelectorAll("#done-container .col-md-4");
+  let loadMoreBtn = document.getElementById("done-more");
+  let visiblePosts = 3; // Hiển thị ban đầu 3 bài viết
+
+  // Hiển thị 3 bài viết đầu tiên, ẩn các bài viết còn lại
+  posts.forEach((post, index) => {
+    if (index < visiblePosts) {
+      post.style.display = "block";
+    } else {
+      post.style.display = "none";
+    }
+  });
+
+  // Xử lý khi nhấn nút "Load More"
+  loadMoreBtn.addEventListener("click", function () {
+    let hiddenPosts = Array.from(posts).filter(post => post.style.display === "none");
+
+    // Hiển thị thêm tối đa 3 bài viết
+    for (let i = 0; i < 3 && i < hiddenPosts.length; i++) {
+      hiddenPosts[i].style.display = "block";
+    }
+
+    // Nếu không còn bài viết nào bị ẩn, thay đổi chức năng nút
+    hiddenPosts = Array.from(posts).filter(post => post.style.display === "none");
+    if (hiddenPosts.length === 0) {
       loadMoreBtn.innerText = "Chuyển tới trang dự án";
-      loadMoreBtn.addEventListener("click", function () {
-        window.location.href = "/du-an";
-      });
-     }
-   });
- });
-  document.addEventListener("DOMContentLoaded", function () {
-   let posts = document.querySelectorAll("#post-container .col-md-4");
-   let loadMoreBtn = document.getElementById("load-more");
-   let visiblePosts = 3;
-   posts.forEach((post, index) => {
-     if (index >= visiblePosts) post.style.display = "none";
-   });
-   loadMoreBtn.addEventListener("click", function () {
-     let hiddenPosts = Array.from(posts).filter(post => post.style.display === "none");
-     for (let i = 0; i < 3 && i < hiddenPosts.length; i++) {
-       hiddenPosts[i].style.display = "block";
-     }
-     if (hiddenPosts.length <= 3) {
-      loadMoreBtn.innerText = "Chuyển tới trang dự án";
-      loadMoreBtn.addEventListener("click", function () {
+      loadMoreBtn.onclick = function () {
         window.location.href = "/charities_events";
-      });
-     }
-   });
- });
+      };
+    }
+  });
+});
+
+  document.addEventListener("DOMContentLoaded", function () {
+  let posts = document.querySelectorAll("#post-container .col-md-4");
+  let loadMoreBtn = document.getElementById("load-more");
+  let visiblePosts = 3;
+
+  // Ẩn tất cả bài viết vượt quá số lượng hiển thị ban đầu
+  posts.forEach((post, index) => {
+    if (index >= visiblePosts) post.style.display = "none";
+  });
+
+  // Xử lý sự kiện nhấn nút "Load More"
+  loadMoreBtn.addEventListener("click", function () {
+    let hiddenPosts = Array.from(posts).filter(post => post.style.display === "none");
+
+    // Hiển thị thêm tối đa 3 bài viết
+    for (let i = 0; i < 3 && i < hiddenPosts.length; i++) {
+      hiddenPosts[i].style.display = "block";
+    }
+
+    // Nếu không còn bài viết nào bị ẩn, thay đổi nội dung nút
+    hiddenPosts = Array.from(posts).filter(post => post.style.display === "none");
+    if (hiddenPosts.length === 0) {
+      loadMoreBtn.innerText = "Chuyển tới trang dự án";
+      loadMoreBtn.onclick = function () {
+        window.location.href = "/charities_events";
+      };
+    }
+  });
+});
+
  document.addEventListener("DOMContentLoaded", function () {
        const bodyText = document.getElementById("ipbodyText");
        const maxLength = 300; // Giới hạn độ dài

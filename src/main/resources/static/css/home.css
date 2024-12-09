@@ -10,10 +10,15 @@
             border-radius: 10px;
         }
         .custom-size {
-            width: 500px;
-            height: 300px;
+            width: 414.39px;
+            height: 220px;
             object-fit: cover;
         }
+        .custom-size-ip {
+                    width: 500px;
+                    height: 300px;
+                    object-fit: cover;
+                }
         .countdown {
             font-size: 1.5rem;
             background-color: #FFF;
@@ -71,7 +76,7 @@
         }
         .badge-position-secondary {
             position: absolute;
-            top: 210px;
+            top: 185px;
             right: -10px;
         }
         .stats-container {
