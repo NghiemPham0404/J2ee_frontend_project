@@ -107,12 +107,12 @@
                     <a class="nav-link" th:classappend="${currentUri == '/introduce'} ? 'active'"
                        th:href="@{/charities_events (page=0)}">Dự án</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link">Sao kê</a>
-                </li>
 <!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" th:href="@{/contact}">Liên hệ</a>-->
+<!--                    <a class="nav-link">Sao kê</a>-->
 <!--                </li>-->
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/contact}">Liên hệ</a>
+                </li>
                 <li class="nav-item" th:if="${#ctx.session.username}">
                     <a class="nav-link" th:href="@{/profile}" th:text="${#ctx.session.username.toString()}" style="color : #4A00E0;"></a>
                 </li>
