@@ -40,7 +40,7 @@
   </svg>
 </div>
 <div class="container my-5" >
-  <div class="row">
+  <div class="row" th:onclick="window.location.href='/article/' + /*[[${ip.id}]]*/ ''">
     <div class="col-md-6">
       <div class="important-project text-center position-relative">
         <h3 class="text-primary">Dự án quan trọng</h3>
@@ -96,7 +96,7 @@
   <div class="row">
     <!-- Dự án 1 -->
     <div class="col-md-4 custom-height mb-4" th:each="post : ${data}" >
-      <div class="card">
+      <div class="card" th:onclick="window.location.href='/article/' + /*[[${post.id}]]*/ ''">
         <img th:src="@{${post.thumbImg}}" class="card-img-top custom-size" alt="Project Image" >
         <div class="badge-position-secondary">
           <span class="badge p-2" th:text="${post.charityEvent.isDisbursed!=null} ? 'Đã hoàn thành' : 'Đang hoạt động'" th:classappend="${post.charityEvent.isDisbursed} ? 'bg-success' : 'bg-primary'"></span>
@@ -168,7 +168,7 @@
   <div class="row">
     <!-- Dự án 1 -->
     <div class="col-md-4 custom-height mb-4" th:each="p : ${done}">
-      <div class="card" >
+      <div class="card" th:onclick="window.location.href='/article/' + /*[[${p.id}]]*/ ''">
         <img  class="card-img-top custom-size" alt="Project Image" th:src="@{${p.thumbImg}}">
         <div class="badge-position-secondary">
           <span class="badge bg-success p-2" th:text="${p.charityEvent.isDisbursed!=null} ? 'Đã hoàn thành' : 'Đang hoạt động'"></span>
