@@ -25,4 +25,5 @@ public interface AccountApi {
 
     @GET("account/search")
     Call<AccountListResponse> searchNameAccounts(@Query("query") String query, @Query("page") int page);
+
 }

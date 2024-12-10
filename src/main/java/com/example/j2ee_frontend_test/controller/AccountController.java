@@ -7,14 +7,19 @@ import com.example.j2ee_frontend_test.services.AccountService;
 import com.example.j2ee_frontend_test.services.RoleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.websocket.server.PathParam;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -91,5 +96,101 @@ public class AccountController {
         accountService.deleteAccount(id);
         return "redirect:/account";
     }
+
+//    @PostMapping("/upload")
+//    public String uploadExcelFile(@RequestParam("file") MultipartFile file, Model model) {
+//        if (file.isEmpty() || !file.getOriginalFilename().endsWith(".xlsx")) {
+//            model.addAttribute("error", "Invalid file format. Please upload an Excel file.");
+//            return "error";
+//        }
+//
+//        try {
+//            List<Account> accounts = new ArrayList<>();
+//            Workbook workbook = new XSSFWorkbook(file.getInputStream());
+//            Sheet sheet = workbook.getSheetAt(0); // Lấy sheet đầu tiên
+//
+//            // Duyệt qua các dòng trong sheet, bỏ qua dòng đầu tiên (header)
+//            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+//                Row row = sheet.getRow(i);
+//                if (row != null) {
+//                    Account account = new Account();
+//                    account.setName(row.getCell(0).getStringCellValue()); // Cột tên
+//                    account.setEmail(row.getCell(1).getStringCellValue()); // Cột email
+//                    account.setPassword(row.getCell(2).getStringCellValue()); // Cột mật khẩu
+//                    account.setRole(roleService.getRoleById(account.getRole_id()));
+//
+//                    String birthDateStr = row.getCell(4).getStringCellValue(); // Cột ngày sinh
+//                    Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(birthDateStr);
+//                    account.setBirthDate(birthDate);
+//
+//                    accounts.add(account);
+//                }
+//            }
+//
+//            workbook.close();
+////            accountService.getAccountById();
+//            model.addAttribute("success", "Thêm tài khoản thành công!");
+//            return "redirect:/account";
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            model.addAttribute("error", "Error processing file: " + e.getMessage());
+//            return "error";
+//        }
+//    }
+
+    @PostMapping("/import")
+    public String importAccountsFromExcel(@RequestParam("file") MultipartFile file, Model model) {
+        if (file.isEmpty() || !file.getOriginalFilename().endsWith(".xlsx")) {
+            model.addAttribute("error", "Invalid file format. Please upload an Excel file.");
+            return "error";
+        }
+
+        try {
+            List<Account> accounts = new ArrayList<>();
+            Workbook workbook = new XSSFWorkbook(file.getInputStream());
+            Sheet sheet = workbook.getSheetAt(0);
+
+            // Đọc từng dòng trong Excel
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) { // Bỏ qua header
+                Row row = sheet.getRow(i);
+                if (row != null) {
+                    Account account = new Account();
+                    account.setName(row.getCell(0).getStringCellValue()); // Tên
+                    Date birthDateStr = row.getCell(1).getDateCellValue();
+                    account.setBirthDate(birthDateStr);
+//                    account.setBirthDate(new SimpleDateFormat("dd/MM/YYYY").parse(birthDateStr));
+                    account.setEmail(row.getCell(2).getStringCellValue()); // Email
+                    account.setUsername(row.getCell(3).getStringCellValue());
+                    account.setPassword(row.getCell(4).getStringCellValue()); // Mật khẩu
+                    account.setActive(true);
+
+                    int roleId = (int) row.getCell(5).getNumericCellValue();
+                    account.setRole_id(roleId);
+                    Role role = roleService.getRoleById(roleId);
+                    account.setRole(role);
+
+                    accounts.add(account);
+                }
+            }
+
+            workbook.close();
+
+            // Gửi danh sách tài khoản tới API
+            for (Account account : accounts) {
+                accountService.createAccount(account);
+            }
+
+            model.addAttribute("success", "Thêm thành công!");
+            return "redirect:/account";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Failed to process file: " + e.getMessage());
+            return "error";
+        }
+    }
+
+
 }
 
