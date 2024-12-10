@@ -23,6 +23,8 @@ public class ProfileController {
         return "profile";
     }
 
+
+
 //    @PostMapping
 //    public String updateProfile( @ModelAttribute("profile") Profile profile, BindingResult bindingResult, Model model) {
 //        if (bindingResult.hasErrors()) {
@@ -38,4 +40,6 @@ public class ProfileController {
 //
 //        return "redirect:/profile";
 //    }
+
+
 }

@@ -62,5 +62,20 @@ public class ProfileService {
 //            throw new RuntimeException(e);
 //        }
 //    }
+
+    public boolean validateAdmin(String username) {
+        Call<Profile> call = profileApi.validateAdmin(username);
+        try {
+            Response<Profile> response = call.execute();
+            if (response.isSuccessful() && response.body() != null) {
+                return true;
+
+            } else {
+                return false;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 

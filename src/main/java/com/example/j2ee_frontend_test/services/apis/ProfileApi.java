@@ -15,4 +15,8 @@ public interface ProfileApi {
     @GET("personal-info/{id}")
     Call<Profile> getProfileById(@Path("id") Integer id);
 
+    @GET("personal-info/validateAdmin")
+    Call<Profile> validateAdmin(@Query("username") String username);
+
+
 }

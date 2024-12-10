@@ -186,5 +186,37 @@ public class PostService {
         }
     }
 
+    // lay danh sach post chua duoc duyet
+    public PostListResponse getNotApprovedPosts(int page) {
+        Call<PostListResponse> call = postApi.getNotApprovedPosts(page);
+        try {
+            Response<PostListResponse> response = call.execute();
+            if (response.isSuccessful() && response.body() != null) {
+                return response.body();
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // duyet post
+    public String approvePost(UUID id) {
+        Call<ResponseEntity<Object>> call = postApi.approvePost(id);
+        try {
+            Response<ResponseEntity<Object>> response = call.execute();
+            if (response.isSuccessful() && response.body() != null) {
+                System.out.println("Approved Post Successfully");
+                return response.body().toString();
+            } else {
+                System.out.println("Error: " + response.errorBody().string());
+                return null;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }
