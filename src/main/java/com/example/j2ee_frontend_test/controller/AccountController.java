@@ -12,6 +12,12 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -188,6 +194,25 @@ public class AccountController {
             e.printStackTrace();
             model.addAttribute("error", "Failed to process file: " + e.getMessage());
             return "error";
+        }
+    }
+
+    @GetMapping("/export")
+    public ResponseEntity<Resource> exportAccountsToExcel() {
+        try {
+            // Gọi service để lấy danh sách tài khoản và tạo file Excel
+            ByteArrayResource excelFile = accountService.exportAccountsToExcel();
+
+            // Trả file Excel về phía client
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=accounts.xlsx")
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(excelFile);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
         }
     }
 
