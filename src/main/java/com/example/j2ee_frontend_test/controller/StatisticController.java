@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -215,16 +216,44 @@ public class StatisticController {
 
         return htmlContent.toString();
     }
-    @GetMapping("disburse")
-    public String disburse(Model model,@PathParam("startDate") String startDate,
-                           @PathParam("endDate") String endDate){
-        startDate= startDate != null ? startDate : "2023/01/01";
-        endDate=endDate != null? endDate: "2025/01/01";
-        // Tách chuỗi ngày tháng theo dấu "/"
+//    @GetMapping("disburse")
+//    public String disburse(Model model,@PathParam("startDate") String startDate,
+//                           @PathParam("endDate") String endDate){
+//
+//        startDate= startDate != null ? startDate : "2023/01/01";
+//        endDate=endDate != null? endDate: "2025/01/01";
+//        // Tách chuỗi ngày tháng theo dấu "/"
+//        String[] startParts = startDate.split("/");
+//        String[] endParts = endDate.split("/");
+//
+//        // Lấy năm, tháng, ngày từ các chuỗi đã tách
+//        int startYear = Integer.parseInt(startParts[0]);
+//        int startMonth = Integer.parseInt(startParts[1]) - 1; // Tháng trong `Date` bắt đầu từ 0 (0 = January)
+//        int startDay = Integer.parseInt(startParts[2]);
+//
+//        int endYear = Integer.parseInt(endParts[0]);
+//        int endMonth = Integer.parseInt(endParts[1]) - 1; // Tháng trong `Date` bắt đầu từ 0
+//        int endDay = Integer.parseInt(endParts[2]);
+//
+//        // Tạo đối tượng Date từ các giá trị đã tách
+//        Date start = new Date(startYear - 1900, startMonth, startDay); // Năm cần giảm đi 1900
+//        Date end = new Date(endYear - 1900, endMonth, endDay); // Năm cần giảm đi 1900
+//        CharityListResponse charityListResponse = statisticService.disburseCharity(start, end);
+//        List<CharityEvent> data = charityListResponse.getCharityList();
+//        model.addAttribute("data",data);
+//        model.addAttribute("startDate",start);
+//        model.addAttribute("endDate",end);
+//        model.addAttribute("start",startDate);
+//        model.addAttribute("end",endDate);
+//        return "statistic/disburse";
+//    }
+@GetMapping("disburse")
+public String disburse(Model model, @PathParam("startDate") String startDate,
+                       @PathParam("endDate") String endDate) {
+    LocalDate today = LocalDate.now();
+    if (startDate !=null && endDate != null){
         String[] startParts = startDate.split("/");
         String[] endParts = endDate.split("/");
-
-        // Lấy năm, tháng, ngày từ các chuỗi đã tách
         int startYear = Integer.parseInt(startParts[0]);
         int startMonth = Integer.parseInt(startParts[1]) - 1; // Tháng trong `Date` bắt đầu từ 0 (0 = January)
         int startDay = Integer.parseInt(startParts[2]);
@@ -235,7 +264,7 @@ public class StatisticController {
 
         // Tạo đối tượng Date từ các giá trị đã tách
         Date start = new Date(startYear - 1900, startMonth, startDay); // Năm cần giảm đi 1900
-        Date end = new Date(endYear - 1900, endMonth, endDay); // Năm cần giảm đi 1900
+        Date end = new Date(endYear - 1900, endMonth, endDay);
         CharityListResponse charityListResponse = statisticService.disburseCharity(start, end);
         List<CharityEvent> data = charityListResponse.getCharityList();
         model.addAttribute("data",data);
@@ -243,8 +272,30 @@ public class StatisticController {
         model.addAttribute("endDate",end);
         model.addAttribute("start",startDate);
         model.addAttribute("end",endDate);
-        return "statistic/disburse";
+    } else {
+        startDate = today.minusDays(30).toString();
+        endDate=today.toString();
+        String[] startParts = startDate.split("-");
+        String[] endParts = endDate.split("-");
+        int startYear = Integer.parseInt(startParts[0]);
+        int startMonth = Integer.parseInt(startParts[1]) - 1; // Tháng trong `Date` bắt đầu từ 0 (0 = January)
+        int startDay = Integer.parseInt(startParts[2]);
+
+        int endYear = Integer.parseInt(endParts[0]);
+        int endMonth = Integer.parseInt(endParts[1]) - 1; // Tháng trong `Date` bắt đầu từ 0
+        int endDay = Integer.parseInt(endParts[2]);
+        Date start = new Date(startYear - 1900, startMonth, startDay); // Năm cần giảm đi 1900
+        Date end = new Date(endYear - 1900, endMonth, endDay);
+        CharityListResponse charityListResponse = statisticService.disburseCharity(start, end);
+        List<CharityEvent> data = charityListResponse.getCharityList();
+        model.addAttribute("data",data);
+        model.addAttribute("startDate",start);
+        model.addAttribute("endDate",end);
+        model.addAttribute("start",startDate);
+        model.addAttribute("end",endDate);
     }
+    return "statistic/disburse";
+}
 
 
     @GetMapping("disburse/export")

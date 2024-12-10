@@ -56,31 +56,39 @@ public class HomeController {
         model.addAttribute("total_pages", totalPages);
         return "home";
     }
-
+    @GetMapping("/contact")
+    public String introduce(Model model, HttpServletRequest request) {
+        model.addAttribute("currentUri", request.getRequestURI());
+        return "contact";
+    }
     @GetMapping("/charities_events")
     public String charities_events(Model model,@PathParam("page") Integer page,@PathParam("query") String query){
         page = page != null ? page : 0;
         PostListResponse postListResponse;
+        List<Post> data=new ArrayList<>();
+        int pages=postService.getAllPostsforuser(0).getTotalPages();
+
         if (query == null) {
-             postListResponse = postService.getAllPostsforuser(page);
-            List<Post> data=postListResponse.getPostList();
-            int total=postListResponse.getTotalPages();
+            for (int i=0;i<=pages;i++){
+                postListResponse=postService.getAllPostsforuser(i);
+                data.addAll(postListResponse.getPostList());
+            }
             for (Post p : data) {
                 timeLeft(p);
             }
-            model.addAttribute("total_pages",total);
+            model.addAttribute("total_pages",pages);
             model.addAttribute("data", data);
         } else {
-            postListResponse=postService.searchPosts(page,query);
-            List<Post> data=postListResponse.getPostList();
-            int total=postListResponse.getTotalPages();
+            for (int i=0;i<=pages;i++){
+                postListResponse=postService.searchPosts(i,query);
+                data.addAll(postListResponse.getPostList());
+            }
             for (Post p : data) {
                 timeLeft(p);
             }
-            model.addAttribute("total_pages",total);
+            model.addAttribute("total_pages",pages);
             model.addAttribute("data", data);
         }
-
         model.addAttribute("query",query);
         model.addAttribute("page", page);
         return "charities";

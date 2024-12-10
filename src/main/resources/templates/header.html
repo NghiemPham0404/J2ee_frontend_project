@@ -93,8 +93,8 @@
                                     án được ủng hộ</a></li>
                                 <li><a class="dropdown-item  " th:href="@{/statistic/most_post_account }">Thống kê số
                                     bài viết của tài khoản</a></li>
-                                <li><a class="dropdown-item  " th:href="@{/statistic/disburse }"> Thống kê giải ngân</a>
-                                </li>
+<!--                                <li><a class="dropdown-item  " th:href="@{/statistic/disburse }"> Thống kê giải ngân</a>-->
+<!--                                </li>-->
                             </ul>
                         </li>
                     </ul>
@@ -110,9 +110,9 @@
                 <li class="nav-item">
                     <a class="nav-link">Sao kê</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link">Liên hệ</a>
-                </li>
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" th:href="@{/contact}">Liên hệ</a>-->
+<!--                </li>-->
                 <li class="nav-item" th:if="${#ctx.session.username}">
                     <a class="nav-link" th:href="@{/profile}" th:text="${#ctx.session.username.toString()}" style="color : #4A00E0;"></a>
                 </li>

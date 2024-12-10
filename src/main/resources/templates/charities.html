@@ -49,7 +49,7 @@
                     <div style="position:absolute;width:92.5%;bottom:24px">
                     <p>Đã góp được: <span th:text="${post.charityEvent.currentAmount}"></span> / <span th:text="${post.charityEvent.goalAmount}"></span></p>
                     <div class="progress mb-3">
-                        <div class="progress-bar" role="progressbar"  th:style="'width: ' + (${post.charityEvent.currentAmount} / ${post.charityEvent.goalAmount} * 100) + '%;'"
+                        <div th:classappend="${post.charityEvent.isDisbursed} ? 'progress-bar-success' : 'progress-bar-primary'" role="progressbar"  th:style="'width: ' + (${post.charityEvent.currentAmount} / ${post.charityEvent.goalAmount} * 100) + '%;'"
                              th:aria-valuenow="${post.charityEvent.currentAmount / post.charityEvent.goalAmount * 100}"
                              aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
@@ -57,26 +57,26 @@
                     <a  th:href="@{/donate/{id}(id=${post.id})}" class="btn btn-outline-primary w-100">Đóng góp</a>
                 </div>
                     <div th:if="${post.charityEvent.isDisbursed != null}">
-                        <a   th:href="@{/transaction/{id}(id=${post.charityEvent.id})}"  class="btn btn-outline-primary w-100">Cảm ơn đã đóng góp</a>
+                        <a   th:href="@{/transaction/{id}(id=${post.charityEvent.id})}"  class="btn btn-outline-success w-100">Cảm ơn đã đóng góp</a>
                     </div>
                 </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-center">
+<!--    <div class="d-flex justify-content-center">-->
 
-        <a th:classappend="${page == 0} ? 'disabled'" class="btn btn-outline-primary"
-           th:href="@{/charities-events (query=${query},page=${page - 1})}">
-            Trang trước
-        </a>
-        &nbsp;
+<!--        <a th:classappend="${page == 0} ? 'disabled'" class="btn btn-outline-primary"-->
+<!--           th:href="@{/charities-events (query=${query},page=${page - 1})}">-->
+<!--            Trang trước-->
+<!--        </a>-->
+<!--        &nbsp;-->
 
-        <a th:classappend="${page == total_pages} ? 'disabled'"  class="btn btn-outline-primary"
-           th:href="@{/charityties-events (query=${query},page=${page + 1})}">
-            Trang kế tiếp
-        </a>
-    </div>
+<!--        <a th:classappend="${page == total_pages} ? 'disabled'"  class="btn btn-outline-primary"-->
+<!--           th:href="@{/charityties-events (query=${query},page=${page + 1})}">-->
+<!--            Trang kế tiếp-->
+<!--        </a>-->
+<!--    </div>-->
 </div>
 
 
