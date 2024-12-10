@@ -59,9 +59,8 @@
       <h6 class="text-center">Thời gian còn lại trước khi khóa sổ</h6>
 
       <div class="countdowns text-center mt-4">
-
-        <div th:text="${ip.charityEvent.timeLeft}">29 : 23 : 59 : 59</div>
-        <div class="small">Ngày</div>
+        <div class="countdown-time time-left" th:text="${ip.charityEvent.timeLeft}">29 : 23 : 59 : 59</div>
+        <div class="small" th:text="${ip.charityEvent.timeLeft == 'Dự án đã kết thúc.' ? '' : 'Ngày : Giờ : Phút : Giây'}"></div>
       </div>
 
       <div class="progress-container">
@@ -104,9 +103,9 @@
         </div>
         <div class="card-body" style="height:530px;">
           <h6>Thời gian còn lại trước khi khóa sổ</h6>
-          <div class="countdowns text-center mb-3">
-            <div class="countdown-time" th:text="${post.charityEvent.timeLeft}">29 : 23 : 59 : 59</div>
-            <div class="small">Ngày</div>
+          <div class="countdowns text-center mb-3" >
+            <div class="countdown-time time-left" th:text="${post.charityEvent.timeLeft}"></div>
+            <div class="small" th:text="${post.charityEvent.timeLeft == 'Dự án đã kết thúc.' ? ' ' : 'Ngày : Giờ : Phút : Giây'}">Ngày : Giờ : Phút : Giây</div>
           </div>
           <h5 class="card-title" th:text="${post.title}" th:onclick="window.location.href='/article/' + /*[[${post.id}]]*/ ''"></h5>
           <p class="card-text" th:text="${post.charityEvent.description}"></p>
@@ -201,59 +200,99 @@
 </div>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-  let posts = document.querySelectorAll("#done-container .col-md-4");
-  let loadMoreBtn = document.getElementById("done-more");
-  let visiblePosts = 3; // Hiển thị ban đầu 3 bài viết
+  // 1. Countdown
+  function setupCountdown(element) {
+    const timeLeftStr = element.querySelector('.time-left').textContent.trim();  // Lấy giá trị từ .time-left
 
-  // Hiển thị 3 bài viết đầu tiên, ẩn các bài viết còn lại
-  posts.forEach((post, index) => {
-    if (index < visiblePosts) {
+    if (!timeLeftStr || timeLeftStr === 'Dự án đã kết thúc.') {
+      element.querySelector('.time-left').textContent = 'Dự án đã kết thúc.';
+      return;
+    }
+
+    const timeDisplay = element.querySelector('.time-left');
+    const timeParts = timeLeftStr.split(':').map(Number);
+
+    if (timeParts.length !== 4 || timeParts.some(isNaN)) {
+      console.error('Giá trị timeLeft không hợp lệ');
+      return;
+    }
+
+    let [days, hours, minutes, seconds] = timeParts;
+    let totalSeconds = days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 + seconds;
+
+    // Hàm cập nhật countdown
+    function updateCountdown() {
+      if (totalSeconds <= 0) {
+        timeDisplay.textContent = 'Dự án đã kết thúc.';
+        clearInterval(interval); // Dừng countdown
+        return;
+      }
+
+      totalSeconds--; // Giảm số giây còn lại
+      const d = Math.floor(totalSeconds / (24 * 60 * 60));
+      const h = Math.floor((totalSeconds % (24 * 60 * 60)) / (60 * 60));
+      const m = Math.floor((totalSeconds % (60 * 60)) / 60);
+      const s = totalSeconds % 60;
+
+      // Cập nhật giao diện
+      timeDisplay.textContent = `${d} : ${h.toString().padStart(2, '0')} : ${m.toString().padStart(2, '0')} : ${s.toString().padStart(2, '0')}`;
+    }
+
+    // Cập nhật mỗi giây
+    const interval = setInterval(updateCountdown, 1000);
+
+    // Gọi hàm update ngay khi trang tải
+    updateCountdown();
+  }
+
+  // Thiết lập countdown cho tất cả các phần tử có class .countdowns
+  document.querySelectorAll('.countdowns').forEach(setupCountdown);
+
+  // 2. Load more posts (done-container)
+  let donePosts = document.querySelectorAll("#done-container .col-md-4");
+  let doneLoadMoreBtn = document.getElementById("done-more");
+  let doneVisiblePosts = 3;
+
+  donePosts.forEach((post, index) => {
+    if (index < doneVisiblePosts) {
       post.style.display = "block";
     } else {
       post.style.display = "none";
     }
   });
 
-  // Xử lý khi nhấn nút "Load More"
-  loadMoreBtn.addEventListener("click", function () {
-    let hiddenPosts = Array.from(posts).filter(post => post.style.display === "none");
+  doneLoadMoreBtn.addEventListener("click", function () {
+    let hiddenPosts = Array.from(donePosts).filter(post => post.style.display === "none");
 
-    // Hiển thị thêm tối đa 3 bài viết
     for (let i = 0; i < 3 && i < hiddenPosts.length; i++) {
       hiddenPosts[i].style.display = "block";
     }
 
-    // Nếu không còn bài viết nào bị ẩn, thay đổi chức năng nút
-    hiddenPosts = Array.from(posts).filter(post => post.style.display === "none");
+    hiddenPosts = Array.from(donePosts).filter(post => post.style.display === "none");
     if (hiddenPosts.length === 0) {
-      loadMoreBtn.innerText = "Chuyển tới trang dự án";
-      loadMoreBtn.onclick = function () {
+      doneLoadMoreBtn.innerText = "Chuyển tới trang dự án";
+      doneLoadMoreBtn.onclick = function () {
         window.location.href = "/charities_events";
       };
     }
   });
-});
 
-  document.addEventListener("DOMContentLoaded", function () {
+  // 3. Load more posts (post-container)
   let posts = document.querySelectorAll("#post-container .col-md-4");
   let loadMoreBtn = document.getElementById("load-more");
   let visiblePosts = 3;
 
-  // Ẩn tất cả bài viết vượt quá số lượng hiển thị ban đầu
   posts.forEach((post, index) => {
     if (index >= visiblePosts) post.style.display = "none";
   });
 
-  // Xử lý sự kiện nhấn nút "Load More"
   loadMoreBtn.addEventListener("click", function () {
     let hiddenPosts = Array.from(posts).filter(post => post.style.display === "none");
 
-    // Hiển thị thêm tối đa 3 bài viết
     for (let i = 0; i < 3 && i < hiddenPosts.length; i++) {
       hiddenPosts[i].style.display = "block";
     }
 
-    // Nếu không còn bài viết nào bị ẩn, thay đổi nội dung nút
     hiddenPosts = Array.from(posts).filter(post => post.style.display === "none");
     if (hiddenPosts.length === 0) {
       loadMoreBtn.innerText = "Chuyển tới trang dự án";
@@ -262,18 +301,15 @@
       };
     }
   });
+
+  // 4. Cắt đoạn văn bản (maxLength)
+  const bodyText = document.getElementById("ipbodyText");
+  const maxLength = 300;
+
+  if (bodyText && bodyText.textContent.length > maxLength) {
+    bodyText.textContent = bodyText.textContent.substring(0, maxLength) + "...";
+  }
 });
-
- document.addEventListener("DOMContentLoaded", function () {
-       const bodyText = document.getElementById("ipbodyText");
-       const maxLength = 300; // Giới hạn độ dài
-
-       if (bodyText.textContent.length > maxLength) {
-           bodyText.textContent = bodyText.textContent.substring(0, maxLength) + "...";
-       }
- });
-
-
 
 
 </script>

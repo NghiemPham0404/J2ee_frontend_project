@@ -111,8 +111,8 @@ public class HomeController {
             long minutesLeft = duration.minusDays(daysLeft).minusHours(hoursLeft).toMinutes();
             long secondsLeft = duration.minusDays(daysLeft).minusHours(hoursLeft).minusMinutes(minutesLeft).getSeconds();
 
-            //String timeLeft = String.format("%d ngày %d giờ %d phút %d giây", daysLeft, hoursLeft, minutesLeft, secondsLeft);
-            p.getCharityEvent().setTimeLeft(String.valueOf(daysLeft)); // Set time left to CharityEvent
+            String timeLeft = String.format("%d : %d : %d : %d", daysLeft, hoursLeft, minutesLeft, secondsLeft);
+            p.getCharityEvent().setTimeLeft(timeLeft); // Set time left to CharityEvent
         } else {
             p.getCharityEvent().setTimeLeft("Dự án đã kết thúc.");
         }

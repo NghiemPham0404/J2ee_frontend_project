@@ -41,8 +41,8 @@
                 <div class="card-body" style="height:530px;">
                     <h6>Thời gian còn lại trước khi khóa sổ</h6>
                     <div class="countdowns text-center mb-3">
-                        <div th:text="${post.charityEvent.timeLeft}"></div>
-                        <div class="small">Ngày</div>
+                        <div class="countdown-time time-left" th:text="${post.charityEvent.timeLeft}"></div>
+                        <div class="small" th:text="${post.charityEvent.timeLeft == 'Dự án đã kết thúc.' ? ' ' : 'Ngày : Giờ : Phút : Giây'}">Ngày</div>
                     </div>
                     <h5 class="card-title" th:text="${post.title}"></h5>
                     <p class="card-text" th:text="${post.charityEvent.description}"></p>
@@ -114,12 +114,56 @@
 
 <script>
    document.addEventListener("DOMContentLoaded", function () {
-         const bodyText = document.getElementById("ipbodyText");
-         const maxLength = 300; // Giới hạn độ dài
 
-         if (bodyText.textContent.length > maxLength) {
-             bodyText.textContent = bodyText.textContent.substring(0, maxLength) + "...";
-         }
+
+         // 1. Countdown
+  function setupCountdown(element) {
+    const timeLeftStr = element.querySelector('.time-left').textContent.trim();  // Lấy giá trị từ .time-left
+
+    if (!timeLeftStr || timeLeftStr === 'Dự án đã kết thúc.') {
+      element.querySelector('.time-left').textContent = 'Dự án đã kết thúc.';
+      return;
+    }
+
+    const timeDisplay = element.querySelector('.time-left');
+    const timeParts = timeLeftStr.split(':').map(Number);
+
+    if (timeParts.length !== 4 || timeParts.some(isNaN)) {
+      console.error('Giá trị timeLeft không hợp lệ');
+      return;
+    }
+
+    let [days, hours, minutes, seconds] = timeParts;
+    let totalSeconds = days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 + seconds;
+
+    // Hàm cập nhật countdown
+    function updateCountdown() {
+      if (totalSeconds <= 0) {
+        timeDisplay.textContent = 'Dự án đã kết thúc.';
+        clearInterval(interval); // Dừng countdown
+        return;
+      }
+
+      totalSeconds--; // Giảm số giây còn lại
+      const d = Math.floor(totalSeconds / (24 * 60 * 60));
+      const h = Math.floor((totalSeconds % (24 * 60 * 60)) / (60 * 60));
+      const m = Math.floor((totalSeconds % (60 * 60)) / 60);
+      const s = totalSeconds % 60;
+
+      // Cập nhật giao diện
+      timeDisplay.textContent = `${d} : ${h.toString().padStart(2, '0')} : ${m.toString().padStart(2, '0')} : ${s.toString().padStart(2, '0')}`;
+    }
+
+    // Cập nhật mỗi giây
+    const interval = setInterval(updateCountdown, 1000);
+
+    // Gọi hàm update ngay khi trang tải
+    updateCountdown();
+  }
+
+  // Thiết lập countdown cho tất cả các phần tử có class .countdowns
+  document.querySelectorAll('.countdowns').forEach(setupCountdown);
+
      });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
