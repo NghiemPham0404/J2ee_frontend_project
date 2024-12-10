@@ -107,4 +107,20 @@ public class AccountService {
             throw new RuntimeException(e);
         }
     }
+
+//    public String createAccount(Account account) {
+//        Call<ResponseEntity<Object>> call = accountApi.createAccount(account);
+//        try {
+//            Response<ResponseEntity<Object>> response = call.execute();
+//            if (response.isSuccessful() && response.body() != null) {
+//                return response.body().toString();
+//            } else {
+//                System.out.println("Error: " + response.errorBody().string());
+//                return null;
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
 }
