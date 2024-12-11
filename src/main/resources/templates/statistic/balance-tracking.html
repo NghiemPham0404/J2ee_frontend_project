@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Line Chart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="/css/home.css" th:href="@{/css/home.css}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .card-text {
+            height: 20px;
+        }
+
+        .table {
+            width: 1000px;
+            margin: 0 auto;
+        }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+            margin: 0 auto;
+        }
+
+        .table tbody tr:hover {
+            background: #D3D3D3;
+            cursor: pointer;
+            color: white;
+            transform: scale(1.05);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .table tr:nth-child(odd) {
+            background-color: white;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table th {
+            background: linear-gradient(195deg, #8E2DE2, #4A00E0);
+            color: white;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        td.description {
+            max-width: 400px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .stat-box {
+            width: 70%; /* Chiều rộng tối đa là 50% màn hình */
+            max-width: 1000px; /* Chiều rộng tối đa cụ thể */
+            min-width: 400px; /* Chiều rộng tối thiểu */
+        }
+
+        .border {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+        }
+
+        canvas {
+
+            width: 100%;
+            height: auto; /* Giữ tỷ lệ khi thu phóng */
+        }
+
+        .vh-100 {
+            height: 100vh; /* Chiều cao toàn màn hình */
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{header :: navbar}"></div>
+<div class="container mt-5">
+    <h2 class="text-center" style="font-family : 'Montserrat', sans-serif;">BÁO CÁO TÀI CHÍNH HOẠT ĐỘNG GÂY QUỸ</h2>
+    <form th:action="@{/balance-tracking}" method="get">
+        <div class="row justify-content-center align-items-center g-3 mb-4">
+            <div class="col-auto">
+                <label for="year" class="form-label mb-0">Năm :</label>
+            </div>
+
+            <div class="col-auto">
+                <select class="form-control" style="width:400px" name="year" id="year">
+                    <option th:each="l :${allActiveYear}" th:value="${l}" th:text="${l}"
+                            th:selected="${allActiveYear[0]}"></option>
+                </select>
+            </div>
+
+            <div class="col-auto">
+                <button class="btn btn-primary" type="submit">Duyệt</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Summary Blocks -->
+<div class="row text-center sm-4" style="width:900px; margin : 0 auto;">
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Số tiền còn lại trong quỹ</h5>
+                <div class="card-text" th:text="${remainBalance}+đ"></div>
+                <i class="bi bi-piggy-bank" style="font-size: 3rem; color: #28a745;"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Số tiền nhận được</h5>
+                <div class="card-text" th:text="${transferTotalsSum}+đ"></div>
+                <i class="bi bi-cash" style=" font-size: 3rem; color: rgba(75, 192, 192, 1);"></i>
+            </div>
+        </div>
+    </div>
+    <div class=" col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Số tiền đã giải ngân</h5>
+                <div class="card-text" th:text="${disburseTotalsSum}+đ"></div>
+                <i class="bi bi-currency-exchange" style=" font-size: 3rem; color: rgba(255, 99, 132, 1);"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class=" row justify-content-center">
+    <div class="col-md-8">
+        <canvas id="lineChart"></canvas>
+    </div>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Tháng</th>
+        <th>Số tiền chuyển khoản nhận được</th>
+        <th>Số tiền giải ngân</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="balance : ${data}">
+        <td th:text="${balance.getMonth()}"></td>
+        <td th:text="${balance.getTransferTotal()}" class="text-success"></td>
+        <td th:text="${balance.getCharityEventDisburse()}" class="text-danger"></td>
+    </tr>
+    </tbody>
+
+</table>
+
+<script>
+    // Data from Thymeleaf
+    const months = [[${months}]];
+    const year = document.getElementById("year").value;
+    const chartLabel = `Hoạt động gây quỹ theo tháng năm ${year}`;
+    const transferTotals = [[${transferTotals}]];
+    const charityEventTotals = [[${disburseTotals}]];
+
+    // Format months to readable labels
+    const monthLabels = months.map(m => `Tháng ${m}`);
+
+    // Chart.js configuration
+    const ctx = document.getElementById('lineChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: monthLabels,
+            datasets: [
+                {
+                    label: 'Số tiền chuyển khoản nhận được',
+                    data: transferTotals,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true
+                },
+                {
+                    label: 'Số tiền đã giải ngân',
+                    data: charityEventTotals,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {display: true, position: 'top'},
+                title: {display: true, text: chartLabel}
+            },
+            scales: {
+                x: {title: {display: true, text: 'Mốc thời gian'}},
+                y: {title: {display: true, text: 'VND'}}
+            }
+        }
+    });
+</script>
+</body>
+</html>

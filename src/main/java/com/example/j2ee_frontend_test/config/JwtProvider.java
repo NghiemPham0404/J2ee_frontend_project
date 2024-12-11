@@ -37,12 +37,14 @@ public class JwtProvider {
         if (httpSession.getAttribute("rememberMe").equals("false")) {
             httpSession.removeAttribute("username");
             httpSession.removeAttribute("rememberMe");
+            authorities = null;
         }
     }
 
     public void setToken(String token, boolean rememberMe) {
         httpSession.setAttribute("jwtToken", token);
         httpSession.setAttribute("username", getUsernameFromToken(token));
+        getAuthoritiesFromToken(token);
         if (rememberMe) httpSession.setAttribute("rememberMe", true);
     }
 
@@ -59,6 +61,10 @@ public class JwtProvider {
     // Get username from JWT token
     public String getUsernameFromToken(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public boolean containAuthority(String authority) {
+        return authorities.stream().anyMatch(a -> a.getAuthority().equals(authority));
     }
 
     public List<GrantedAuthority> getAuthoritiesFromToken(String token) {

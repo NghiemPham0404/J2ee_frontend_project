@@ -7,10 +7,12 @@ import com.example.j2ee_frontend_test.models.TransferSession;
 import com.example.j2ee_frontend_test.services.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -33,6 +35,9 @@ public class PaymentController {
     @Autowired
     private EmailService emailService; // Inject EmailService
 
+    @Value("${base.api.url}")
+    private String baseApiUrl;
+
 
     @GetMapping("/donate/{post_id}")
     public String home(@PathVariable String post_id, Model model) {
@@ -51,6 +56,7 @@ public class PaymentController {
                               Model model) {
         model.addAttribute("fullName", fullname);
         model.addAttribute("orderInfo", orderInfo);
+        orderInfo = removeDiacritics(orderInfo);
         orderInfo = fullname + "_" + postId + "_" + orderInfo;
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         String vnpayUrl = vnPayService.createOrder(orderTotal, orderInfo, baseUrl);
@@ -114,6 +120,7 @@ public class PaymentController {
                     model.addAttribute("totalPrice", totalPrice);
                     model.addAttribute("paymentTime", formattedPaymentTime);
                     model.addAttribute("transactionId", transactionId);
+                    model.addAttribute("apiBaseUrl", baseApiUrl);
 
                     // Trả về trang phù hợp
                     return paymentStatus == 1 ? "payment/ordersuccess" : "payment/orderfail";
@@ -143,5 +150,13 @@ public class PaymentController {
         // Gửi email cho người dùng
         emailService.sendCertification(emailAddress, transferId);
         return "redirect:/";
+    }
+
+    public static String removeDiacritics(String input) {
+        // Normalize the text to decompose diacritics
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
+        // Use regex to remove all non-ASCII characters
+        return normalized
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
     }
 }
