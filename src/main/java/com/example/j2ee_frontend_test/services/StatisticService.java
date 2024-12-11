@@ -136,4 +136,26 @@ public class StatisticService {
             return null;
         }
     }
+    public TransferSessionListResponse top10(UUID id) {
+       Call<TransferSessionListResponse> call=statisticApi.getTop10(id);
+        try {
+            Response<TransferSessionListResponse> response = call.execute();
+            if (response.isSuccessful() && response.body() != null) {
+                return response.body();
+            } else {
+                if (response.errorBody() != null) {
+                    try (ResponseBody errorBody = response.errorBody()) {
+                        String errorDetails = errorBody.string();
+                        System.out.println("Error: " + errorDetails);
+                    }
+                } else {
+                    System.out.println("Error: No error body provided.");
+                }
+                return null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

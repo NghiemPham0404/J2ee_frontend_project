@@ -1,7 +1,10 @@
 package com.example.j2ee_frontend_test.controller;
 import com.example.j2ee_frontend_test.models.Post;
+import com.example.j2ee_frontend_test.models.TransferSession;
 import com.example.j2ee_frontend_test.response.PostListResponse;
+import com.example.j2ee_frontend_test.response.TransferSessionListResponse;
 import com.example.j2ee_frontend_test.services.PostService;
+import com.example.j2ee_frontend_test.services.StatisticService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.websocket.server.PathParam;
@@ -16,10 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -27,7 +27,8 @@ public class HomeController {
 
     @Autowired
     PostService postService;
-
+    @Autowired
+    StatisticService statisticService;
     @GetMapping("/")
     public String home(Model model, HttpServletRequest request) throws JsonProcessingException {
         model.addAttribute("currentUri", request.getRequestURI());
@@ -125,18 +126,40 @@ public class HomeController {
         Post post=postService.getPostByIdForUser(UUID.fromString(id));
         timeLeft(post);
         PostListResponse postListResponse=postService.getAllPostsforuser(0);
+        int pages=postListResponse.getTotalPages();
+        PostListResponse all;
+        List<Post> a=new ArrayList<>();
+        for (int i=0;i<pages;i++){
+            all=postService.getAllPostsforuser(i);
+            a.addAll(all.getPostList());
+
+        }
+        List<Post> r = getRandomPosts(a, 7);
         List<Post> data=postListResponse.getPostList();
+        Post d=postService.getPostById(UUID.fromString(id));
+        data. remove(d);
         List<Post> done= data.stream().filter(p-> p.getCharityEvent().getIsDisbursed()!=null).collect(Collectors.toList());
         System.out.println("Done:" + done);
-
+        System.out.println("R:" + done);
+        System.out.println("data:" + data);
         for (Post p : data) {
             timeLeft(p);
         }
 
+        List<TransferSession> top10= statisticService.top10(post.getCharityEvent().getId()).getTransferSessionList();
         model.addAttribute("ip",post);
+        model.addAttribute("r",r);
         model.addAttribute("data", data);
         model.addAttribute("done", done);
-
+        model.addAttribute("top",top10);
         return "article";
+    }
+    private List<Post> getRandomPosts(List<Post> posts, int count) {
+        if (posts == null || posts.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        Collections.shuffle(posts);
+        return posts.stream().limit(count).collect(Collectors.toList());
     }
 }

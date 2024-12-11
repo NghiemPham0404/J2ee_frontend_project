@@ -10,7 +10,8 @@
             height: 100%;
             margin: 0;
         }
-
+        .progress-container{
+        width:700px;}
         .content-center {
             display: flex;
             flex-direction: column;
@@ -27,12 +28,17 @@
         }
 
         h5 {
-            cursor: pointer;
+
+            font-weight: bold;
+            color: black;
+            text-align:start
         }
+        .similar-post h6 {
+        color:bule;}
         .content-center{
         height:max-content;
-        margin:auto;
-        width:50%;
+
+        width:100%;
         }
 
         img{
@@ -81,6 +87,38 @@
         .similar-post a:hover {
             text-decoration: underline;
         }
+        .content{
+        width:50%;
+        }
+        .donate{
+        width:25%;
+        height:100%;
+        h6{
+        color:blue;}
+        }
+        .posts{
+        width:25%;
+        height:100%}
+        .similar-post h3.rank-gold {
+    color: gold;
+    font-weight: bold;
+}
+
+.similar-post h3.rank-silver {
+    color: silver;
+    font-weight: bold;
+}
+
+.similar-post h3.rank-bronze {
+    color: #cd7f32; /* Màu đồng */
+    font-weight: bold;
+}
+
+.similar-post h3.rank-default {
+    color: black;
+}
+        .truncate {
+        color:blue;}
     </style>
 </head>
 <body>
@@ -89,8 +127,24 @@
 
 <div th:replace="~{header :: navbar}"></div>
 
-<div class="content-center col-md-12">
+<div class="content-center">
+    <div class="row">
+    <div class="posts col-md-3  sticky-top">
+        <h5 class="mt-5">Top 10 người ủng hộ</h5>
+        <div class="similar-post mt-3" th:each="t, iterStat :${top}">
+            <h3 th:text="${iterStat.index + 1}" class="me-2"
+                th:classappend="'rank-' + (iterStat.index == 0 ? 'gold' : (iterStat.index == 1 ? 'silver' : (iterStat.index == 2 ? 'bronze' : 'default')))"></h3>
+<!--        <h3 th:text="${index + 1}" th:classappend="'rank-' + (index == 0 ? 'gold' : (index == 1 ? 'silver' : (index == 2 ? 'bronze' : 'default')))"></h3> class="similar-post mt-3" >-->
+            <div>
 
+                <h6  class="truncate" th:text="${t.name}"></h6>
+
+                <p class="truncate" th:text="${t.amount}"></p>
+            </div>
+        </div>
+    </div>
+
+<div class="content col-md-6">
     <h4 class="mt-5" th:text="${ip.title}"></h4>
     <p id="ipbodyText" th:utext="${ip.body}" style="width:600px;"></p>
 
@@ -101,7 +155,7 @@
         <div class="small" th:text="${ip.charityEvent.timeLeft == 'Dự án đã kết thúc.' ? ' ' : 'Ngày : Giờ : Phút : Giây'}">Ngày : Giờ : Phút : Giây</div>
     </div>
 
-    <div class="progress-container" style="width:400px">
+    <div class="progress-container" >
         <div class="progress-label mt-4">Đã góp được:
             <span class="highlight" th:text="${ip.charityEvent.currentAmount}"></span> /
             <span th:text="${ip.charityEvent.goalAmount}"></span>
@@ -122,16 +176,22 @@
         </div>
     </div>
 </div>
-<div class="sidebar">
-    <h5>Bài viết tương tự</h5>
-    <div  class="similar-post">
-        <img th:src="@{${ip.thumbImg}}">
-        <a>
-            <h6 th:text="${ip.charityEvent.title}"></h6>
-        </a>
-        <p th:text="${ip.charityEvent.descriptiom}"></p>
+    <div class="posts col-md-3 position-sticky sticky-top ">
+    <h5 class="mt-5">Những bài viết tương tự</h5>
+        <div th:each="p : ${data}"  class="similar-post mt-3" th:onclick="window.location.href='/article/' + /*[[${p.id}]]*/ ''">
+            <img th:src="@{${p.thumbImg}}" alt="Hình ảnh bài viết">
+            <div>
+
+                    <h6  class="truncate" th:text="${p.title}"></h6>
+                </a>
+                <p class="truncate" th:text="${p.charityEvent.description}"></p>
+            </div>
+        </div>
+
+    </div>
     </div>
 </div>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
   // 1. Countdown
@@ -181,6 +241,24 @@
 
   // Thiết lập countdown cho tất cả các phần tử có class .countdowns
   document.querySelectorAll('.countdowns').forEach(setupCountdown);
+    });
+     document.addEventListener("DOMContentLoaded", function () {
+        const maxLength = {
+            title: 30, // Số ký tự tối đa cho tiêu đề
+            description: 75 // Số ký tự tối đa cho mô tả
+        };
+
+        function truncateText(selector, limit) {
+            document.querySelectorAll(selector).forEach(function (element) {
+                const originalText = element.textContent.trim();
+                if (originalText.length > limit) {
+                    element.textContent = originalText.substring(0, limit) + "...";
+                }
+            });
+        }
+
+        truncateText(".similar-post h6", maxLength.title);
+        truncateText(".similar-post p", maxLength.description);
     });
 </script>
 </body>
