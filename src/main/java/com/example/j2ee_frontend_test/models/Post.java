@@ -31,6 +31,8 @@ public class Post {
 
     private List<PostView> postViews;
 
+    private int viewed;
+
     public void generateUUID() {
         if (id == null) {
             id = UUID.randomUUID();

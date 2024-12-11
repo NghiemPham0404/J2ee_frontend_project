@@ -33,4 +33,7 @@ public interface CharityApi {
 
     @POST("charity-events/disburse/{id}")
     Call<ResponseEntity<Object>> disburse(@Path("id") String id);
+
+    @GET("charity-events/without-post")
+    Call<CharityListResponse> getCharityEventsWithoutPost(@Query("page") int page);
 }

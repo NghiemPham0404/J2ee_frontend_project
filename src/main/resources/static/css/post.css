@@ -17,13 +17,13 @@ h1 {
 .table td {
     vertical-align: middle;
     text-align: center;
+
 }
 
-.table tbody tr:hover {
-    background: linear-gradient(195deg, #c2e59c, #64b3f4);
-    color: white;
+.table th {
+    background: linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%);
+    color: #FFFFFF;
 }
-
 
 .btn-create,
 .btn-view-all {
@@ -62,13 +62,18 @@ h1 {
     margin-bottom: 20px;
 }
 .active-btn {
-    background: linear-gradient(195deg, #c2e59c 0%, #64b3f4 100%);
+    background: linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%);
     color:white;
     border:none;
 }
 
 .table tbody tr:hover {
-    background: linear-gradient(195deg, #c2e59c, #64b3f4);
+    background: linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%);
     cursor: pointer;
-    color:white;
+    color: white;
+
+}
+
+.table tbody tr:hover td {
+    color: white; /* Đảm bảo màu chữ trong các ô của dòng cũng thành trắng khi hover */
 }

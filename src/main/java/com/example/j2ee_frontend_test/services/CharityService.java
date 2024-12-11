@@ -152,6 +152,21 @@ public class CharityService {
             throw new RuntimeException(e);
         }
     }
+
+    // lay danh sach tu thien chua co bai dang
+    public CharityListResponse getCharityEventsWithoutPost(int page) {
+        Call<CharityListResponse> call = charityApi.getCharityEventsWithoutPost(page);
+        try {
+            Response<CharityListResponse> response = call.execute();
+            if (response.isSuccessful() && response.body() != null) {
+                return response.body();
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 
 

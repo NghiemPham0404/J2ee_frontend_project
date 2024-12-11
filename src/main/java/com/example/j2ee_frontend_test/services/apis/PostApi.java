@@ -24,6 +24,12 @@ public interface PostApi {
     @GET("posts/approved/{id}")
     Call<Post> getPostByIdForUser(@Path("id") UUID id);
 
+    @GET("posts/not-approved")
+    Call<PostListResponse> getNotApprovedPosts(@Query("page") int page);
+
+    @POST("posts/post/{id}/approved")
+    Call<ResponseEntity<Object>> approvePost(@Path("id") UUID id);
+
     @PUT("posts/{id}")
     Call<ResponseEntity<Object>> updatePost(@Path("id") UUID id, @Body Post post);
 

@@ -1,5 +1,6 @@
 package com.example.j2ee_frontend_test.services;
 
+import com.example.j2ee_frontend_test.models.Account;
 import com.example.j2ee_frontend_test.models.Profile;
 import com.example.j2ee_frontend_test.services.apis.ProfileApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +63,21 @@ public class ProfileService {
 //            throw new RuntimeException(e);
 //        }
 //    }
+
+    public Account getPersonalInfo() {
+        Call<Account> call = profileApi.getPersonalInfo();
+        try {
+            Response<Account> response = call.execute();
+            if (response.isSuccessful() && response.body() != null) {
+                return response.body();
+            } else {
+                System.out.println("Error: " + response.errorBody());
+                return new Account();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
 

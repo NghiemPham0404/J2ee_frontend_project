@@ -14,6 +14,10 @@ public class PostListResponse {
     private List<Post> postList;
 
     @Expose
+    @SerializedName("dataNotApproved")
+    private List<Post> postListNotApproved;
+
+    @Expose
     @SerializedName("total_results")
     private int totalResults;
 

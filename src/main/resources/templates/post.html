@@ -33,6 +33,7 @@
             th:value="${query}"
             placeholder="Tìm kiếm bài viết theo tiêu đề..."
           />
+
           <input
             type="submit"
             class="btn btn-outline-primary me-2"
@@ -50,55 +51,26 @@
 
       <!-- Nút hành động -->
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Bài viết của tôi</h2>
+        <div>
+          <button class="btn btn-outline-primary active-btn" id="my-btn" th:if="${isAdmin}">Bài viết của tôi</button>
+          <button class="btn btn-outline-primary" id="pend-btn" th:if="${isAdmin}">Bài viết chờ duyệt</button>
+        </div>
+
         <div>
           <a href="/posts/new" class="btn btn-outline-primary"
             >Tạo bài viết mới</a
           >
-          <button class="btn btn-outline-primary btn-view-all">
+          <button class="btn btn-outline-primary btn-view-all" id="admin-btn" th:if="${isAdmin}">
             Xem tất cả
           </button>
         </div>
       </div>
 
-      <!-- Filters Section -->
-<!--      <div class="row mb-4">-->
-<!--        <div class="col-md-10 offset-md-1">-->
-<!--          <div class="d-flex justify-content-between align-items-center">-->
-<!--            <div class="input-group mx-2" style="max-width: 250px">-->
-<!--              <label for="startDate" class="form-label mt-2"-->
-<!--                >Ngày bắt đầu: </label-->
-<!--              >&nbsp;-->
-<!--              <input type="date" id="startDate" class="form-control" />-->
-<!--            </div>-->
+      <div th:attr="data-owner-id=${isAdmin}" id="ownerData"></div>
 
-<!--            <div class="input-group mx-2" style="max-width: 250px">-->
-<!--              <label for="endDate" class="form-label mt-2">Ngày kết thúc:</label-->
-<!--              >&nbsp;-->
-<!--              <input type="date" id="endDate" class="form-control" />-->
-<!--            </div>-->
+      <h2 id="labelpost"> Bài viết của tôi</h2>
 
-<!--            <div class="input-group mx-2" style="max-width: 250px">-->
-<!--              <label for="viewRange" class="form-label">Số lượt xem:</label>-->
-<!--              <input-->
-<!--                type="range"-->
-<!--                id="viewRange"-->
-<!--                class="form-range"-->
-<!--                min="0"-->
-<!--                max="1000000"-->
-<!--                step="100"-->
-<!--                value="1000000"-->
-<!--                onchange="updateViewRangeValue()"-->
-<!--              />-->
-<!--              <span id="viewRangeValue">1,000,000 lượt xem</span>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-
-      <!-- Button group for "Tạo bài viết mới" and "Bài viết đang duyệt" -->
-
-      <!-- Bảng quản lý bài viết -->
+      <!-- Bảng quản lý bài viết của tôi -->
 
       <div class="row">
         <div class="col">
@@ -133,10 +105,11 @@
                     class="thumb-image"
                   />
                 </td>
-                <td>150</td>
+                <td th:text="${post.viewed}">150</td>
               </tr>
             </tbody>
           </table>
+
 
           <!-- Pagination -->
 
@@ -178,6 +151,85 @@
       </div>
     </div>
     <!--<div th:replace="~{footer :: footer}"></div>-->
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      var allPosts = /*[[${dataForAdmin}]]*/ '[]';
+      var pendingPosts = /*[[${dataNotApproved}]]*/ '[]';
+      var userPosts = /*[[${data}]]*/ '[]';
+      const ownerId = document.getElementById('ownerData').getAttribute('data-owner-id');
+      console.log('Is Admin:', ownerId);
+
+      if (ownerId === 'true') {
+        document.getElementById('my-btn').addEventListener('click', function() {
+          document.getElementById('labelpost').innerHTML = 'Bài viết của tôi';
+          updateTable(userPosts);
+        });
+
+        document.getElementById('admin-btn').addEventListener('click', function() {
+          document.getElementById('labelpost').innerHTML = 'Tất cả bài viết';
+          updateTable(allPosts);
+        });
+
+        document.getElementById('pend-btn').addEventListener('click', function() {
+          document.getElementById('labelpost').innerHTML = 'Bài viết chờ duyệt';
+          updateTable(pendingPosts);
+        });
+      }
+
+
+      function updateTable(posts) {
+        let tableBody = document.getElementById('postTableBody');
+        tableBody.innerHTML = ''; // Xóa dữ liệu cũ trong bảng
+
+        if (posts.length === 0) {
+          let noDataRow = document.createElement('tr');
+          let noDataCell = document.createElement('td');
+          noDataCell.setAttribute('colspan', '5');
+          noDataCell.classList.add('text-center');
+          noDataCell.textContent = 'Không có bài viết nào';
+          noDataRow.appendChild(noDataCell);
+          tableBody.appendChild(noDataRow);
+        } else {
+          posts.forEach(post => {
+            let row = document.createElement('tr');
+            row.setAttribute('data-id', post.id);
+            row.style.cursor = 'pointer';
+            row.onclick = function() {
+              window.location.href = '/posts/update/' + post.id;
+            };
+
+            let idCell = document.createElement('td');
+            idCell.textContent = post.id;
+            row.appendChild(idCell);
+
+            let titleCell = document.createElement('td');
+            titleCell.textContent = post.title;
+            row.appendChild(titleCell);
+
+            let timeCell = document.createElement('td');
+            timeCell.textContent = post.timePost;
+            row.appendChild(timeCell);
+
+            let imgCell = document.createElement('td');
+            let img = document.createElement('img');
+            img.src = post.thumbImg;
+            img.alt = 'Thumb';
+            img.classList.add('thumb-image');
+            imgCell.appendChild(img);
+            row.appendChild(imgCell);
+
+            let viewedCell = document.createElement('td');
+            viewedCell.textContent = post.viewed;
+            row.appendChild(viewedCell);
+
+            tableBody.appendChild(row);
+          });
+        }
+      }
+
+      /*]]>*/
+    </script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
