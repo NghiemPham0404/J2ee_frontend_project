@@ -57,7 +57,7 @@
 <div th:replace="~{header :: navbar}"></div>
 <div class="container mt-5">
     <h1 class="text-center">Quản lý vai trò</h1>
-    <button class="btn btn-outline-primary mb-3 float-end" th:onclick="window.location.href='/role/new'">Thêm Vai trò</button>
+    <button class="btn btn-outline-primary mb-3 float-end" th:onclick="window.location.href='/role/new'" th:if="${create}">Thêm Vai trò</button>
 
     <table class="table table-bordered">
         <thead>

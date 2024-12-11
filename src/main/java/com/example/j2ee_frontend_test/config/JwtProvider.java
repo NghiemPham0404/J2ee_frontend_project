@@ -34,11 +34,10 @@ public class JwtProvider {
 
     public void destroyToken() {
         httpSession.removeAttribute("jwtToken");
-        if (httpSession.getAttribute("rememberMe").equals("false")) {
-            httpSession.removeAttribute("username");
-            httpSession.removeAttribute("rememberMe");
-            authorities = null;
-        }
+        destroyHeaderAuthority();
+        authorities = null;
+        httpSession.removeAttribute("username");
+        httpSession.removeAttribute("rememberMe");
     }
 
     public void setToken(String token, boolean rememberMe) {
@@ -68,7 +67,7 @@ public class JwtProvider {
     }
 
     public List<GrantedAuthority> getAuthoritiesFromToken(String token) {
-        if (authorities == null) {
+        if (authorities == null || authorities.isEmpty()) {
             System.out.println("getAuthoritiesFromToken: " + token);
             Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
             authorities = (((List<?>) claims.get("authorities")).stream()
@@ -77,7 +76,28 @@ public class JwtProvider {
             for (GrantedAuthority grantedAuthority : authorities) {
                 System.out.println(grantedAuthority);
             }
+            setHeaderAuthority();
         }
         return authorities;
     }
+
+    public void setHeaderAuthority() {
+        httpSession.setAttribute("account_management", containAuthority("Account Management read"));
+        httpSession.setAttribute("role_management", containAuthority("Role Management read"));
+        httpSession.setAttribute("charity_event_management", containAuthority("Charity Event Management read"));
+        httpSession.setAttribute("post_management", containAuthority("Post Management read"));
+        httpSession.setAttribute("accounting", containAuthority("Accounting read"));
+        System.out.println("setHeaderAuthority: " + containAuthority("Accounting"));
+        System.out.println("setHeaderAuthority: " + httpSession.getAttribute("Accounting"));
+    }
+
+    public void destroyHeaderAuthority() {
+        httpSession.removeAttribute("account_management");
+        httpSession.removeAttribute("role_management");
+        httpSession.removeAttribute("charity_event_management");
+        httpSession.removeAttribute("post_management");
+        httpSession.removeAttribute("accounting");
+    }
+
+
 }

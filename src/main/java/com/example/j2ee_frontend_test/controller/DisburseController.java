@@ -22,6 +22,7 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/disburse")
+@PreAuthorize("hasAuthority('Accounting read')")
 public class DisburseController {
     @Autowired
     CharityService charityService;

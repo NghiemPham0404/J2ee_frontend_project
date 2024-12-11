@@ -55,8 +55,8 @@
         </div>
 
         <div class="col-12 text-center">
-          <button type="submit" class="btn btn-outline-primary">Lưu</button>
-          <a href="/roles" th:href="@{/role/delete/{id}(id=${id})}" class="btn btn-outline-del">Xóa</a>
+          <button type="submit" class="btn btn-outline-primary" th:if="${update}">Lưu</button>
+          <a href="/roles" th:href="@{/role/delete/{id}(id=${id})}" class="btn btn-outline-del" th:if="${delete}">Xóa</a>
         </div>
       </form>
     </div>

@@ -1,5 +1,6 @@
 package com.example.j2ee_frontend_test.controller;
 
+import com.example.j2ee_frontend_test.config.JwtProvider;
 import com.example.j2ee_frontend_test.models.Account;
 import com.example.j2ee_frontend_test.models.Role;
 import com.example.j2ee_frontend_test.response.AccountListResponse;
@@ -37,11 +38,16 @@ public class AccountController {
 
     @Autowired
     RoleService roleService;
+    @Autowired
+    private JwtProvider jwtProvider;
 
     @GetMapping
     public String viewAccountsPage(Model model, @PathParam("page") Integer page) {
         page = page != null ? page : 0;
         AccountListResponse accountListResponse = accountService.getAllAccounts(1, page);
+        if(accountListResponse!=null){
+
+        }
         model.addAttribute("data", accountListResponse.getAccountList());
         model.addAttribute("page", page);
         model.addAttribute("total_pages", accountListResponse.getTotalPages());
@@ -52,6 +58,7 @@ public class AccountController {
         List<Role> roles = roleService.getAllRoles();
         roles.forEach(role -> System.out.println(role.getName()));
         model.addAttribute("roles", roles);
+        model.addAttribute("create", jwtProvider.containAuthority("Account Management create"));
         return "accounts";  // Thymeleaf template
     }
 
@@ -93,7 +100,8 @@ public class AccountController {
         List<Role> roles = roleService.getAllRoles();
         roles.forEach(role -> System.out.println(role.getName()));
         model.addAttribute("roles", roles);
-
+        model.addAttribute("update", jwtProvider.containAuthority("Account Management update"));
+        model.addAttribute("delete", jwtProvider.containAuthority("Account Management delete"));
         return "update_account";
     }
 

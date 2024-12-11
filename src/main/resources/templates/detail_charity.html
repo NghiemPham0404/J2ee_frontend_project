@@ -70,9 +70,9 @@
     </div>
 
     <div class="text-center mt-4">
-      <button type="submit" class="btn btn-outline-primary">Lưu</button>
+      <button type="submit" class="btn btn-outline-primary" th:if="${update}">Lưu</button>
       <a th:href="@{/transaction/{id}(id=${data.id})}" class="btn btn-outline-primary">Sao kê</a>
-      <a th:href="@{/charity-events/delete/{id}(id=${data.id})}" class="btn btn-outline-danger">Xóa</a>
+      <a th:href="@{/charity-events/delete/{id}(id=${data.id})}" class="btn btn-outline-danger" th:if="${delete}">Xóa</a>
     </div>
   </form>
 </div>
