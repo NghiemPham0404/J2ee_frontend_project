@@ -52,20 +52,21 @@
       <!-- Nút hành động -->
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
-          <button class="btn btn-outline-primary active-btn" id="my-btn" >Bài viết của tôi</button>
-          <button class="btn btn-outline-primary" id="pend-btn" >Bài viết chờ duyệt</button>
+          <button class="btn btn-outline-primary active-btn" id="my-btn" th:if="${isAdmin}">Bài viết của tôi</button>
+          <button class="btn btn-outline-primary" id="pend-btn" th:if="${isAdmin}">Bài viết chờ duyệt</button>
         </div>
 
         <div>
           <a href="/posts/new" class="btn btn-outline-primary"
             >Tạo bài viết mới</a
           >
-          <button class="btn btn-outline-primary btn-view-all" id="admin-btn">
+          <button class="btn btn-outline-primary btn-view-all" id="admin-btn" th:if="${isAdmin}">
             Xem tất cả
           </button>
         </div>
       </div>
 
+      <div th:attr="data-owner-id=${isAdmin}" id="ownerData"></div>
 
       <h2 id="labelpost"> Bài viết của tôi</h2>
 
@@ -109,83 +110,6 @@
             </tbody>
           </table>
 
-          <!-- Bảng bài viết đang duyệt -->
-<!--          <table class="table table-bordered table-hover" id="PendingTable" style="display:none">-->
-<!--            <thead>-->
-<!--            <tr>-->
-<!--              <th>ID</th>-->
-<!--              <th>Tiêu đề</th>-->
-<!--              <th>Người đăng</th>-->
-<!--              <th>Ngày đăng</th>-->
-<!--              <th>Hình ảnh</th>-->
-<!--            </tr>-->
-
-<!--            </thead>-->
-<!--            <tbody id="pendingTableBody">-->
-
-<!--            <tr th:if="${message_not_approved != null}">-->
-<!--              <td colspan="5" class="text-center" th:text="${message_not_approved}"></td>-->
-<!--            </tr>-->
-
-<!--            <tr-->
-<!--                    th:each="post : ${dataNotApproved}"-->
-<!--                    th:attr="data-id=${post.id}"-->
-<!--                    th:onclick="|window.location.href='/posts/update/' + this.getAttribute('data-id');|"-->
-<!--                    style="cursor: pointer"-->
-<!--            >-->
-<!--              <td th:text="${post.id}">2</td>-->
-<!--              <td th:text="${post.title}">Tiêu đề bài viết chờ duyệt</td>-->
-<!--              <td th:text="${post.account.name}">Thiệu Huy</td>-->
-<!--              <td th:text="${post.timePost}">7/11/2024</td>-->
-<!--              <td>-->
-<!--                <img-->
-<!--                        th:src="@{${post.thumbImg}}"-->
-<!--                        alt="Thumb"-->
-<!--                        class="thumb-image"-->
-<!--                />-->
-<!--              </td>-->
-
-
-<!--            </tr>-->
-<!--            </tbody>-->
-<!--          </table>-->
-
-          <!-- Bảng bài viết cho admin xem -->
-<!--          <table class="table table-bordered table-hover" id="AdminTable">-->
-<!--            <thead>-->
-<!--            <tr>-->
-<!--              <th>ID</th>-->
-<!--              <th>Tiêu đề</th>-->
-<!--              <th>Ngày đăng</th>-->
-<!--              <th>Hình ảnh</th>-->
-<!--              <th>Lượt xem</th>-->
-<!--            </tr>-->
-<!--            </thead>-->
-<!--            <tbody id="adminTableBody">-->
-<!--&lt;!&ndash;            <tr th:if="${message != null}">&ndash;&gt;-->
-<!--&lt;!&ndash;              <td colspan="5" class="text-center" th:text="${message}"></td>&ndash;&gt;-->
-<!--&lt;!&ndash;            </tr>&ndash;&gt;-->
-
-<!--            <tr-->
-<!--                    th:each="post : ${dataForAdmin}"-->
-<!--                    th:attr="data-id=${post.id}"-->
-<!--                    th:onclick="|window.location.href='/posts/update/' + this.getAttribute('data-id');|"-->
-<!--                    style="cursor: pointer"-->
-<!--            >-->
-<!--              <td th:text="${post.id}">1</td>-->
-<!--              <td th:text="${post.title}">Tiêu đề bài viết 1</td>-->
-<!--              <td th:text="${post.timePost}">01/01/2024</td>-->
-<!--              <td>-->
-<!--                <img-->
-<!--                        th:src="@{${post.thumbImg}}"-->
-<!--                        alt="Thumb"-->
-<!--                        class="thumb-image"-->
-<!--                />-->
-<!--              </td>-->
-<!--              <td th:text="${post.viewed}">150</td>-->
-<!--            </tr>-->
-<!--            </tbody>-->
-<!--          </table>-->
 
           <!-- Pagination -->
 
@@ -232,21 +156,26 @@
       var allPosts = /*[[${dataForAdmin}]]*/ '[]';
       var pendingPosts = /*[[${dataNotApproved}]]*/ '[]';
       var userPosts = /*[[${data}]]*/ '[]';
+      const ownerId = document.getElementById('ownerData').getAttribute('data-owner-id');
+      console.log('Is Admin:', ownerId);
 
-      document.getElementById('my-btn').addEventListener('click', function() {
-        document.getElementById('labelpost').innerHTML = 'Bài viết của tôi';
-        updateTable(userPosts);
-      });
+      if (ownerId === 'true') {
+        document.getElementById('my-btn').addEventListener('click', function() {
+          document.getElementById('labelpost').innerHTML = 'Bài viết của tôi';
+          updateTable(userPosts);
+        });
 
-      document.getElementById('admin-btn').addEventListener('click', function() {
-        document.getElementById('labelpost').innerHTML = 'Tất cả bài viết';
-        updateTable(allPosts);
-      });
+        document.getElementById('admin-btn').addEventListener('click', function() {
+          document.getElementById('labelpost').innerHTML = 'Tất cả bài viết';
+          updateTable(allPosts);
+        });
 
-      document.getElementById('pend-btn').addEventListener('click', function() {
-        document.getElementById('labelpost').innerHTML = 'Bài viết chờ duyệt';
-        updateTable(pendingPosts);
-      });
+        document.getElementById('pend-btn').addEventListener('click', function() {
+          document.getElementById('labelpost').innerHTML = 'Bài viết chờ duyệt';
+          updateTable(pendingPosts);
+        });
+      }
+
 
       function updateTable(posts) {
         let tableBody = document.getElementById('postTableBody');
@@ -301,34 +230,7 @@
       /*]]>*/
     </script>
 
-<!--    <script>-->
-<!--        function MyPost() {-->
-<!--            document.getElementById("MyTable").style.display = "table";-->
-<!--            document.getElementById("PendingTable").style.display = "none";-->
-<!--            document.getElementById("AdminTable").style.display = "none";-->
-<!--            document.getElementById("my-btn").classList.add("active-btn");-->
-<!--            document.getElementById("pend-btn").classList.remove("active-btn");-->
-<!--            document.getElementById("labelpost").innerHTML = "Bài viết của tôi";-->
-<!--        }-->
 
-<!--        function PendingPost() {-->
-<!--            document.getElementById("MyTable").style.display = "none";-->
-<!--            document.getElementById("PendingTable").style.display = "table";-->
-<!--            document.getElementById("AdminTable").style.display = "none";-->
-<!--            document.getElementById("pend-btn").classList.add("active-btn");-->
-<!--            document.getElementById("my-btn").classList.remove("active-btn");-->
-<!--            document.getElementById("labelpost").innerHTML = "Bài viết đang duyệt";-->
-<!--        }-->
-
-<!--        function AdminPost() {-->
-<!--            document.getElementById("MyTable").style.display = "none";-->
-<!--            document.getElementById("PendingTable").style.display = "none";-->
-<!--            document.getElementById("AdminTable").style.display = "table";-->
-<!--            document.getElementById("pend-btn").classList.remove("active-btn");-->
-<!--            document.getElementById("my-btn").classList.remove("active-btn");-->
-<!--            document.getElementById("labelpost").innerHTML = "Tất cả bài viết";-->
-<!--        }-->
-<!--    </script>-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

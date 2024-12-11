@@ -3,6 +3,7 @@ package com.example.j2ee_frontend_test.controller;
 import com.example.j2ee_frontend_test.models.Account;
 import com.example.j2ee_frontend_test.models.CharityEvent;
 import com.example.j2ee_frontend_test.models.Post;
+import com.example.j2ee_frontend_test.models.Profile;
 import com.example.j2ee_frontend_test.response.PostListResponse;
 import com.example.j2ee_frontend_test.services.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -40,8 +41,23 @@ public class PostController {
         PostListResponse postListResponse = null;
         PostListResponse postListResponseForAdmin = null;
 
+        Account personalInfo = profileService.getPersonalInfo();
+        System.out.println("Personal Info: " + personalInfo.getId());
+
+        // lay id cua nguoi dung da dang nhap
+        int ownerId = personalInfo.getId();
+
+        boolean isAdmin = false;
+
+        // kiem tra xem co phai admin khong
+        if (ownerId == 1) {
+            isAdmin = true;
+            System.out.println("Yes, this is admin");
+        }
+
+
         if (query != null && !query.isEmpty()) {
-            postListResponse = postService.getMyPosts(page, 1, query);
+            postListResponse = postService.getMyPosts(page, ownerId, query);
             postListResponseForAdmin = postService.getAllPosts(1, page, query);
 
             if (postListResponse == null || postListResponse.getPostList().isEmpty() && postListResponseForAdmin == null || postListResponseForAdmin.getPostList().isEmpty()) {
@@ -53,13 +69,14 @@ public class PostController {
                 model.addAttribute("total_results", 0);
                 model.addAttribute("query", query);
                 model.addAttribute("queryForAdmin", query);
+                model.addAttribute("isAdmin", isAdmin);
                 return "post";
             }
 
         }
 
         else {
-            postListResponse = postService.getMyPosts(page, 1, "");
+            postListResponse = postService.getMyPosts(page, ownerId, "");
             postListResponseForAdmin = postService.getAllPosts(1, page, "");
             PostListResponse postListResponseNotApproved = postService.getNotApprovedPosts(page);
 
@@ -72,13 +89,6 @@ public class PostController {
                 model.addAttribute("message_not_approved", "Không có bài viết nào để duyệt!");
             }
 
-//            String isAdmin = profileService.validateAdmin(username);
-//            if (isAdmin.equals("Admin")) {
-//                model.addAttribute("isAdmin", "Yes");
-//            }
-//            else {
-//                model.addAttribute("isAdmin", "No");
-//            }
 
         }
 
@@ -91,6 +101,7 @@ public class PostController {
         model.addAttribute("total_results", postListResponse.getTotalResults());
         model.addAttribute("query", query);
         model.addAttribute("queryForAdmin", query);
+        model.addAttribute("isAdmin", isAdmin);
 
 
         return "post";
@@ -99,18 +110,20 @@ public class PostController {
     @GetMapping("/new")
     public String showNewPostPage(Model model) {
         Post post = new Post();
+        Account personalInfo = profileService.getPersonalInfo();
+        int ownerId = personalInfo.getId();
         model.addAttribute("post", post);
         model.addAttribute("charityEvents", charityService.getCharityEventsWithoutPost(0).getCharityList());
-
+        model.addAttribute("ownerId", ownerId);
         return "create_post";
     }
 
     @PostMapping("/save")
     public String savePost(@ModelAttribute("post") Post post) throws Exception {
-        if (post.getAccount() != null && post.getAccount().getId() != null) {
-            System.out.println("Account ID:" + post.getAccount().getId());
-            Account account = accountService.getAccountById(post.getAccount().getId());
+     if (post.getAccount() == null) {
+            Account account = profileService.getPersonalInfo();
             post.setAccount(account);
+            System.out.println("Account is null");
         }
         else {
             System.out.println("Account ID is null");
@@ -125,7 +138,7 @@ public class PostController {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String jString = objectMapper.writeValueAsString(post);
-        System.out.println(jString);
+        System.out.println(jString); // luc nay la no ch tao id cho post, luu r no tu dong tao
 
         if (post.getId() != null) {
             postService.updatePost(post.getId(), post);
@@ -134,16 +147,30 @@ public class PostController {
             postService.createPost(post);
         }
 
-
         return "redirect:/posts";
     }
 
     @GetMapping("/update/{id}")
     public String showUpdatePostPage(Model model, @PathVariable("id") UUID id) {
+
+        Account personalInfo = profileService.getPersonalInfo();
+        int ownerId = personalInfo.getId();
+        System.out.println("Owner ID: " + ownerId);
+
+        boolean isAdmin = false;
+
+        // kiem tra xem co phai admin khong
+        if (ownerId == 1) {
+            isAdmin = true;
+            System.out.println("Yes, this is admin");
+        }
+
         Post post = postService.getPostById(id);
         System.out.println(post);
         model.addAttribute("post", post);
         model.addAttribute("charityEvents", charityService.getAllCharities(0).getCharityList());
+        model.addAttribute("ownerId", ownerId);
+        model.addAttribute("isAdmin", isAdmin);
         return "detail_post";
     }
 
@@ -158,6 +185,8 @@ public class PostController {
         postService.approvePost(id);
         return "redirect:/posts";
     }
+
+
 
 
 

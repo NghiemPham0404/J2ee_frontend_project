@@ -1,5 +1,6 @@
 package com.example.j2ee_frontend_test.services;
 
+import com.example.j2ee_frontend_test.models.Account;
 import com.example.j2ee_frontend_test.models.Profile;
 import com.example.j2ee_frontend_test.services.apis.ProfileApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,19 +64,20 @@ public class ProfileService {
 //        }
 //    }
 
-    public boolean validateAdmin(String username) {
-        Call<Profile> call = profileApi.validateAdmin(username);
+    public Account getPersonalInfo() {
+        Call<Account> call = profileApi.getPersonalInfo();
         try {
-            Response<Profile> response = call.execute();
+            Response<Account> response = call.execute();
             if (response.isSuccessful() && response.body() != null) {
-                return true;
-
+                return response.body();
             } else {
-                return false;
+                System.out.println("Error: " + response.errorBody());
+                return new Account();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
 }
 

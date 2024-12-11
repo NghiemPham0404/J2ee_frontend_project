@@ -78,6 +78,8 @@
 
             </div>
 
+            <div th:attr="data-owner-id=${ownerId}" id="ownerData"></div>
+
 
             <button type="submit" class="btn btn-primary">Tạo bài viết</button>
         </div>
@@ -93,6 +95,10 @@
 <script src="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js"></script>
 
 <script>
+
+    const ownerId = document.getElementById('ownerData').getAttribute('data-owner-id');
+    console.log('Owner ID:', ownerId);
+
     const { Editor } = toastui;
     const { colorSyntax } = Editor.plugin;
     // Create a new instance of the Editor
@@ -156,7 +162,7 @@
 
         // Get the content of the editor
         document.getElementById('hidden-body').value = editor.getHTML();
-        document.getElementById('accountId').value = 1;
+        document.getElementById('accountId').value = ownerId;
         this.submit();
 
     });
@@ -172,6 +178,8 @@
 
         // Set the value of the datetime-local input
         document.getElementById("dateTime").value = formattedDate;
+
+
     };
 
     // Xử lý nút xóa giá trị trong input

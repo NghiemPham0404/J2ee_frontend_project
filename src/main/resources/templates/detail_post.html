@@ -90,13 +90,15 @@
 
       </div>
 
+      <div th:attr="data-owner-id=${ownerId}" id="ownerData"></div>
+
 
       <button type="submit" class="btn btn-primary">Lưu</button>
 <!--      <a th:href="@{/posts/delete/{id}(id=${post.id})}" class="btn btn-danger">Xóa</a>-->
       <button type="button" class="btn btn-danger" id="delete-post">Xoá</button>
 
       <!-- duyet bai viet -->
-      <button type="button" class="btn btn-success" id="approve-post">Duyệt</button>
+      <button type="button" class="btn btn-success" id="approve-post" th:if="${isAdmin}">Duyệt</button>
 
     </div>
   </form>
@@ -110,6 +112,10 @@
 <script src="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js"></script>
 
 <script>
+
+  const ownerId = document.getElementById('ownerData').getAttribute('data-owner-id');
+  console.log('Owner ID:', ownerId);
+
   const { Editor } = toastui;
   const { colorSyntax } = Editor.plugin;
   // Create a new instance of the Editor
@@ -173,7 +179,7 @@
 
     // Get the content of the editor
     document.getElementById('hidden-body').value = editor.getHTML();
-    document.getElementById('accountId').value = 1;
+    document.getElementById('accountId').value = ownerId;
     this.submit();
 
 
