@@ -58,6 +58,25 @@
             vertical-align: middle;
             text-align: center;
         }
+
+        .loader {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 2s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
@@ -105,7 +124,8 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-body">
-                            <form th:action="@{/certification}" method="post">
+                            <form id="certificationForm">
+                                <input name="apiBaseUrl" th:value="${apiBaseUrl}" hidden>
                                 <input name="transferId" th:value="${transferId}" hidden>
 
                                 <!-- Form nhập email -->
@@ -116,7 +136,8 @@
                                 </div>
 
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary">Gửi</button>
+                                    <button type="button" class="btn btn-primary" id="sendEmailBtn">Gửi</button>
+                                    <div class="loader" hidden></div>
                                 </div>
                             </form>
                         </div>
@@ -124,14 +145,57 @@
                 </div>
             </div>
             <!-- Nút trở về trang chủ -->
-            <a href="/trang-chu" class="btn btn-primary mt-4">Về trang chủ</a>
+            <a href="/" class="btn btn-primary mt-4">Về trang chủ</a>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
 </div>
 </body>
 
 </html>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<script>
+    const sendEmailBtn = document.getElementById("sendEmailBtn");
+    const loader = document.getElementsByClassName("loader").item(0);
+
+    sendEmailBtn.onclick = async function (e) {
+        // Prevent default behavior if the button is inside a form
+        e.preventDefault();
+        sendEmailBtn.setAttribute("hidden", "")
+        sendEmailBtn.disabled = true
+        loader.removeAttribute("hidden");
+
+        // Get form data
+        const form = document.getElementById('certificationForm');
+        const formData = new FormData(form);
+        const transferId = formData.get('transferId');
+        const emailAddress = formData.get('emailAddress');
+        const baseApiUrl = formData.get('apiBaseUrl')
+
+        // Construct the API URL
+        const apiCall = `${baseApiUrl}email/certification?transferId=${encodeURIComponent(transferId)}&recipientAddress=${encodeURIComponent(emailAddress)}`;
+        console.log(apiCall);
+
+        try {
+            // Call the API using Fetch API
+            const response = await fetch(apiCall, {
+                method: 'POST',
+            });
+
+            if (response.ok) {
+                alert('Email sent successfully!');
+            } else {
+                const errorText = await response.text();
+                alert(`Failed to send email: ${response.status} - ${errorText}`);
+            }
+            sendEmailBtn.removeAttribute("hidden")
+            sendEmailBtn.disabled = false
+            loader.setAttribute("hidden", "")
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+</script>

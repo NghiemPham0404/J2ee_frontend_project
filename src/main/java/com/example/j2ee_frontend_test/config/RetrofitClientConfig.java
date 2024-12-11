@@ -110,4 +110,9 @@ public class RetrofitClientConfig {
         return retrofit.create(StatisticApi.class);
     }
 
+    @Bean
+    public BalanceTrackApi balanceTrackApi(Retrofit retrofit) {
+        return retrofit.create(BalanceTrackApi.class);
+    }
+
 }
