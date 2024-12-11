@@ -38,6 +38,7 @@
             color: #0d6efd;
             padding: 5px;
             border-radius: 5px;
+            height:66.25px;
         }
         .progress-container {
             margin-bottom: 15px;
@@ -50,8 +51,11 @@
         .progress {
             flex-grow: 1;
         }
-        .progress-bar {
+        .progress-bar-primary {
         background-image :  linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%); !important;
+        }
+        .progress-bar-success{
+        background-image:linear-gradient(45deg, #8a2387, #e94057, #f27121); !important;
         }
         .donate-button {
             flex-shrink: 0;
@@ -166,6 +170,21 @@
         .btn-primary{
            background: linear-gradient(195deg, #8E2DE2 0%, #4A00E0 100%);
            border:none;
+        }
+        .btn-outline-success{
+        border: 1px solid red;
+                  color: red;
+                  background-color: white;
+        }
+        .btn-outline-success:hover{
+        background: linear-gradient(45deg, #8a2387, #e94057, #f27121);
+                    outline:none;
+                    border:none;
+                     box-shadow:box-shadow:
+                                        0 0 5px 2px rgba(138, 35, 135, 0.6),
+                                        0 0 10px 4px rgba(233, 64, 87, 0.6),
+                                        0 0 15px 6px rgba(242, 113, 33, 0.6);
+                                }
         }
         .btn-outline-del {
           border: 1px solid red;

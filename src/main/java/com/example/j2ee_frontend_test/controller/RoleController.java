@@ -34,7 +34,8 @@ public class RoleController {
                 new Action(1, "Account Management", null),
                 new Action(2, "Charity Event Management", null),
                 new Action(3, "Post Management", null),
-                new Action(4, "Accounting", null)
+                new Action(4, "Accounting", null),
+                new Action(5,"Role Management",null)
         );
 
 
@@ -109,7 +110,8 @@ public String getRoleDetails(Model model ,@PathVariable("id") int id) {
             new Action(1, "Account Management",null),
             new Action(2, "Charity Event Management",null),
             new Action(3, "Post Management",null),
-            new Action(4, "Accounting",null)
+            new Action(4, "Accounting",null),
+            new Action(5,"Role Management",null)
     );
     Role role=roleService.getRoleById(id);
     System.out.println("Detail: " );
