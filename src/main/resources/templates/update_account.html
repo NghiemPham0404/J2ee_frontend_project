@@ -84,8 +84,8 @@
 
     <div class="row justify-content-center">
         <div class="col-md-6 text-center">
-            <button class="btn btn-outline-primary mt-4" type="submit">Cập nhật</button>
-            <button class="btn btn-outline-del mt-4" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?');" th:href="@{/account/delete/{id}(id=${account.id})}">Xóa</button>
+            <button class="btn btn-outline-primary mt-4" type="submit" th:if="${update}">Cập nhật</button>
+            <button class="btn btn-outline-del mt-4" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?');" th:href="@{/account/delete/{id}(id=${account.id})}" th:if="${delete}">Xóa</button>
         </div>
     </div>
 </form>

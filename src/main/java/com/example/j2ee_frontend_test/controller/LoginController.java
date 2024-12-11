@@ -10,10 +10,14 @@ import com.example.j2ee_frontend_test.response.AccountListResponse;
 import com.example.j2ee_frontend_test.response.LoginResponse;
 import com.example.j2ee_frontend_test.services.LoginService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -36,7 +40,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String login(@ModelAttribute(name = "loginDTO") LoginDTO loginDTO) {
-        if (jwtProvider.getToken()==null) {
+        if (jwtProvider.getToken() == null) {
             return "login";
         }
         retrofitClientConfig.reinitializeRetrofit();
@@ -80,9 +84,9 @@ public class LoginController {
         return "";
     }
 
-    @GetMapping("/logout")
+    @GetMapping("/l0g0ut")
     public String logout() {
         jwtProvider.destroyToken();
-        return "redirect:/";
+        return "redirect:/login";
     }
 }

@@ -1,5 +1,6 @@
 package com.example.j2ee_frontend_test.controller;
 
+import com.example.j2ee_frontend_test.config.JwtProvider;
 import com.example.j2ee_frontend_test.models.Account;
 import com.example.j2ee_frontend_test.models.CharityEvent;
 import com.example.j2ee_frontend_test.response.CharityListResponse;
@@ -20,7 +21,11 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/charity-events")
+@PreAuthorize("hasAuthority('Charity Event Management read')")
 public class CharityController {
+
+    @Autowired
+    private JwtProvider jwtProvider;
 
     @Autowired
     CharityService charityService;
@@ -38,6 +43,7 @@ public class CharityController {
         model.addAttribute("total_pages", charityListResponse.getTotalPages());
         model.addAttribute("total_results", charityListResponse.getTotalResults());
         model.addAttribute("query",query);
+        model.addAttribute("create", jwtProvider.containAuthority("Charity Event Management create"));
         return "charity";
     }
     @GetMapping("/new")
@@ -55,6 +61,8 @@ public class CharityController {
         model.addAttribute("data",c);
         model.addAttribute("startTime", formattedStartTime);
         model.addAttribute("endTime", formattedEndTime);
+        model.addAttribute("update", jwtProvider.containAuthority("Charity Event Management update"));
+        model.addAttribute("delete", jwtProvider.containAuthority("Charity Event Management delete"));
         return "detail_charity";
     }
     @PostMapping("/save")

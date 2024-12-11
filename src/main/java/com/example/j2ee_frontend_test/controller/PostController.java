@@ -1,5 +1,6 @@
 package com.example.j2ee_frontend_test.controller;
 
+import com.example.j2ee_frontend_test.config.JwtProvider;
 import com.example.j2ee_frontend_test.models.Account;
 import com.example.j2ee_frontend_test.models.CharityEvent;
 import com.example.j2ee_frontend_test.models.Post;
@@ -22,6 +23,7 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/posts")
+@PreAuthorize("hasAuthority('Post Management read')")
 public class PostController {
 
     @Autowired
@@ -33,11 +35,13 @@ public class PostController {
     private AccountService accountService;
     @Autowired
     private CharityService charityService;
+    @Autowired
+    private JwtProvider jwtProvider;
 
 
     @GetMapping
     public String viewPostsPage(Model model, @PathParam("page") Integer page, @PathParam("query") String query) {
-        page = page != null ? page - 1: 0;
+        page = page != null ? page - 1 : 0;
         PostListResponse postListResponse = null;
         PostListResponse postListResponseForAdmin = null;
 
@@ -73,9 +77,7 @@ public class PostController {
                 return "post";
             }
 
-        }
-
-        else {
+        } else {
             postListResponse = postService.getMyPosts(page, ownerId, "");
             postListResponseForAdmin = postService.getAllPosts(1, page, "");
             PostListResponse postListResponseNotApproved = postService.getNotApprovedPosts(page);
@@ -83,8 +85,7 @@ public class PostController {
 
             if (postListResponseNotApproved != null && postListResponseNotApproved.getPostList() != null) {
                 model.addAttribute("dataNotApproved", postListResponseNotApproved.getPostList());
-            }
-            else {
+            } else {
                 model.addAttribute("dataNotApproved", new ArrayList<>());
                 model.addAttribute("message_not_approved", "Không có bài viết nào để duyệt!");
             }
@@ -94,16 +95,23 @@ public class PostController {
 
         System.out.println("PostListResponse: " + postListResponseForAdmin.getPostList());
 
-        model.addAttribute("data", postListResponse.getPostList());
+        if (postListResponse != null) {
+            model.addAttribute("data", postListResponse.getPostList());
+            model.addAttribute("total_pages", postListResponse.getTotalPages());
+            model.addAttribute("total_results", postListResponse.getTotalResults());
+        }else{
+             model.addAttribute("data", new ArrayList<>());
+            model.addAttribute("total_pages", 0);
+            model.addAttribute("total_results",0);
+        }
+
         model.addAttribute("dataForAdmin", postListResponseForAdmin.getPostList());
         model.addAttribute("page", page);
-        model.addAttribute("total_pages", postListResponse.getTotalPages());
-        model.addAttribute("total_results", postListResponse.getTotalResults());
+
         model.addAttribute("query", query);
         model.addAttribute("queryForAdmin", query);
         model.addAttribute("isAdmin", isAdmin);
-
-
+        model.addAttribute("create", jwtProvider.containAuthority("Post Management create"));
         return "post";
     }
 
@@ -120,12 +128,11 @@ public class PostController {
 
     @PostMapping("/save")
     public String savePost(@ModelAttribute("post") Post post) throws Exception {
-     if (post.getAccount() == null) {
+        if (post.getAccount() == null) {
             Account account = profileService.getPersonalInfo();
             post.setAccount(account);
             System.out.println("Account is null");
-        }
-        else {
+        } else {
             System.out.println("Account ID is null");
         }
 
@@ -146,7 +153,6 @@ public class PostController {
 
             postService.createPost(post);
         }
-
         return "redirect:/posts";
     }
 
@@ -171,6 +177,8 @@ public class PostController {
         model.addAttribute("charityEvents", charityService.getAllCharities(0).getCharityList());
         model.addAttribute("ownerId", ownerId);
         model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("update", jwtProvider.containAuthority("Post Management update"));
+        model.addAttribute("delete", jwtProvider.containAuthority("Post Management delete"));
         return "detail_post";
     }
 
@@ -185,11 +193,6 @@ public class PostController {
         postService.approvePost(id);
         return "redirect:/posts";
     }
-
-
-
-
-
 
 
 }

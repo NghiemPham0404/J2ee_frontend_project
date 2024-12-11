@@ -1,5 +1,6 @@
 package com.example.j2ee_frontend_test.controller;
 
+import com.example.j2ee_frontend_test.config.JwtProvider;
 import com.example.j2ee_frontend_test.models.Action;
 import com.example.j2ee_frontend_test.models.Role;
 import com.example.j2ee_frontend_test.models.RoleAction;
@@ -17,14 +18,19 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/role")
+@PreAuthorize("hasAuthority('Role Management read')")
 public class RoleController {
 
     @Autowired
     RoleService roleService;
+    @Autowired
+    private JwtProvider jwtProvider;
+
     @GetMapping("/all")
     public String getAllRoles(Model model) {
         List<Role> roleListResponse=roleService.getAllRoles();
         model.addAttribute("data",roleListResponse);
+        model.addAttribute("create",jwtProvider.containAuthority("Role Management create"));
         return "role";
     }
     @GetMapping("/new")
@@ -134,6 +140,8 @@ public String getRoleDetails(Model model ,@PathVariable("id") int id) {
 
     role.setRoleActions(completeRoleActions);
     model.addAttribute("data", role);
+    model.addAttribute("update", jwtProvider.containAuthority("Role Management update"));
+    model.addAttribute("delete", jwtProvider.containAuthority("Role Management delete"));
     return "detail_role";
 }
     @GetMapping("/delete/{id}")

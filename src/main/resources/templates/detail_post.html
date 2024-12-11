@@ -93,9 +93,9 @@
       <div th:attr="data-owner-id=${ownerId}" id="ownerData"></div>
 
 
-      <button type="submit" class="btn btn-primary">Lưu</button>
+      <button type="submit" class="btn btn-primary" th:if="${update}">Lưu</button>
 <!--      <a th:href="@{/posts/delete/{id}(id=${post.id})}" class="btn btn-danger">Xóa</a>-->
-      <button type="button" class="btn btn-danger" id="delete-post">Xoá</button>
+      <button type="button" class="btn btn-danger" id="delete-post" th:if="${delete}">Xoá</button>
 
       <!-- duyet bai viet -->
       <button type="button" class="btn btn-success" id="approve-post" th:if="${isAdmin}">Duyệt</button>
