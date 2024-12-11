@@ -22,11 +22,64 @@
 
         h4 {
             font-weight: bold;
-            color: #6607F1;
+            color: black;
+            text-align:start;
         }
 
         h5 {
             cursor: pointer;
+        }
+        .content-center{
+        height:max-content;
+        margin:auto;
+        width:50%;
+        }
+
+        img{
+        height:300px;
+        }
+        p{
+        text-align: start;
+        }
+        .sidebar {
+            width: 300px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-left: 1px solid #ddd;
+        }
+
+        .similar-post {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .similar-post img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+
+        .similar-post h6 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .similar-post p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .similar-post a {
+            text-decoration: none;
+        }
+
+        .similar-post a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -37,15 +90,15 @@
 <div th:replace="~{header :: navbar}"></div>
 
 <div class="content-center col-md-12">
-    <img th:src="@{${ip.thumbImg}}" class="card-img-top" alt="Project Image" style="width:600px;">
-    <h4 th:text="${ip.title}"></h4>
+
+    <h4 class="mt-5" th:text="${ip.title}"></h4>
     <p id="ipbodyText" th:utext="${ip.body}" style="width:600px;"></p>
 
     <h6>Thời gian còn lại trước khi khóa sổ</h6>
 
-    <div class="countdowns mt-4">
-        <div th:text="${ip.charityEvent.timeLeft}">29 : 23 : 59 : 59</div>
-        <div class="small">Ngày</div>
+    <div class="countdowns text-center mb-3" >
+        <div class="countdown-time time-left" th:text="${ip.charityEvent.timeLeft}"></div>
+        <div class="small" th:text="${ip.charityEvent.timeLeft == 'Dự án đã kết thúc.' ? ' ' : 'Ngày : Giờ : Phút : Giây'}">Ngày : Giờ : Phút : Giây</div>
     </div>
 
     <div class="progress-container" style="width:400px">
@@ -69,5 +122,66 @@
         </div>
     </div>
 </div>
+<div class="sidebar">
+    <h5>Bài viết tương tự</h5>
+    <div  class="similar-post">
+        <img th:src="@{${ip.thumbImg}}">
+        <a>
+            <h6 th:text="${ip.charityEvent.title}"></h6>
+        </a>
+        <p th:text="${ip.charityEvent.descriptiom}"></p>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+  // 1. Countdown
+  function setupCountdown(element) {
+    const timeLeftStr = element.querySelector('.time-left').textContent.trim();  // Lấy giá trị từ .time-left
+
+    if (!timeLeftStr || timeLeftStr === 'Dự án đã kết thúc.') {
+      element.querySelector('.time-left').textContent = 'Dự án đã kết thúc.';
+      return;
+    }
+
+    const timeDisplay = element.querySelector('.time-left');
+    const timeParts = timeLeftStr.split(':').map(Number);
+
+    if (timeParts.length !== 4 || timeParts.some(isNaN)) {
+      console.error('Giá trị timeLeft không hợp lệ');
+      return;
+    }
+
+    let [days, hours, minutes, seconds] = timeParts;
+    let totalSeconds = days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 + seconds;
+
+    // Hàm cập nhật countdown
+    function updateCountdown() {
+      if (totalSeconds <= 0) {
+        timeDisplay.textContent = 'Dự án đã kết thúc.';
+        clearInterval(interval); // Dừng countdown
+        return;
+      }
+
+      totalSeconds--; // Giảm số giây còn lại
+      const d = Math.floor(totalSeconds / (24 * 60 * 60));
+      const h = Math.floor((totalSeconds % (24 * 60 * 60)) / (60 * 60));
+      const m = Math.floor((totalSeconds % (60 * 60)) / 60);
+      const s = totalSeconds % 60;
+
+      // Cập nhật giao diện
+      timeDisplay.textContent = `${d} : ${h.toString().padStart(2, '0')} : ${m.toString().padStart(2, '0')} : ${s.toString().padStart(2, '0')}`;
+    }
+
+    // Cập nhật mỗi giây
+    const interval = setInterval(updateCountdown, 1000);
+
+    // Gọi hàm update ngay khi trang tải
+    updateCountdown();
+  }
+
+  // Thiết lập countdown cho tất cả các phần tử có class .countdowns
+  document.querySelectorAll('.countdowns').forEach(setupCountdown);
+    });
+</script>
 </body>
 </html>
