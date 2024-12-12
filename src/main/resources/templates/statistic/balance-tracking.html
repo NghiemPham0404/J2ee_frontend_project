@@ -94,6 +94,9 @@
             <div class="col-auto">
                 <button class="btn btn-primary" type="submit">Duyệt</button>
             </div>
+            <div class="col-auto">
+                <a class="btn btn-primary" th:href="@{/balance-tracking/export (year=${allActiveYear[0]})}">Xuất PDF</a>
+            </div>
         </div>
     </form>
 </div>
